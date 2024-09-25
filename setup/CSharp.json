@@ -1,0 +1,15 @@
+{
+   "Extraction"    : { "name": "CSharpExtraction",  "kwargs" : {}},
+   "CodeGenerator": { "name": "GPT35JavaCodeGenerator", "kwargs" : {"dummy": true}},
+   "TestGenerator": { "name": "GPT4oCSharpTestGenerator", "kwargs" : {"model": "gpt-4o-mini"}},
+   "Analysis"      : { "name": "TreeAnalysis",  "kwargs" : {}},
+   "Executor"      : { "name": "MavenJavaExecutor",   "kwargs" : {}},
+   "Visualizer"    : { "name": "TreeVisualizer",  "kwargs" : {}},
+
+   "FilterFunctions"  : [
+      { "name": "NoTestsFilterFunction", "kwargs" : {}},
+      { "name": "ContainsFilterFunction", "kwargs" : {"key":"doc", "content":"@inheritDoc" , "invert":true}},
+      { "name": "CheckLengthFilterFunction", "kwargs" : {"key":"code", "op":">", "val":0 }},
+      { "name": "CheckLengthFilterFunction", "kwargs" : {"key":"doc", "op":">", "val":3}}
+   ]
+}
