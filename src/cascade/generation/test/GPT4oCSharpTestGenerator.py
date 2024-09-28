@@ -1,12 +1,12 @@
 import copy
 import json
 import os
-
+import re
 import tiktoken
 
 from cascade.generation.Generator import Generator
 from cascade.generation.executor.OpenAIChatCompletionExecutor import OpenAIChatCompletionExecutor
-from cascade.utils.CSharpUtils import build_context, build_tests
+from cascade.utils.CSharpUtils import build_context, build_tests, check_syntax
 
 
 # TODO: max_tokens can be changed if I remember correctly??
@@ -24,7 +24,7 @@ class GPT4oCSharpTestGenerator(Generator):
     def build_prompt(self, context):
         enc = tiktoken.encoding_for_model(self.model)
 
-        system_prompt = f"Write C# unit tests for the function {context['signature']['name']}. Respond only with the completion of the tests."
+        system_prompt = f"Write C# unit tests for the method {context['signature']['name']}. Respond only with the completion of the tests."
 
         code = "// CODE:\n\n" + build_context(context, doc=True)
 
@@ -79,6 +79,7 @@ class GPT4oCSharpTestGenerator(Generator):
 
             safety_copy = copy.deepcopy(context)
 
+            # TODO: maybe do this as well?
             '''
             imports = dict()
             if len(context["tests"]["test_imports"]) == 1 and "*" in context["test_imports"][0]:
@@ -90,9 +91,10 @@ class GPT4oCSharpTestGenerator(Generator):
                     if "import" in line and ";" in line:
                         context["test_imports"].append(line)
                 context["test_imports"] = list(set(context["test_imports"]))
-            
             response = {"response" : response, "imports" : imports}
             '''
+            response = {"response" : response, "imports" : None}
+
             
             safety_copy["response"] = response
             with open(test_safety_copy_path , "w") as file:
@@ -102,7 +104,67 @@ class GPT4oCSharpTestGenerator(Generator):
 
         new_tests = self.extract_tests(new_tests, context, response, output_path)
 
-        return new_tests , response
+        return new_tests, response
 
     def extract_tests(self, new_tests, context, response, output_path):
-        pass
+        code_blocks = re.findall(r"```csharp(.*?)\n```", new_tests, flags=re.DOTALL)
+
+        if not code_blocks == []:
+            new_tests = code_blocks[0]
+
+        new_tests = self.try_to_fix(new_tests, response, context, output_path)
+
+        return new_tests
+
+# TODO: Revise the implementation by addressing concrete examples
+    def try_to_fix(self, new_tests, response, context, output_path):
+        # check if the class is complete
+        chunk = ""
+        braces = 2
+        for letter in new_tests:
+            chunk += letter
+            if letter == "{":
+                braces += 1
+            elif letter == "}":
+                braces -= 1
+            if braces == 0:
+                break
+
+        # we have to complete the class
+        if braces == 0:
+            return build_tests(context) + chunk
+
+        if braces == 1:
+            # two possible cases: 1. full class with a brace too much, 2. or a completion with a brace to few
+            # full class
+            to_check = [chunk[:chunk.rfind("}")], build_tests(context) + chunk + "}",
+                        build_tests(context) + chunk[chunk.find("{") + 1:]]
+            for check in to_check:
+                if check_syntax(check, output_path):
+                    return check
+
+        # the class is complete
+        if braces == 2:
+            check = chunk
+            if check_syntax(check, output_path):
+                return check
+            check = build_tests(context) + chunk[chunk.find("{") + 1:] + "}"
+            if check_syntax(check, output_path):
+                return check
+
+        if braces > 2:
+            if response['response']['choices'][0]["finish_reason"] == "length":
+                last_test = 0
+                lines = new_tests.splitlines()
+
+                for num, line in enumerate(lines):
+                    if not self.is_three:
+                        if "@Test" in line:
+                            last_test = num
+                    else:
+                        if "public void test" in line:
+                            last_test = num
+
+                return "\n".join(lines[:last_test]) + "\n}"
+
+        return new_tests + "}" * (braces - 2)

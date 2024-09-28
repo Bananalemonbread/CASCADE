@@ -1,8 +1,9 @@
 from cascade.extraction.Extraction import Extraction
 from cascade.extraction.JsonExtraction import JsonExtraction
 from typing import List, Dict
+
+from cascade.utils import CSharpUtils
 from cascade.utils.Utils import save_dicts_list_to_json
-import subprocess
 import os
 
 
@@ -14,7 +15,7 @@ class CSharpExtraction(Extraction):
         super().__init__()
 
     """
-    The Java extraction class, this class supports extracting from source folders.
+    The C# extraction class, this class supports extracting from source folders.
     """
     def extract(self, input_path, output_path) -> List[Dict[str, any]]:
         """
@@ -34,24 +35,10 @@ class CSharpExtraction(Extraction):
         if extracted:
             return extracted
 
-        my_path = os.path.dirname(__file__)
-        subprocess.run(
-            ["dotnet", os.path.join(my_path, "..", "resources", "tools","CSharpExtractor", "CSharpExtractor.dll"),
-             input_path,
-             output_path,
-             "net6.0"] # TODO: make this a parameter
-            , text=True
-        )
+        #TODO: make framework a paramter
+        CSharpUtils.run_extraction(input_path, output_path, "net6.0")
+
         extracted = json_extractor.extract(input_path, output_path)
-
-        count = 0
-        for e in extracted:
-            e["id"] = count
-            count += 1
-
-            # TODO remove this later when it is fixed in the jar
-            del e["root_path"]
-
 
         save_dicts_list_to_json(extracted, os.path.join(output_path, "extracted.json"))
 

@@ -1,3 +1,6 @@
+import os
+import subprocess
+
 TEST_FRAMEWORK_XUNIT: str = "xUnit"
 TEST_FRAMEWORK_NUNIT: str = "NUnit"
 TEST_FRAMEWORK_MSTEST: str = "MSTest"
@@ -45,7 +48,6 @@ def build_signature(method_context, doc=False):
                        + ('<' + ', '.join(generics) + '> ' if generics else '')
                        + "(" + ", ".join(sig["params"]) + ")")
 
-    #TODO: include body?
     return complete_method
 
 def build_tests(context, primer=""):
@@ -81,28 +83,56 @@ def build_tests(context, primer=""):
         raise Exception("No valid test runner defined")
 
 
-def check_syntax(code, type, output_path):
+def check_syntax(code, output_path):
     """
-
-    :param code:
-    :param type:   should be "block" or "class"
+    :param code: C# code to check syntactically
+    :param output_path: destination of log file
     :return:
     """
-    print("TODO: implement syntax check for C#!")
-    pass
+    temp_file = "temp.cs"
+    with open(temp_file, "w") as file:
+        file.write(code)
 
+    my_path = os.path.dirname(__file__)
+    p = subprocess.run(
+        ["dotnet",
+         os.path.join(my_path, "..", "resources", "tools", "CSharpVerifier", "CSharpVerifier.dll"),
+         temp_file],
+        capture_output=True,
+        text=True
+    )
+
+    with open(os.path.join(output_path, "log.txt"), "a") as file:
+        file.write("verify returned with:" + str(p.returncode) + "\n")
+        file.write(code + "\n")
+        file.write(p.stdout + "\n")
+        file.write(p.stderr + "\n")
+
+    os.remove(temp_file)
+
+    return p.returncode == 0
+
+def run_extraction(input_path, output_path, target_framework):
+    """
+    :param input_path: project to extract from
+    :param output_path: location to place the final extracted.json
+    :param target_framework: the .NET target framework used to compile to project
+    """
+    my_path = os.path.dirname(__file__)
+    subprocess.run(
+        ["dotnet",
+         os.path.join(my_path, "..", "resources", "tools", "CSharpExtractor", "CSharpExtractor.dll"),
+         input_path,
+         output_path,
+         target_framework],
+        text=True
+    )
 
 #TODO: remove after testing
-import json
-
 def main():
-    file_path = '/Users/mar/Desktop/Masterarbeit/extracted.json'
 
-    with open(file_path, 'r') as file:
-        json_data = json.load(file)
-        for json_object in json_data:
-            print(build_tests(json_object, primer="\n    // start writing tests for FUNCTIONNAME here"))
-            print("\n------\n")
+    code = "public class Test { }"
+    print(check_syntax(code, "/Users/mar/Desktop/Masterarbeit/tmp_out"))
 
 # Run the main function
 if __name__ == '__main__':

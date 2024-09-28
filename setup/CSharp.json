@@ -1,6 +1,6 @@
 {
    "Extraction"    : { "name": "CSharpExtraction",  "kwargs" : {}},
-   "CodeGenerator": { "name": "GPT35JavaCodeGenerator", "kwargs" : {"dummy": true}},
+   "CodeGenerator": { "name": "GPT4oCSharpCodeGenerator", "kwargs" : {"model": "gpt-4o-mini"}},
    "TestGenerator": { "name": "GPT4oCSharpTestGenerator", "kwargs" : {"model": "gpt-4o-mini"}},
    "Analysis"      : { "name": "TreeAnalysis",  "kwargs" : {}},
    "Executor"      : { "name": "MavenJavaExecutor",   "kwargs" : {}},
