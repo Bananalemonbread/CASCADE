@@ -10,7 +10,7 @@ import tiktoken
 import json
 
 class GPT4oCSharpCodeGenerator(Generator):
-    def __init__(self, max_attempts=1, max_tokens=1000, temperature=0, delay=3, max_prompt_tokens=2000, model="gpt-4o", freq_penalty=0.0, dummy=False):
+    def __init__(self, max_attempts=1, max_tokens=10000, temperature=0, delay=3, max_prompt_tokens=6000, model="gpt-4o-mini-2024-07-18", freq_penalty=0.0, dummy=False):
         super().__init__()
         self.model = model
         self.max_prompt_tokens = max_prompt_tokens

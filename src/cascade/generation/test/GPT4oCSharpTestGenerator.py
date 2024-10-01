@@ -8,9 +8,8 @@ from cascade.generation.Generator import Generator
 from cascade.generation.executor.OpenAIChatCompletionExecutor import OpenAIChatCompletionExecutor
 from cascade.utils.CSharpUtils import build_context, build_tests, check_syntax
 
-# TODO: max_tokens can be changed if I remember correctly??
 class GPT4oCSharpTestGenerator(Generator):
-    def __init__(self, max_attempts=1, max_tokens=1000, temperature=0, delay=3, max_prompt_tokens=2000, model="gpt-4o", freq_penalty=0.0, dummy=False):
+    def __init__(self, max_attempts=1, max_tokens=10000, temperature=0, delay=3, max_prompt_tokens=6000, model="gpt-4o-mini-2024-07-18", freq_penalty=0.0, dummy=False):
         super().__init__()
         self.model = model
         self.max_prompt_tokens = max_prompt_tokens
@@ -75,7 +74,7 @@ class GPT4oCSharpTestGenerator(Generator):
 
             safety_copy = copy.deepcopy(context)
 
-            # TODO: maybe do this as well?
+            # TODO: Do this as well. Include new param from master
             '''
             imports = dict()
             if len(context["tests"]["test_imports"]) == 1 and "*" in context["test_imports"][0]:
