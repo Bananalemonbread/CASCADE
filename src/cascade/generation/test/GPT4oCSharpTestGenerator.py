@@ -8,7 +8,6 @@ from cascade.generation.Generator import Generator
 from cascade.generation.executor.OpenAIChatCompletionExecutor import OpenAIChatCompletionExecutor
 from cascade.utils.CSharpUtils import build_context, build_tests, check_syntax
 
-
 # TODO: max_tokens can be changed if I remember correctly??
 class GPT4oCSharpTestGenerator(Generator):
     def __init__(self, max_attempts=1, max_tokens=1000, temperature=0, delay=3, max_prompt_tokens=2000, model="gpt-4o", freq_penalty=0.0, dummy=False):
@@ -16,10 +15,7 @@ class GPT4oCSharpTestGenerator(Generator):
         self.model = model
         self.max_prompt_tokens = max_prompt_tokens
         self.prompt_executor = OpenAIChatCompletionExecutor(max_attempts=max_attempts, model=model, max_tokens=max_tokens, temperature=temperature,
-                                            delay=delay, freq_penalty=freq_penalty, dummy=dummy)
-        # TODO: add api key to env
-
-        self.is_three = False # TODO: I don't need this, right?
+                                                            delay=delay, freq_penalty=freq_penalty, dummy=dummy)
 
     def build_prompt(self, context):
         enc = tiktoken.encoding_for_model(self.model)
@@ -116,7 +112,6 @@ class GPT4oCSharpTestGenerator(Generator):
 
         return new_tests
 
-# TODO: Revise the implementation by addressing concrete examples
     def try_to_fix(self, new_tests, response, context, output_path):
         # check if the class is complete
         chunk = ""
@@ -157,8 +152,10 @@ class GPT4oCSharpTestGenerator(Generator):
                 last_test = 0
                 lines = new_tests.splitlines()
 
+                # TODO: identify last-test line
                 for num, line in enumerate(lines):
-                    if not self.is_three:
+                    #if not self.is_three:
+                    if not True:
                         if "@Test" in line:
                             last_test = num
                     else:

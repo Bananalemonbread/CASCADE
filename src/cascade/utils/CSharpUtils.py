@@ -127,14 +127,3 @@ def run_extraction(input_path, output_path, target_framework):
          target_framework],
         text=True
     )
-
-#TODO: remove after testing
-def main():
-
-    code = "public class Test { }"
-    print(check_syntax(code, "/Users/mar/Desktop/Masterarbeit/tmp_out"))
-
-# Run the main function
-if __name__ == '__main__':
-    main()
-
