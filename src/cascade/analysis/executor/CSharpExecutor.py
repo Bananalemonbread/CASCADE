@@ -49,18 +49,20 @@ class CSharpExecutor(AnalysisExecutor):
                 "image": self.builder.image,
                 "directory": temp_dir,
                 "command": f"pwd; ls; cat -n {context['code_file_path']}; cat -n {test['test_file_path']};"
-                           f"{run_test_class_command}", #TODO: the cat commands are not working at the moment
+                           f"{run_test_class_command}",
                 "eval_command": f"cat {self.test_report_filename}",
                 "eval_function": self.builder.eval_function
             }
 
-            # TODO: why is one container started in here and killed after eval ...
+
             result = dock_ex.execute(dock_context, output_path)
 
         return result
 
-    #TODO: ... while one is setup and running in here for the whole duration?
     def set_up(self, data, input_path, output_path):
+        """
+        This setup method is only used to check if the project can be build.
+        """
         # because the input_path points to the .sln file of the project
         input_path = os.path.dirname(input_path)
 
