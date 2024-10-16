@@ -69,7 +69,7 @@ class DockerizedWrapper:
             exit_code = self.run(container, context, output_path)
             container.commit(context["new_image"])
         finally:
-            if not images and container:
+            if container:
                 self.kill(container)
             return exit_code
 
@@ -83,11 +83,13 @@ class DockerizedWrapper:
     def setup(self, context: dict):
         client = docker.from_env(timeout=240)
         container = client.containers.run(context["image"], "tail -f /dev/null", detach=True)
-        buffer = io.BytesIO()
-        with tarfile.open(mode="w", fileobj=buffer) as tar:
-            tar.add(context["directory"], arcname="")
-        buffer.seek(0)
-        container.put_archive("/root/", buffer)
+        if "directory" in context:
+            buffer = io.BytesIO()
+            with tarfile.open(mode="w", fileobj=buffer) as tar:
+                tar.add(context["directory"], arcname="")
+
+            buffer.seek(0)
+            container.put_archive("/root/", buffer)
         return container
 
     def run(self, container: Container, context: dict, path):

@@ -28,12 +28,15 @@ class TreeAnalysis(Analysis):
 
     def analyse(self, data: list, input_path, output_path):
         """
-        TODO
+        This
+
+        :param data:
         :param input_path:
         :param output_path:
-        :param data:
         :return:
         """
+
+
 
         # allows setting up requirements needed in every step of the execution (i.e. load docker images )
         print("Set up started")
@@ -63,7 +66,11 @@ class TreeAnalysis(Analysis):
                 if self.debug >= 1:
                     log("        Executing code, tests", logger="tqdm")
 
-                res1 = self.executor.execute("code", "tests", d, input_path, output_path)
+                try:
+                    res1 = self.executor.execute("code", "tests", d, input_path, output_path)
+                except:
+                    d["results"]["(code, tests)"] = [[], [], []]
+                    continue
 
                 if self.debug >= 1:
                     log("        Finished executing code, tests", logger="tqdm")
@@ -90,8 +97,12 @@ class TreeAnalysis(Analysis):
 
                 if self.debug >= 1:
                     log("        Generating new tests", logger="tqdm")
-
-                new_tests, response = self.generator.generate_tests(d, output_path)
+                try:
+                    new_tests, response = self.generator.generate_tests(d, output_path)
+                except:
+                    d["new_tests"] = []
+                    d["new_tests_response"] = []
+                    continue
 
                 if self.debug >= 1:
                     log("        Finished generating new tests", logger="tqdm")
@@ -105,7 +116,11 @@ class TreeAnalysis(Analysis):
                 if self.debug >= 1:
                     log("        Executing code, new_tests", logger="tqdm")
 
-                res2 = self.executor.execute("code", "new_tests", d, input_path, output_path)
+                try:
+                    res2 = self.executor.execute("code", "new_tests", d, input_path, output_path)
+                except:
+                    d["results"]["(code, new_tests)"] = [[], [], []]
+                    continue
 
                 if self.debug >= 1:
                     log("        Finished executing code, new_tests", logger="tqdm")
@@ -135,7 +150,12 @@ class TreeAnalysis(Analysis):
                 if self.debug >= 1:
                     log("        Generating new code", logger="tqdm")
 
-                new_code, response = self.generator.generate_code(d, output_path)
+                try:
+                    new_code, response = self.generator.generate_code(d, output_path)
+                except:
+                    d["new_code"] = []
+                    d["new_code_response"] = []
+                    continue
 
                 if self.debug >= 1:
                     log("        Finished generating new code", logger="tqdm")
@@ -149,7 +169,11 @@ class TreeAnalysis(Analysis):
                 if self.debug >= 1:
                     log("        Executing new_code, new_tests", logger="tqdm")
 
-                res3 = self.executor.execute("new_code", "new_tests", d, input_path, output_path)
+                try:
+                    res3 = self.executor.execute("new_code", "new_tests", d, input_path, output_path)
+                except:
+                    d["results"]["(new_code, new_tests)"] = [[], [], []]
+                    continue
 
                 if self.debug >= 1:
                     log("        Finished executing new_code, new_tests", logger="tqdm")
@@ -178,7 +202,11 @@ class TreeAnalysis(Analysis):
                 if self.debug >= 1:
                     log("        Executing new_code, tests", logger="tqdm")
 
-                res4 = self.executor.execute("new_code", "tests", d, input_path, output_path)
+                try:
+                    res4 = self.executor.execute("new_code", "tests", d, input_path, output_path)
+                except:
+                    d["results"]["(new_code, tests)"] = [[], [], []]
+                    continue
 
                 if self.debug >= 1:
                     log("        Finished executing new_code, tests", logger="tqdm")

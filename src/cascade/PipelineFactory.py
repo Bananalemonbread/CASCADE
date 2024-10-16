@@ -58,8 +58,11 @@ class PipelineFactory:
 
     def build(self, pipeline_path, kwargs=None):
         """
-        TODO
-        :return: a build pipeline object
+        Builds a pipeline from a setup file and optional keyword arguments.
+        The setup file is a JSON file containing the specific modules that should be used for each pipeline component.
+        It should include Extraction, any of (CodeGenerator, TestGenerator, DocGenerator), Analysis, Executor and Visualizer
+
+        :param pipeline_path: The path to the setup file.
         """
         if not kwargs:
             kwargs = {"module_path": None, "Extraction": {}, "CodeGenerator": {}, "TestGenerator": {},
@@ -67,8 +70,7 @@ class PipelineFactory:
 
         setup = Utils.load_json_from_path(pipeline_path)
         if not setup:
-            raise Exception("AAAAAAAH")
-        # TODO change that to something meaningful
+            raise Exception("No setup file found")
 
         if kwargs["module_path"]:
             sys.path.append(os.path.abspath(str(kwargs["module_path"])))

@@ -104,8 +104,9 @@ class DatasetAnalysis(Analysis):
 
 
 
-        if "junit_version" not in d:    #remove this if clause later
 
+        if "junit_version" not in d:    #remove this if clause later
+            print(output_path)
             print("extracting Junit version")
             junit_version, source_dir, test_source_dir = self.extract_junit_version( input_path, output_path )
             print("Junit version: ", junit_version)
@@ -123,11 +124,11 @@ class DatasetAnalysis(Analysis):
             d["junit_version"] = junit_version #remove that later
             save_dicts_list_to_json([d], ana_path)
 
+
             return
 
         else:
             junit_version = d["junit_version"]
-
 
 
         # found in imports ?
@@ -158,14 +159,13 @@ class DatasetAnalysis(Analysis):
         if not "new_tests" in d:
             print("generate new tests")
             new_tests, response = self.generator.generate_tests(d, output_path)
-
+            new_tests = new_tests.replace(d["test_file_path"].split("/")[-1].split(".")[0], str("THIS_IS_A_UNIQUE_NAME_Test"))
             d["new_tests"] = new_tests
             d["new_tests_response"] = response
         else:
             print("new tests already generated")
 
-
-
+        d["test_file_path"] = d["test_file_path"].replace(d["test_file_path"].split("/")[-1].split(".")[0], str("THIS_IS_A_UNIQUE_NAME_Test"))
 
         print("execute new tests")
 

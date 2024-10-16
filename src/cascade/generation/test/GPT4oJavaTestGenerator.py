@@ -11,20 +11,14 @@ from cascade.utils.JavaUtils import build_context
 from cascade.generation.test.GPT4JavaTestGenerator import GPT4JavaTestGenerator
 
 class GPT4oJavaTestGenerator(GPT4JavaTestGenerator):
-    def __init__(self, max_attempts=1, max_tokens=1000, temperature=0, delay=3, max_prompt_tokens=2000, model="gpt-4o", freq_penalty=0.0, dummy=False):
-        super().__init__()
-        self.model = model
-        self.max_prompt_tokens = max_prompt_tokens
-        self.prompt_executor = OpenAIChatCompletionExecutor(max_attempts=max_attempts, model=model, max_tokens=max_tokens, temperature=temperature,
-                                            delay=delay, freq_penalty=freq_penalty, dummy=dummy)
-
-        self.is_three = False
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 
     def build_prompt(self, context):
         enc = tiktoken.encoding_for_model(self.model)
 
-        system_prompt = f"Write Java JUnit tests for the function {context['signature']['name']}. Respond only with the completion of the tests."
+        system_prompt = f"Write Java tests for the function {context['signature']['name']}. Respond only with the completion of the tests."
 
 
 
