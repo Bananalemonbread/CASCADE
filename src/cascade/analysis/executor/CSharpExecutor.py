@@ -2,11 +2,11 @@ import shutil
 import tempfile
 import json
 import os
-import subprocess
 
 from cascade.analysis.executor.AnalysisExecutor import AnalysisExecutor, succeeded, failed, errored
 from cascade.analysis.executor.builders.CSharpBuilder import CSharpBuilder
 from cascade.utils.DockerizedWrapper import DockerizedWrapper
+from cascade.utils.CSharpUtils import run_modification
 from pathlib import Path
 
 class CSharpExecutor(AnalysisExecutor):
@@ -34,37 +34,9 @@ class CSharpExecutor(AnalysisExecutor):
             with open(entry, "w") as json_entry:
                 json.dump(context, json_entry)
 
-            my_path = os.path.dirname(__file__)
-
-        # TODO: use your own tool here
-        # allow changing tests or code
-        # ANNAHMEN:
-        # ich hab ein Context object (inkl. TestDatei Pfad und Code Pfad)
-            ''' p = subprocess.run(
-                ["java", "-jar", os.path.join(my_path, "..", "..", "resources", "tools", "JavaExtractor.jar"),
-                 "mod-AWIBDAIBWDIWA",
-                 temp_dir,
-                 entry,
-                 code,
-                 tests],
-                capture_output=True,
-                text=True
-            )
+            run_modification(temp_dir, entry, code, tests)
 
             os.remove(entry)
-            with open(os.path.join(output_path, "log.txt"), "a") as file:
-                file.write(str(context["id"]) + "\n")
-                file.write(p.stdout + "\n")
-                file.write(p.stderr + "\n")
-            if p.stderr:
-                if self.debug:
-                    print(p.stdout)
-                    print(p.stderr)
-                return [], [], []
-
-            if self.debug:
-                print(p.stdout)
-            '''
 
             dock_ex = DockerizedWrapper(debug=self.debug)
 
