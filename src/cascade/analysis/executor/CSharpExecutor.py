@@ -34,7 +34,17 @@ class CSharpExecutor(AnalysisExecutor):
             with open(entry, "w") as json_entry:
                 json.dump(context, json_entry)
 
-            run_modification(temp_dir, entry, code, tests)
+            process = run_modification(temp_dir, entry, code, tests)
+
+            with open(os.path.join(output_path, "log.txt"), "a") as file:
+                file.write("Modifying context with id: " + str(context["id"]) + "\n")
+                file.write(process.stdout + "\n")
+                file.write(process.stderr + "\n")
+            if process.stderr:
+                if self.debug:
+                    print(process.stdout)
+                    print(process.stderr)
+                return [], [], []
 
             os.remove(entry)
 
@@ -61,7 +71,7 @@ class CSharpExecutor(AnalysisExecutor):
 
     def set_up(self, data, input_path, output_path):
         """
-        This setup method is only used to check if the project can be build.
+        This setup method is only used to check if the project can be built.
         """
         # because the input_path points to the .sln file of the project
         input_path = os.path.dirname(input_path)

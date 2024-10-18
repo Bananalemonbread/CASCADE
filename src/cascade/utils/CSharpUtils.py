@@ -137,10 +137,10 @@ def run_modification(project_dir, entry, code, tests):
         (similar to context + new_code & new_tests fields)
     :param code: keyword to trigger the modification
     :param tests: keyword to trigger the modification
-
     """
+
     my_path = os.path.dirname(__file__)
-    p = subprocess.run(
+    return subprocess.run(
         ["dotnet",
          os.path.join(my_path, "..", "resources", "tools", "CSharpTool", "CSharpTool.dll"),
          "modify",
@@ -151,16 +151,3 @@ def run_modification(project_dir, entry, code, tests):
         text=True,
         capture_output=True
     )
-
-    #TODO: think about error handling
-    '''
-    with open(os.path.join(output_path, "log.txt"), "a") as file:
-        file.write(str(context["id"]) + "\n")
-        file.write(p.stdout + "\n")
-        file.write(p.stderr + "\n")
-    if p.stderr:
-        if self.debug:
-            print(p.stdout)
-            print(p.stderr)
-        return [], [], []
-    '''
