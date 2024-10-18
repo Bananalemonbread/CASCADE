@@ -4,26 +4,28 @@ import xml.etree.ElementTree as ET
 
 def parse_xml_result(xml):
     # Define the namespace used in the XML
-    namespaces = {'vs': 'http://microsoft.com/schemas/VisualStudio/TeamTest/2010'}
+    namespace = {'vs': 'http://microsoft.com/schemas/VisualStudio/TeamTest/2010'}
 
     root = ET.fromstring(xml)
-    result_summary = root.find('vs:ResultSummary', namespaces)
-    if result_summary is None:
-        raise ValueError("Invalid XML: <ResultSummary> element not found")
 
-    counters = result_summary.find('vs:Counters', namespaces)
-    if counters is None:
-        raise ValueError("Invalid XML: <Counters> element not found")
+    passed_tests = []
+    failed_tests = []
+    errored_tests = []
 
-    results = {
-        'total': int(counters.attrib['total']),
-        'passed': int(counters.attrib['passed']),
-        'failed': int(counters.attrib['failed']),
-        'error': int(counters.attrib['error'])
-    }
+    for test_result in root.findall('.//vs:UnitTestResult', namespace):
+        test_name = test_result.get('testName')
+        test_name = test_name.split('.')[-1]  # only use the method name
+        outcome = test_result.get('outcome')
 
-    return results
+        # Categorize based on the outcome
+        if outcome == 'Passed':
+            passed_tests.append(test_name)
+        elif outcome == 'Failed':
+            failed_tests.append(test_name)
+        elif outcome == 'Error':
+            errored_tests.append(test_name)
 
+    return [passed_tests, failed_tests, errored_tests]
 
 class CSharpBuilder(Builder):
     def __init__(self,
@@ -46,21 +48,12 @@ class CSharpBuilder(Builder):
         :param x: a string containing the output produced in the docker,
                     which should contain the output of the tests which are then parsed here.
         :return: result a tuple of three lists of strings,
-            the first list contains the ids of the tests that passed,
-            the second list contains the ids of the tests that failed,
-            the third list contains the ids of the tests that errored
+            the first list contains the names of the tests that passed,
+            the second list contains the names of the tests that failed,
+            the third list contains the names of the tests that errored
         """
 
-        result = ([], [], [])
-
-        parsed = parse_xml_result(x)
-
-        print("TODO: determine with TOBI")
-        #TODO: you can extract the actual method names of the tests
-
-
-
-        return result
+        return parse_xml_result(x)
 
     def set_up(self, temp_dir, _, output_path):
         wrapper = DockerizedWrapper(debug=True)
