@@ -15,6 +15,7 @@ def parse_xml_result(xml):
     for test_result in root.findall('.//vs:UnitTestResult', namespace):
         test_name = test_result.get('testName')
         test_name = test_name.split('.')[-1]  # only use the method name
+        test_name = test_name.split('(')[0]
         outcome = test_result.get('outcome')
 
         # Categorize based on the outcome
@@ -61,7 +62,7 @@ class CSharpBuilder(Builder):
             "image": self.image,
             "new_image": self.new_image_name,  # name of the new image that results
             "directory": temp_dir,
-            "command": f"dotnet {self.set_up_command} {self.set_up_args}; RET=$?; rm -rf ../root/*; exit $RET;",
+            "command": f"{self.set_up_command} {self.set_up_args}; RET=$?; rm -rf ../root/*; exit $RET;",
         }
         return wrapper.setup_image(dock_context, output_path)
 

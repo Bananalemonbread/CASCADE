@@ -1,9 +1,9 @@
 {
-   "Extraction"    : { "name": "CSharpExtraction",  "kwargs" : {}},
+   "Extraction"    : { "name": "CSharpExtraction",  "kwargs" : {"framework": "net6.0"}},
    "CodeGenerator": { "name": "GPT4oCSharpCodeGenerator", "kwargs" : {"model": "gpt-4o-mini"}},
    "TestGenerator": { "name": "GPT4oCSharpTestGenerator", "kwargs" : {"model": "gpt-4o-mini"}},
-   "Analysis"      : { "name": "TreeAnalysis",  "kwargs" : {"reexecute" : true}},
-   "Executor"      : { "name": "CSharpExecutor",   "kwargs" : {}},
+   "Analysis"      : { "name": "TreeAnalysis",  "kwargs" : {}},
+   "Executor"      : { "name": "CSharpExecutor",   "kwargs" : {"image": "mcr.microsoft.com/dotnet/sdk:6.0", "framework": "net6.0"}},
    "Visualizer"    : { "name": "TreeVisualizer",  "kwargs" : {}},
 
    "FilterFunctions"  : [

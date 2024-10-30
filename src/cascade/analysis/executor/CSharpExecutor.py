@@ -10,15 +10,15 @@ from cascade.utils.CSharpUtils import run_modification
 from pathlib import Path
 
 class CSharpExecutor(AnalysisExecutor):
-    def __init__(self, debug=False, builder=None):
+    def __init__(self, debug=False, image="mcr.microsoft.com/dotnet/sdk:8.0", framework = "net8.0"):
         super().__init__()
         self.debug = debug
         self.test_report_filename = "$HOME/test_result.trx"
-        self.builder = CSharpBuilder(image="mcr.microsoft.com/dotnet/sdk:8.0",
-                                     new_image_name="dotnet8.0",
-                                     dotnet_args=f"--filter %t --logger \"trx;LogFileName={self.test_report_filename}\"",
-                                     set_up_command="build",
-                                     set_up_args="--property WarningLevel=0")
+        self.builder = CSharpBuilder(image=image,
+                                     new_image_name=f"dot{framework}",
+                                     dotnet_args=f"--filter %t --framework {framework} --logger \"trx;LogFileName={self.test_report_filename}\"",
+                                     set_up_command="dotnet restore; dotnet build",
+                                     set_up_args=f"--framework {framework} --property WarningLevel=0")
 
     def execute(self, code: str, tests: str, context: dict, input_path, output_path: str) -> (succeeded, failed, errored):
         # because the input_path points to the .sln file of the project
@@ -58,7 +58,7 @@ class CSharpExecutor(AnalysisExecutor):
             dock_context = {
                 "image": self.builder.image,
                 "directory": temp_dir,
-                "command": f"pwd; ls; cat -n {context['code_file_path']}; cat -n {test['test_file_path']};"
+                "command": #f"pwd; ls; cat -n {context['code_file_path']}; cat -n {test['test_file_path']};"
                            f"{run_test_class_command}",
                 "eval_command": f"cat {self.test_report_filename}",
                 "eval_function": self.builder.eval_function

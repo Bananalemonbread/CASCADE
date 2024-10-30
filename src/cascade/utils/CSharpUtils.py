@@ -60,8 +60,7 @@ def build_tests(context, primer=""):
 
     class_name = test["test_file_path"].split("/")[-1].split(".")[0]
     class_definition = "public class " + class_name + "\n{"
-    name = str(context["signature"]["name"])
-    test_method = "\n    public void " + name[0].upper() + name[1:] + "_Test_1()\n{"
+    test_method = build_test_first_method(context["signature"]["name"])
 
     class_definition += primer # always include primer prior to method declaration
 
@@ -82,6 +81,8 @@ def build_tests(context, primer=""):
     else:
         raise Exception("No valid test runner defined")
 
+def build_test_first_method(signature_name):
+    return "\n    public void " + signature_name[0].upper() + signature_name[1:] + "_Test_1()\n{"
 
 def check_syntax(code, output_path):
     """

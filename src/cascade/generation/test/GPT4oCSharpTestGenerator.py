@@ -6,7 +6,8 @@ import tiktoken
 
 from cascade.generation.Generator import Generator
 from cascade.generation.executor.OpenAIChatCompletionExecutor import OpenAIChatCompletionExecutor
-from cascade.utils.CSharpUtils import build_context, build_tests, check_syntax
+from cascade.utils.CSharpUtils import build_context, build_tests, check_syntax, build_test_first_method
+
 
 class GPT4oCSharpTestGenerator(Generator):
     def __init__(self, max_attempts=1, max_tokens=10000, temperature=0, delay=3, max_prompt_tokens=6000, model="gpt-4o-mini-2024-07-18", freq_penalty=0.0, dummy=False):
@@ -112,6 +113,9 @@ class GPT4oCSharpTestGenerator(Generator):
         return new_tests
 
     def try_to_fix(self, new_tests, response, context, output_path):
+
+        new_tests = self.remove_first_method_signature(context, new_tests)
+
         # check if the class is complete
         chunk = ""
         braces = 2
@@ -151,16 +155,24 @@ class GPT4oCSharpTestGenerator(Generator):
                 last_test = 0
                 lines = new_tests.splitlines()
 
-                # TODO: identify last-test line
                 for num, line in enumerate(lines):
-                    #if not self.is_three:
-                    if not True:
-                        if "@Test" in line:
-                            last_test = num
-                    else:
-                        if "public void test" in line:
-                            last_test = num
+                    if "[Test]" in line or "[Fact]" in line or "[TestMethod]" in line:
+                        last_test = num
 
                 return "\n".join(lines[:last_test]) + "\n}"
 
         return new_tests + "}" * (braces - 2)
+
+    def remove_first_method_signature(self, context, new_tests):
+        # I know this is brutal, but this gives us the first test method signature that we passed
+        # to the Chatbot prompting it to complete the test file from there on
+        first_test_method_signature = build_test_first_method(context["signature"]["name"])
+
+        split_result = new_tests.split(first_test_method_signature)
+
+        # in case chatbot return the first passed signature again underneath the original signature,
+        # we remove it
+        if len(split_result) == 3:
+            new_tests = split_result[0] + first_test_method_signature + split_result[2]
+
+        return new_tests

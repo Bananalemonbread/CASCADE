@@ -8,11 +8,12 @@ import os
 
 
 class CSharpExtraction(Extraction):
-    def __init__(self):
+    def __init__(self, framework = "net8.0"):
         """
         A class which enables extracting CSharp projects.
         """
         super().__init__()
+        self.framework = framework
 
     """
     The C# extraction class, this class supports extracting from source folders.
@@ -35,8 +36,7 @@ class CSharpExtraction(Extraction):
         if extracted:
             return extracted
 
-        #TODO: make framework a paramter
-        CSharpUtils.run_extraction(input_path, output_path, "net6.0")
+        CSharpUtils.run_extraction(input_path, output_path, self.framework)
 
         extracted = json_extractor.extract(input_path, output_path)
 
