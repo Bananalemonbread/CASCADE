@@ -75,23 +75,20 @@ class GPT4oCSharpTestGenerator(Generator):
 
             safety_copy = copy.deepcopy(context)
 
-            # TODO: Do this as well. Include new param from master
-            '''
             imports = dict()
-            if len(context["tests"]["test_imports"]) == 1 and "*" in context["test_imports"][0]:
+            if False: #TODO: use param from master
                 prompt.append({"role" : "assistant", "content" : response["choices"][0]["message"]["content"]})
                 prompt.append({"role" : "user", "content" : "What imports are necessary for this code?"})
                 imports = self.prompt_executor.execute(prompt).model_dump()
                 imports_message = imports["choices"][0]["message"]["content"]
                 for line in imports_message.splitlines():
-                    if "import" in line and ";" in line:
-                        context["test_imports"].append(line)
-                context["test_imports"] = list(set(context["test_imports"]))
-            response = {"response" : response, "imports" : imports}
-            '''
-            response = {"response" : response, "imports" : None}
+                    if "using" in line and ";" in line:
+                        context["tests"][0]["test_imports"].append(line) #TODO: handle multiple tests
 
-            
+            context["tests"][0]["test_imports"] = list(set(context["tests"][0]["test_imports"])) #TODO: use it somewhere..
+
+            response = {"response" : response, "imports" : imports}
+
             safety_copy["response"] = response
             with open(test_safety_copy_path , "w") as file:
                 json.dump(safety_copy, file)
