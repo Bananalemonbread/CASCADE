@@ -2,7 +2,7 @@
    "Extraction"    : { "name": "CSharpExtraction",  "kwargs" : {"framework": "net8.0"}},
    "CodeGenerator": { "name": "GPT4oCSharpCodeGenerator", "kwargs" : {"model": "gpt-4o-mini"}},
    "TestGenerator": { "name": "GPT4oCSharpTestGenerator", "kwargs" : {"model": "gpt-4o-mini"}},
-   "Analysis"      : { "name": "TreeAnalysis",  "kwargs" : {"reexecute":  true}},
+   "Analysis"      : { "name": "TreeAnalysis",  "kwargs" : {"reexecute":  true, "debug":  1}},
    "Executor"      : { "name": "CSharpExecutor",   "kwargs" : {"image": "mcr.microsoft.com/dotnet/sdk:8.0", "framework": "net8.0"}},
    "Visualizer"    : { "name": "TreeVisualizer",  "kwargs" : {}},
 
