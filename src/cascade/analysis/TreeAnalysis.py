@@ -43,6 +43,8 @@ class TreeAnalysis(Analysis):
         if not self.executor.set_up(data, input_path, output_path) and self.die_if_setup_fails:
             print("Set up failed")
             return
+        ##TODO: why not tear down here already? A separate container is used for each execution
+        self.executor.tear_down(data)
         print("Set up finished")
 
         #  loop through data
