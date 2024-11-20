@@ -224,7 +224,8 @@ class TreeAnalysis(Analysis):
                 continue
             del res4
 
-        self.executor.tear_down(data)
+        # TODO: revert this before merge
+        #self.executor.tear_down(data)
 
         self.visualizer.visualize(data, output_path, full=True)
 
