@@ -76,7 +76,7 @@ class GPT4oCSharpTestGenerator(Generator):
             safety_copy = copy.deepcopy(context)
 
             imports = dict()
-            if False: #TODO: use param from master
+            if True: #TODO: use param from master
                 prompt.append({"role" : "assistant", "content" : response["choices"][0]["message"]["content"]})
                 prompt.append({"role" : "user", "content" : "What imports are necessary for this code?"})
                 imports = self.prompt_executor.execute(prompt).model_dump()
