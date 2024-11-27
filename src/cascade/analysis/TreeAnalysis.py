@@ -70,7 +70,8 @@ class TreeAnalysis(Analysis):
 
                 try:
                     res1 = self.executor.execute("code", "tests", d, input_path, output_path)
-                except:
+                except Exception as e:
+                    print(e)
                     d["results"]["(code, tests)"] = [[], [], []]
                     continue
 
@@ -101,7 +102,8 @@ class TreeAnalysis(Analysis):
                     log("        Generating new tests", logger="tqdm")
                 try:
                     new_tests, response = self.generator.generate_tests(d, output_path)
-                except:
+                except Exception as e:
+                    print(e)
                     d["new_tests"] = []
                     d["new_tests_response"] = []
                     continue
@@ -120,7 +122,8 @@ class TreeAnalysis(Analysis):
 
                 try:
                     res2 = self.executor.execute("code", "new_tests", d, input_path, output_path)
-                except:
+                except Exception as e:
+                    print(e)
                     d["results"]["(code, new_tests)"] = [[], [], []]
                     continue
 
@@ -154,7 +157,8 @@ class TreeAnalysis(Analysis):
 
                 try:
                     new_code, response = self.generator.generate_code(d, output_path)
-                except:
+                except Exception as e:
+                    print(e)
                     d["new_code"] = []
                     d["new_code_response"] = []
                     continue
@@ -173,7 +177,8 @@ class TreeAnalysis(Analysis):
 
                 try:
                     res3 = self.executor.execute("new_code", "new_tests", d, input_path, output_path)
-                except:
+                except Exception as e:
+                    print(e)
                     d["results"]["(new_code, new_tests)"] = [[], [], []]
                     continue
 
@@ -206,7 +211,8 @@ class TreeAnalysis(Analysis):
 
                 try:
                     res4 = self.executor.execute("new_code", "tests", d, input_path, output_path)
-                except:
+                except Exception as e:
+                    print(e)
                     d["results"]["(new_code, tests)"] = [[], [], []]
                     continue
 

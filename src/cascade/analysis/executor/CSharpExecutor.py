@@ -40,6 +40,7 @@ class CSharpExecutor(AnalysisExecutor):
                 file.write("Modifying context with id: " + str(context["id"]) + "\n")
                 file.write(process.stdout + "\n")
                 file.write(process.stderr + "\n")
+
             if process.stderr:
                 if self.debug:
                     print(process.stdout)
