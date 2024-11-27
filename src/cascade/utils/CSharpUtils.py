@@ -56,7 +56,7 @@ def build_tests(context, primer=""):
     framework = str(test["test_runner"])
 
     usings = '\n'.join(test["test_imports"]) + '\n' if test["test_imports"] else ""
-    namespace = '\n' + "namespace " + test["test_namespace"] + ";\n\n"
+    namespace = '\n' + "namespace " + test["test_namespace"] + "\n{\n\n"
 
     class_name = test["test_file_path"].split("/")[-1].split(".")[0]
     class_definition = "public class " + class_name + "\n{"

@@ -115,7 +115,7 @@ class GPT4oCSharpTestGenerator(Generator):
 
         # check if the class is complete
         chunk = ""
-        braces = 2
+        braces = 3 # one opening brace for namespace, class and method
         for letter in new_tests:
             chunk += letter
             if letter == "{":
