@@ -51,7 +51,7 @@ class CSharpExecutor(AnalysisExecutor):
             dock_ex = DockerizedWrapper(debug=self.debug)
 
             test = context["tests"][0] #TODO: think about handling multiple tests?
-            test_class_name = Path(test['test_file_path']).stem
+            test_class_name = test['test_class_name']
             fully_qualified_name = test["test_namespace"] + "." + test_class_name
             run_test_class_command = self.builder.test_pattern.replace('%t', fully_qualified_name)
 
