@@ -143,7 +143,7 @@ class GPT4oCSharpTestGenerator(Generator):
             check = chunk
             if check_syntax(check, output_path):
                 return check
-            check = build_tests(context) + chunk[chunk.find("{") + 1:] + "}"
+            check = build_tests(context) + chunk + "}}"
             if check_syntax(check, output_path):
                 return check
 
