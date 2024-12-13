@@ -36,7 +36,7 @@ class CSharpBuilder(Builder):
                  set_up_command,
                  set_up_args,
                  timeout=120):
-        pattern = f"echo \"[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0\" > out; timeout {timeout} dotnet test {dotnet_args} 2>&1 > output; cat output > out; cat output"
+        pattern = f"echo \"[INFO] Tests run starting!\" > out; timeout {timeout} dotnet test {dotnet_args} 2>&1 > output; cat output > out; cat output"
         super().__init__(pattern, self.eval_function, image)
         self.image = image
         self.new_image_name = new_image_name
