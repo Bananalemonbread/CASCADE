@@ -17,7 +17,7 @@ class CSharpExecutor(AnalysisExecutor):
                                      new_image_name=f"dot{framework}",
                                      dotnet_args=f"%p --filter %t --framework {framework} /p:EnableWindowsTargeting=true --logger \"trx;LogFileName={self.test_report_filename}\" ",
                                      set_up_command="dotnet workload restore --verbosity quiet; dotnet build",
-                                     set_up_args=f"--framework {framework} --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true")
+                                     set_up_args=f"--verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true")
 
     def execute(self, code: str, tests: str, context: dict, input_path, output_path: str) -> (succeeded, failed, errored):
         # because the input_path points to the .sln file of the project
