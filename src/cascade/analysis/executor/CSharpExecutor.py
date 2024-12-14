@@ -60,7 +60,7 @@ class CSharpExecutor(AnalysisExecutor):
                 "image": self.builder.image,
                 "directory": temp_dir,
                 "command": #f"pwd; ls; cat -n {context['code_file_path']}; cat -n {test['test_file_path']};"
-                           f"{run_test_class_command}",
+                           f"cat -n {test['test_file_path']}; {run_test_class_command}",
                 "eval_command": f"cat {self.test_report_filename}",
                 "eval_function": self.builder.eval_function
             }
