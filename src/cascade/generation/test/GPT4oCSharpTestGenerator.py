@@ -143,11 +143,21 @@ class GPT4oCSharpTestGenerator(Generator):
             check = chunk
             if check_syntax(check, output_path):
                 return check
+
             check = build_tests(context) + chunk + "}}"
             if check_syntax(check, output_path):
                 return check
 
-        if braces > 2:
+            check = build_tests(context, no_method=True) + chunk + "}"
+            if check_syntax(check, output_path):
+                return check
+
+        if braces == 3: # Response could be a full class
+            check = chunk
+            if check_syntax(check, output_path):
+                return check
+
+        if braces >= 3:
             if response['response']['choices'][0]["finish_reason"] == "length":
                 last_test = 0
                 lines = new_tests.splitlines()

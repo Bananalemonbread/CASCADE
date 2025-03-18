@@ -50,7 +50,7 @@ def build_signature(method_context, doc=False):
 
     return complete_method
 
-def build_tests(context, primer=""):
+def build_tests(context, primer="", no_method=False):
     # TODO: Think about using multiple test files?
     test = context["tests"][0]
     framework = str(test["test_runner"])
@@ -66,20 +66,25 @@ def build_tests(context, primer=""):
 
     if framework == TEST_FRAMEWORK_XUNIT:
         annotation = "\n    [Fact]"
-        return usings + namespace + class_definition + annotation + test_method
+        res = usings + namespace + class_definition
+        method = annotation + test_method
 
     elif framework == TEST_FRAMEWORK_NUNIT:
         class_annotation = "[TestFixture]\n"
         annotation = "\n    [Test]"
-        return usings + namespace + class_annotation + class_definition + annotation + test_method
+        res = usings + namespace + class_annotation + class_definition
+        method = annotation + test_method
 
     elif framework == TEST_FRAMEWORK_MSTEST:
         class_annotation = "[TestClass]\n"
         annotation = "\n    [TestMethod]"
-        return usings + namespace + class_annotation + class_definition + annotation + test_method
+        res = usings + namespace + class_annotation + class_definition
+        method = annotation + test_method
 
     else:
         raise Exception("No valid test runner defined")
+
+    return res + ("" if no_method else method)
 
 def build_test_first_method(signature_name):
     return "\n    public void " + signature_name[0].upper() + signature_name[1:] + "_Test_1()\n{"
