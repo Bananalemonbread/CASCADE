@@ -2,32 +2,30 @@ from cascade.extraction.Extraction import Extraction
 from cascade.extraction.JsonExtraction import JsonExtraction
 from typing import List, Dict
 
-from cascade.utils import CSharpUtils
+from cascade.utils import RustUtils
 from cascade.utils.Utils import save_dicts_list_to_json
 import os
 
 
-class CSharpExtraction(Extraction):
-    def __init__(self, framework = "net8.0"):
+class RustExtraction(Extraction):
+    def __init__(self):
         """
-        A class which enables extracting CSharp projects.
+        A class which enables extracting Rust projects.
         """
         super().__init__()
-        self.framework = framework
 
     """
-    The C# extraction class, this class supports extracting from source folders.
+    The Rust extraction class, this class supports extracting from source folders.
     """
     def extract(self, input_path, output_path) -> List[Dict[str, any]]:
         """
-        Extracts a C# class hierarchy from the source folder that the input path points to.
+        Extracts a Rust class hierarchy from the source folder that the input path points to.
 
-        For typical C# package structures point it to the directory which contains both the source and the test
-        directory.
+        For typical Rust package structures point it to the project root directory.
 
         If there already is an "extracted.json" in the output folder, loads that instead.
 
-        :param input_path: The path to the project folder
+        :param input_path: The path to the project
         :param output_path:
         :return:
         """
@@ -36,7 +34,7 @@ class CSharpExtraction(Extraction):
         if extracted:
             return extracted
 
-        CSharpUtils.run_extraction(input_path, output_path, self.framework)
+        RustUtils.run_extraction(input_path, output_path)
 
         extracted = json_extractor.extract(input_path, output_path)
 
