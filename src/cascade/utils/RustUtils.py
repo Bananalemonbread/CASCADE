@@ -64,6 +64,18 @@ def build_signature(method_context, doc=False):
 
     return complete_method
 
+# This is only used if no original tests exist
+def build_test_suite(context, primer="", no_method=False):
+    use_statement = context["use_statement_path"]
+    result = use_statement + "\n"
+
+    # build test method with primer
+    method = (primer + "\n" +
+              build_test_first_method(context))
+
+    return result + ("" if no_method else method)
+
+
 def build_tests(context, primer="", no_method=False):
     test = context["tests"][0]
     test_as_context = test["test_as_context"]
@@ -154,7 +166,7 @@ def run_modification(project_dir, entry, code, tests):
     )
 
 #################
-### TESTING STUFF
+### TESTING STUFF MANUALLY
 #################
 """
 import json
