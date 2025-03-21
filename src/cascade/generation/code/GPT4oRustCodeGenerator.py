@@ -96,4 +96,15 @@ class GPT4oRustCodeGenerator(Generator):
         if len(temp) > 1:
             new_code = "".join(temp[1:])
 
+        new_code = self.ensure_braces(new_code)
+
         return  new_code
+
+    def ensure_braces(self, code: str) -> str:
+        code = code.strip()
+
+        if code.startswith("{") and code.endswith("}"):
+            return code
+
+        # Otherwise, wrap it in braces
+        return "{\n" + code + "\n}"

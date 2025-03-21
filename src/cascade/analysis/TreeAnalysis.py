@@ -7,6 +7,8 @@ from cascade.analysis.executor.Execution import Execution
 from cascade.analysis.visualizer.Visualization import Visualization
 
 from cascade.generation.Generation import Generation
+from cascade.generation.test.GPT4oRustTestGenerator import is_public
+from cascade.utils.RustUtils import build_replacement_test_dict_with_path, INJECTED_SUITE_PATH
 from cascade.utils.Utils import load_json_from_path, log, save_dicts_list_to_json
 
 
@@ -14,7 +16,7 @@ class TreeAnalysis(Analysis):
     """
     TODO
     """
-    def __init__(self, generator: Generation, executor: Execution, visualizer: Visualization, regenerate=False, reexecute=False, debug=0, step_size=1, die_if_setup_fails=False):
+    def __init__(self, generator: Generation, executor: Execution, visualizer: Visualization, regenerate=False, reexecute=False, debug=0, step_size=1, die_if_setup_fails=False, no_original_tests=False):
         super().__init__(generator, executor, visualizer)
         self.die_if_setup_fails = die_if_setup_fails
         self.reexecute = reexecute or regenerate
@@ -22,9 +24,7 @@ class TreeAnalysis(Analysis):
         self.regenerate = regenerate
         self.debug = debug
         self.visualizer.logger = "tqdm"
-
-
-
+        self.no_original_tests = no_original_tests
 
     def analyse(self, data: list, input_path, output_path):
         """
@@ -35,8 +35,6 @@ class TreeAnalysis(Analysis):
         :param output_path:
         :return:
         """
-
-
 
         # allows setting up requirements needed in every step of the execution (i.e. load docker images )
         print("Set up started")
@@ -54,6 +52,19 @@ class TreeAnalysis(Analysis):
             if self.debug >= 2:
                 self.visualizer.visualize(data, output_path)
 
+            if "results" not in d:
+                d["results"] = {}
+
+            test_keyword = "new_tests_inject" if not is_public(d) else "new_tests"
+
+            if is_public(d):
+                replacement_test_dict = build_replacement_test_dict_with_path(INJECTED_SUITE_PATH)
+            else:
+                replacement_test_dict = build_replacement_test_dict_with_path(d["code_file_path"])
+
+            d["tests"] = [replacement_test_dict]
+
+            """
             # Phase 1  code + test: --------------------------------------
 
             if "id" in d and d["id"] != "":
@@ -92,7 +103,7 @@ class TreeAnalysis(Analysis):
             if self.should_skip(res1, False):
                 continue
             del res1
-
+            """
             # Level 2   code + new_test: ---------------------------------
             log("    Level 2", logger="tqdm")
 
@@ -121,7 +132,7 @@ class TreeAnalysis(Analysis):
                     log("        Executing code, new_tests", logger="tqdm")
 
                 try:
-                    res2 = self.executor.execute("code", "new_tests", d, input_path, output_path)
+                    res2 = self.executor.execute("code", test_keyword, d, input_path, output_path)
                 except Exception as e:
                     print(e)
                     d["results"]["(code, new_tests)"] = [[], [], []]
@@ -176,7 +187,7 @@ class TreeAnalysis(Analysis):
                     log("        Executing new_code, new_tests", logger="tqdm")
 
                 try:
-                    res3 = self.executor.execute("new_code", "new_tests", d, input_path, output_path)
+                    res3 = self.executor.execute("new_code", test_keyword, d, input_path, output_path)
                 except Exception as e:
                     print(e)
                     d["results"]["(new_code, new_tests)"] = [[], [], []]
@@ -203,6 +214,7 @@ class TreeAnalysis(Analysis):
                 continue
             del res3
 
+            """
             log("    Level 4", logger="tqdm")
 
             if self.reexecute or "(new_code, tests)" not in d["results"]:
@@ -231,6 +243,7 @@ class TreeAnalysis(Analysis):
             if self.should_skip(res4, True):
                 continue
             del res4
+            """
 
         # TODO: revert this before merge
         #self.executor.tear_down(data)

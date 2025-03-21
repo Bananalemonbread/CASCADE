@@ -5,8 +5,9 @@ import os
 
 from cascade.analysis.executor.AnalysisExecutor import AnalysisExecutor, succeeded, failed, errored
 from cascade.analysis.executor.builders.RustBuilder import RustBuilder
+from cascade.generation.test.GPT4oRustTestGenerator import is_public
 from cascade.utils.DockerizedWrapper import DockerizedWrapper
-from cascade.utils.RustUtils import run_modification
+from cascade.utils.RustUtils import run_modification, INJECTED_SUITE_NAME, INJECTED_MODULE_NAME
 
 class RustExecutor(AnalysisExecutor):
     def __init__(self, debug=False, image="rust:latest", rust_args="--no-fail-fast", timeout=120):
@@ -14,10 +15,10 @@ class RustExecutor(AnalysisExecutor):
         self.debug = debug
         self.builder = RustBuilder(image=image,
                                      new_image_name=f"rust",
-                                     set_up_command="cargo build",
+                                     set_up_command="cargo fetch; cargo build",
                                      set_up_args="")
 
-        self.pattern = f"echo \"[INFO] Tests run starting!\" > out; timeout {timeout} cargo test --test %filename {rust_args} > output 2>&1; cat output > out; cat output"
+        self.pattern = f"echo \"[INFO] Tests run starting!\" > out; timeout {timeout} cargo build --tests; timeout {timeout} cargo test %placeholder {rust_args} > output 2>&1; cat output > out; cat output"
 
     def execute(self, code: str, tests: str, context: dict, input_path, output_path: str) -> (succeeded, failed, errored):
 
@@ -49,16 +50,15 @@ class RustExecutor(AnalysisExecutor):
 
             dock_ex = DockerizedWrapper(debug=self.debug)
 
-            test = context["tests"][0] #TODO: think about handling multiple tests?
-            """
-            test_class_name = test['test_class_name']
-            test_project_path = test['project_path']
-            fully_qualified_name = test["test_namespace"] + "." + test_class_name
-            run_test_class_command =  self.builder.test_pattern.replace('%p', test_project_path).replace('%t', fully_qualified_name)
-            """
-            #TODO: this is just for our experiment run
-            filename = "DedicatedTestSuiteOfCASCADE"  #test["test_file_path"]
-            run_test_command = self.pattern.replace("%filename", filename)
+            # THIS IS JUST FOR THE EXPERIMENT RUN
+            test = context["tests"][0] #we can be sure that it exists
+
+            if is_public(context):
+                command = "--test " + INJECTED_SUITE_NAME
+            else:
+                command = INJECTED_MODULE_NAME
+
+            run_test_command = self.pattern.replace("%placeholder", command)
 
             dock_context = {
                 "image": self.builder.new_image_name,

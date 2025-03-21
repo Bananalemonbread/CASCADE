@@ -2,6 +2,9 @@ import os
 import subprocess
 
 ROOT_MODULE: str = "root module"
+INJECTED_SUITE_PATH: str = "tests/DedicatedTestSuiteOfCASCADE.rs"
+INJECTED_SUITE_NAME: str = "DedicatedTestSuiteOfCASCADE"
+INJECTED_MODULE_NAME: str = "InjectedTestModCASCADE"
 
 def build_context(context, doc=False, no_fields=False, no_other_method_docs=False , no_other_methods=False):
     result = ""
@@ -64,6 +67,26 @@ def build_signature(method_context, doc=False):
 
     return complete_method
 
+
+def build_replacement_test_dict_with_path(test_file_path):
+    replacement_test_dict = {
+        "test_file_path": test_file_path,
+        "tests": "",
+        "test_imports": [],
+        "test_class_name": "",
+        "test_runner": "",
+        "test_as_context": None,
+        "test_type": "",
+        "project_path": "",
+        "test_namespace": "",
+    }
+    return replacement_test_dict
+
+def contains_ignore_whitespace(text, substring):
+    text_norm = text.replace(" ", "")
+    substring_norm = substring.replace(" ", "")
+    return substring_norm in text_norm
+
 # This is only used if no original tests exist
 def build_test_suite(context, primer="", no_method=False):
     use_statement = context["use_statement_path"]
@@ -75,6 +98,17 @@ def build_test_suite(context, primer="", no_method=False):
 
     return result + ("" if no_method else method)
 
+# This is only used if no original tests exist
+def build_test_module(context, primer="", no_method=False):
+    test_module_to_inject = ("#[cfg(test)]\n"
+                             + "mod " + INJECTED_MODULE_NAME + " {\n"
+                             + "use super::*;\n")
+
+    method = (primer + "\n" +
+              build_test_first_method(context))
+
+    return test_module_to_inject + ("" if no_method else method)
+
 
 def build_tests(context, primer="", no_method=False):
     test = context["tests"][0]
@@ -84,7 +118,7 @@ def build_tests(context, primer="", no_method=False):
 
     parents = test_as_context["parent"]
     for parent in parents:
-        result += build_parent(parent, True, True, False)
+        result += build_parent(parent, True, False, False)
 
     # build test method with primer
     method = (primer + "\n" +
