@@ -49,14 +49,15 @@ class RustBuilder(Builder):
             "image": self.image,
             "new_image": self.new_image_name,  # name of the new image that results
             "directory": temp_dir,
-            "command": f"{self.set_up_command} {self.set_up_args}; RET=$?; rm -rf ../root/*; exit $RET;",
+            #"command": f"{self.set_up_command} {self.set_up_args}; RET=$?; rm -rf ../root/*; exit $RET;",
+            "command": f"{self.set_up_command} {self.set_up_args}; RET=$?; exit $RET;",
         }
         return wrapper.setup_image(dock_context, output_path)
 
     def tear_down(self, _):
         wrapper = DockerizedWrapper(debug=True)
         dock_context = {
-            "new_image": self.image,
+            "new_image": self.new_image_name,
         }
         wrapper.remove_image(dock_context)
 

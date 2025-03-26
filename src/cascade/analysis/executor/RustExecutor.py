@@ -14,11 +14,11 @@ class RustExecutor(AnalysisExecutor):
         super().__init__()
         self.debug = debug
         self.builder = RustBuilder(image=image,
-                                     new_image_name=f"rust",
-                                     set_up_command="cargo fetch; cargo build",
+                                     new_image_name=f"rust-pre-compiled-project",
+                                     set_up_command="cargo fetch; cargo build --tests",
                                      set_up_args="")
 
-        self.pattern = f"echo \"[INFO] Tests run starting!\" > out; timeout {timeout} cargo build --tests; timeout {timeout} cargo test %placeholder {rust_args} > output 2>&1; cat output > out; cat output"
+        self.pattern = f"echo \"[INFO] Tests run starting!\" > output;export RUSTFLAGS=\"-Awarnings\"; timeout {timeout} cargo build --tests; timeout {timeout} cargo test %placeholder {rust_args} > output 2>&1; cat output"
 
     def execute(self, code: str, tests: str, context: dict, input_path, output_path: str) -> (succeeded, failed, errored):
 
@@ -65,7 +65,7 @@ class RustExecutor(AnalysisExecutor):
                 "directory": temp_dir,
                 "command": #f"pwd; ls; cat -n {context['code_file_path']}; cat -n {test['test_file_path']};"
                            f"cat -n {test['test_file_path']}; {run_test_command}",
-                "eval_command": f"cat out",
+                "eval_command": f"cat output",
                 "eval_function": self.builder.eval_function
             }
 

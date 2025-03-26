@@ -2,7 +2,7 @@
    "Extraction"    : { "name": "RustExtraction",  "kwargs" : {}},
    "CodeGenerator": { "name": "GPT4oRustCodeGenerator", "kwargs" : {}},
    "TestGenerator": { "name": "GPT4oRustTestGenerator", "kwargs" : {"no_original_tests" :  true}},
-   "Analysis"      : { "name": "TreeAnalysis",  "kwargs" : {"no_original_tests" :  true, "reexecute":  true, "debug":  1, "regenerate" : false}},
+   "Analysis"      : { "name": "TreeAnalysis",  "kwargs" : {"no_original_tests" :  true, "debug":  1, "regenerate" : false}},
    "Executor"      : { "name": "RustExecutor",   "kwargs" : {"image": "rust:latest"}},
    "Visualizer"    : { "name": "TreeVisualizer",  "kwargs" : {}},
 

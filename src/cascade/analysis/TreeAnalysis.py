@@ -41,8 +41,6 @@ class TreeAnalysis(Analysis):
         if not self.executor.set_up(data, input_path, output_path) and self.die_if_setup_fails:
             print("Set up failed")
             return
-        ##TODO: why not tear down here already? A separate container is used for each execution
-        self.executor.tear_down(data)
         print("Set up finished")
 
         #  loop through data
@@ -245,8 +243,7 @@ class TreeAnalysis(Analysis):
             del res4
             """
 
-        # TODO: revert this before merge
-        #self.executor.tear_down(data)
+        self.executor.tear_down(data)
 
         self.visualizer.visualize(data, output_path, full=True)
 

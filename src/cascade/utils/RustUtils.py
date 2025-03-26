@@ -4,7 +4,7 @@ import subprocess
 ROOT_MODULE: str = "root module"
 INJECTED_SUITE_PATH: str = "tests/DedicatedTestSuiteOfCASCADE.rs"
 INJECTED_SUITE_NAME: str = "DedicatedTestSuiteOfCASCADE"
-INJECTED_MODULE_NAME: str = "InjectedTestModCASCADE"
+INJECTED_MODULE_NAME: str = "injected_test_mod_cascade"
 
 def build_context(context, doc=False, no_fields=False, no_other_method_docs=False , no_other_methods=False):
     result = ""
