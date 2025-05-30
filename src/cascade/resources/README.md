@@ -1,3 +1,3 @@
-This dirrectoy contains ressources that might be needed by a specific class ussually artifacts that are not written in python directly
+This directory contains resources that might be needed by a specific class usually artifacts that are not written in python directly
 
-for exampel the extractors and or modifiers for specific programmin languages 
+for example the extractors and or modifiers for specific programming languages 
