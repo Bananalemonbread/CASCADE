@@ -1,7 +1,7 @@
 import re
 
 from cascade.generation.Generator import Generator
-from cascade.generation.executor.OpenAIChatCompletionExecutor import OpenAIChatCompletionExecutor
+from cascade.generation.executor.OpenAICaller import OpenAICaller
 from cascade.utils.RustUtils import build_context, build_signature
 
 import os
@@ -10,15 +10,40 @@ import tiktoken
 import json
 
 class GPT4oRustCodeGenerator(Generator):
-    def __init__(self, max_attempts=1, max_tokens=10000, temperature=0, delay=3, max_prompt_tokens=6000, model="gpt-4o-mini-2024-07-18", freq_penalty=0.0, dummy=False):
+    def __init__(
+        self,
+        max_attempts=1,
+        max_tokens=10000,
+        temperature=0,
+        delay=3,
+        max_prompt_tokens=6000,
+        model="gpt-4o-mini-2024-07-18",
+        freq_penalty=0.0,
+        dummy=False,
+        base_url=None,
+        api_key=None
+    ):
         super().__init__()
         self.model = model
         self.max_prompt_tokens = max_prompt_tokens
-        self.prompt_executor = OpenAIChatCompletionExecutor(max_attempts=max_attempts, model=model, max_tokens=max_tokens, temperature=temperature,
-                                            delay=delay, freq_penalty=freq_penalty, dummy=dummy)
+        self.prompt_executor = OpenAICaller(
+            max_attempts=max_attempts,
+            model=model,
+            max_tokens=max_tokens,
+            temperature=temperature,
+            delay=delay,
+            freq_penalty=freq_penalty,
+            dummy=dummy,
+            base_url=base_url,
+            api_key=api_key
+        )
 
     def build_prompt(self, context):
-        enc = tiktoken.encoding_for_model(self.model)
+        try:
+            enc = tiktoken.encoding_for_model(self.model)
+        except KeyError:
+            enc = tiktoken.get_encoding("cl100k_base")
+
 
         system_prompt = f"Write the body of one Rust function for {context['signature']['name']}. Respond only with the completion of the function body."
 

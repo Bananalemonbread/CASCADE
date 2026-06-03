@@ -1,0 +1,15 @@
+{
+   "Extraction"    : { "name": "RustExtraction",  "kwargs" : {}},
+   "CodeGenerator": { "name": "GPT4oRustCodeGenerator", "kwargs" : {}},
+   "TestGenerator": { "name": "GPT4oRustTestGenerator", "kwargs" : {"no_original_tests" :  true}},
+   "Analysis"      : { "name": "TreeAnalysis",  "kwargs" : {"no_original_tests" :  true, "debug":  1, "regenerate" : false}},
+   "Executor"      : { "name": "RustExecutor",   "kwargs" : {"image": "rust:latest"}},
+   "Visualizer"    : { "name": "TreeVisualizer",  "kwargs" : {}},
+
+   "FilterFunctions"  : [
+      { "name": "NoTestsFilterFunction", "kwargs" : {}},
+      { "name": "ContainsFilterFunction", "kwargs" : {"key":"doc", "content":"@inheritDoc" , "invert":true}},
+      { "name": "CheckLengthFilterFunction", "kwargs" : {"key":"code", "op":">", "val":0 }},
+      { "name": "CheckLengthFilterFunction", "kwargs" : {"key":"doc", "op":">", "val":3}}
+   ]
+}

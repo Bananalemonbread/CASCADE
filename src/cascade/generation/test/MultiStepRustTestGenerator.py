@@ -124,15 +124,6 @@ class MultiStepRustTestGenerator(Generator):
             )
         }
 
-        # possible alterations to later filter out unnecessary tests
-        # To ensure the correctness of the `uniqueIterable` method, we can derive several testable behavior specifications based on the provided documentation.
-        # Here are the key behaviors to test, structured in an "if this then that" format:
-        # classes:
-        #  - "directly from documentation"
-        #  - "additional meaningful tests"
-        #  - "performance and integration"
-        #  - "compile time tests (e.g. for return types)"
-
         prompt_step1.append(prompt_json_list)
 
         response_step1b = self.prompt_executor.execute(prompt_step1).model_dump()
@@ -180,9 +171,9 @@ class MultiStepRustTestGenerator(Generator):
 
         if new_tests == "":
             with open(results_path, "w") as f:
-                f.write("Negative, No synthatically correct Rust test module generated")
+                f.write("Negative, No syntactically correct Rust test module generated")
             with open(errors_path, "w") as f:
-                f.write(f"No synthatically correct Rust test module generated \nResponse text:\n{response_text}")
+                f.write(f"No syntactically correct Rust test module generated \nResponse text:\n{response_text}")
         print("     Test generation finished")
         return new_tests, chat_history
     

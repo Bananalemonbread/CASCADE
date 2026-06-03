@@ -3,9 +3,9 @@ import tempfile
 import json
 import os
 
-from cascade.analysis.executor.AnalysisExecutor import AnalysisExecutor, succeeded, failed, errored
+from cascade.analysis.executor.AnalysisExecutor import AnalysisExecutor
 from cascade.analysis.executor.builders.RustBuilder import RustBuilder
-from cascade.generation.test.GPT4oRustTestGenerator import is_public
+from cascade.generation.test.MultiStepRustTestGenerator import is_public
 from cascade.utils.DockerizedWrapper import DockerizedWrapper
 from cascade.utils.RustUtils import run_modification, INJECTED_SUITE_NAME, INJECTED_MODULE_NAME
 
@@ -20,7 +20,7 @@ class RustExecutor(AnalysisExecutor):
 
         self.pattern = f"echo \"[INFO] Tests run starting!\" > output;export RUSTFLAGS=\"-Awarnings\"; timeout {timeout} cargo build --tests; timeout {timeout} cargo test %placeholder {rust_args} > output 2>&1; cat output"
 
-    def execute(self, code: str, tests: str, context: dict, input_path, output_path: str) -> (succeeded, failed, errored):
+    def execute(self, code: str, tests: str, context: dict, input_path, output_path: str):
 
         with tempfile.TemporaryDirectory() as temp_dir:
             try:

@@ -5,7 +5,7 @@ import re
 import tiktoken
 
 from cascade.generation.Generator import Generator
-from cascade.generation.executor.OpenAIChatCompletionExecutor import OpenAIChatCompletionExecutor
+from cascade.generation.executor.OpenAICaller import OpenAICaller
 from cascade.utils.RustUtils import build_context, build_tests, check_syntax, build_test_first_method, build_test_suite, \
     build_test_module, build_replacement_test_dict_with_path, INJECTED_SUITE_PATH
 
@@ -20,7 +20,7 @@ class GPT4oRustTestGenerator(Generator):
         self.no_original_tests = no_original_tests
         self.model = model
         self.max_prompt_tokens = max_prompt_tokens
-        self.prompt_executor = OpenAIChatCompletionExecutor(max_attempts=max_attempts, model=model, max_tokens=max_tokens, temperature=temperature,
+        self.prompt_executor = OpenAICaller(max_attempts=max_attempts, model=model, max_tokens=max_tokens, temperature=temperature,
                                                             delay=delay, freq_penalty=freq_penalty, dummy=dummy)
 
 
