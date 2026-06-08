@@ -1,9 +1,0 @@
-(code, tests):	 p:0, f:0, e:0
-(code, new_tests):	 p:1, f:1, e:0
-(new_code, new_tests):	 p:1, f:0, e:0
-(new_code, tests):	 p:0, f:0, e:0
--------------------
-(code, tests):	 p:[], f:[], e:[]
-(code, new_tests):	 p:[1], f:[2], e:[]
-(new_code, new_tests):	 p:[2], f:[], e:[]
-(new_code, tests):	 p:[], f:[], e:[]

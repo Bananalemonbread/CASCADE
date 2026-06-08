@@ -127,10 +127,22 @@ Files:
 
 ### 5.1 Run the example workflow
 
-Run from inside the  folder:
+Run from the repository root. For the Java example:
 
 ```bash
-./cascade.venv/bin/CASCADE run -i "./exampleTargetproject/repository" -o "./exampleTargetproject/output" -c "./configs/exampleConfig.json" 
+../cascade.venv/bin/CASCADE run \
+  -i "./examples/java/repository" \
+  -o "./examples/java/output" \
+  -c "./configs/exampleConfig.json"
+```
+
+For the Rust example:
+
+```bash
+../cascade.venv/bin/CASCADE run \
+  -i "./examples/rust" \
+  -o "./examples/rust/output" \
+  -c "./configs/Rust.json"
 ```
 
 ### 5.2 What happens in this example
@@ -193,4 +205,3 @@ If your custom classes are outside `src/cascade`, pass their location with CLI `
 `PipelineFactory` loads classes dynamically from the names in your config file.
 
 If you build a cool or useful extension, feel free to open a pull request.
-
