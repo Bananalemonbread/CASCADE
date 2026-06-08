@@ -13,7 +13,7 @@
       "api_key": "ollama"
    }
    },
-   "Analysis"      : { "name": "TreeAnalysis",  "kwargs" : {"no_original_tests" :  true, "debug":  1, "regenerate" : false}},
+   "Analysis"      : { "name": "RustTwoStepAnalysis",  "kwargs" : {"no_original_tests" :  true, "debug":  1, "regenerate" : false}},
    "Executor"      : { "name": "RustExecutor",   "kwargs" : {"image": "rust:latest"}},
    "Visualizer"    : { "name": "TreeVisualizer",  "kwargs" : {}},
 

@@ -282,17 +282,17 @@ class MultiStepJavaTestGenerator(Generator):
                 f.write(f"Could not parse JSON: {error_message}\nResponse text:\n{response_text}")
 
         json_blocks = re.findall(r"```json\s*(.*?)\s*```", response_text, flags=re.DOTALL)
-
-
-        if not json_blocks:
-            log_json_error("Error extracting JSON block from response")
-            return []
+        json_text = json_blocks[0].strip() if json_blocks else response_text.strip()
 
         try:
-            extracted_test_list = json.loads(json_blocks[0].strip())
+            extracted_test_list = json.loads(json_text)
 
         except json.JSONDecodeError as e:
             log_json_error(str(e))
+            return []
+
+        if not isinstance(extracted_test_list, list):
+            log_json_error("Extracted JSON is not a list")
             return []
 
         # make sure that all tests begin with test (e.g. instead of ending) and adding numbers to test cases that have the name
@@ -300,6 +300,9 @@ class MultiStepJavaTestGenerator(Generator):
         clean_test_list = []
         seen_names = {}
         for et in extracted_test_list:
+            if not isinstance(et, dict):
+                continue
+
             if "test_name" in et and "test_description" in et:
                 base_name = et["test_name"].replace("test", "").replace("Test", "").replace("TEST", "").strip()
                 seen_names[base_name] = seen_names.get(base_name, 0) + 1
