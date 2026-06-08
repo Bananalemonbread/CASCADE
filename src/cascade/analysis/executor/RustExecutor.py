@@ -2,8 +2,10 @@ import shutil
 import tempfile
 import json
 import os
+import re
 
 from cascade.analysis.executor.AnalysisExecutor import AnalysisExecutor
+from cascade.analysis.executor.ExecutionResults import ExecutionResults
 from cascade.analysis.executor.builders.RustBuilder import RustBuilder
 from cascade.generation.test.MultiStepRustTestGenerator import is_public
 from cascade.utils.DockerizedWrapper import DockerizedWrapper
@@ -19,6 +21,28 @@ class RustExecutor(AnalysisExecutor):
                                      set_up_args="")
 
         self.pattern = f"echo \"[INFO] Tests run starting!\" > output;export RUSTFLAGS=\"-Awarnings\"; timeout {timeout} cargo build --tests; timeout {timeout} cargo test %placeholder {rust_args} > output 2>&1; cat output"
+
+    def build_execution_results(self, result, comp_errors=None, parsed_file=""):
+        exec_results = ExecutionResults()
+        exec_results.results = result
+        exec_results.results_numbers = (
+            len(result[0]),
+            len(result[1]),
+            len(result[2])
+        )
+        exec_results.comp_errors = comp_errors
+        exec_results.parsed_file = parsed_file
+        exec_results.comp_error_matches = re.findall(r"error(?:\[[^\]]+\])?:.*(?:\n\s+-->.*)?", parsed_file)
+        return exec_results
+
+    def extract_comp_errors(self, result, parsed_file):
+        if not result[2]:
+            return None
+
+        if parsed_file:
+            return parsed_file
+
+        return "\n".join(result[2])
 
     def execute(self, code: str, tests: str, context: dict, input_path, output_path: str):
 
@@ -44,7 +68,7 @@ class RustExecutor(AnalysisExecutor):
                 if self.debug:
                     print(process.stdout)
                     print(process.stderr)
-                return [], [], []
+                return self.build_execution_results(([], [], []), comp_errors=process.stderr, parsed_file=process.stdout)
 
             os.remove(entry)
 
@@ -60,18 +84,25 @@ class RustExecutor(AnalysisExecutor):
 
             run_test_command = self.pattern.replace("%placeholder", command)
 
+            parsed_file = {"content": ""}
+
+            def eval_and_capture(output):
+                parsed_file["content"] = output
+                return self.builder.eval_function(output)
+
             dock_context = {
                 "image": self.builder.new_image_name,
                 "directory": temp_dir,
                 "command": #f"pwd; ls; cat -n {context['code_file_path']}; cat -n {test['test_file_path']};"
                            f"cat -n {test['test_file_path']}; {run_test_command}",
                 "eval_command": f"cat output",
-                "eval_function": self.builder.eval_function
+                "eval_function": eval_and_capture
             }
 
             result = dock_ex.execute(dock_context, output_path)
 
-        return result
+        comp_errors = self.extract_comp_errors(result, parsed_file["content"])
+        return self.build_execution_results(result, comp_errors=comp_errors, parsed_file=parsed_file["content"])
 
     def set_up(self, data, input_path, output_path):
         """

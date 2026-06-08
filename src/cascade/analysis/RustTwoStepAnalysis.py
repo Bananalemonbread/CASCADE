@@ -93,15 +93,42 @@ class RustTwoStepAnalysis(Analysis):
                         print("      new tests already generated")
 
                     print("      execute new tests")
-                    res1 = self.executor.execute("code", test_keyword, d, input_path, output_path)
-                    log("Results after step 1", str(res1))
+                    exec_results = self.executor.execute("code", test_keyword, d, input_path, output_path)
+                    res1 = exec_results.results
+                    comp_errors = exec_results.comp_errors
+                    log("Results after step 1", str(exec_results))
 
                     evaluated = self.evaluate(res1)
+
+                    d["repair_history"] = []
+                    for i in range(self.max_repair_tries):
+                        if evaluated == 0 and comp_errors:
+                            print("      Try to generate repaired tests")
+                            repaired_tests, response_history = self.generator.repair_tests(d, input_path, output_path, comp_errors, "new_tests")
+                            d["repair_history"].append(response_history)
+
+                            if repaired_tests == "":
+                                break
+
+                            old_tests_key = "tests_pre_repairstep_" + str(i + 1)
+                            d[old_tests_key] = d["new_tests"]
+                            d["new_tests"] = repaired_tests
+
+                            print("      execute repaired tests")
+                            exec_results = self.executor.execute("code", test_keyword, d, input_path, output_path)
+                            res1 = exec_results.results
+                            comp_errors = exec_results.comp_errors
+
+                            log(f"Results after step 1-Repairstep Nr. {i + 1}", str(exec_results))
+                            d["repairsteps"] = i + 1
+
+                            evaluated = self.evaluate(res1)
+
                     d["results"]["(code, new_tests)"] = list(res1)
-                    amount_res = self.result_numbers(res1)
+                    amount_res = exec_results.results_numbers
 
                     if evaluated == 0:
-                        self.log_error(output_path, "S1 Error in tests", d, res1)
+                        self.log_error(output_path, "S1 Error in tests", d, exec_results)
                         d["verdict"] = f"NoInco; error; step 1 (C +T'); {str(amount_res)}; ; "
 
                     elif evaluated == 1:
@@ -117,15 +144,17 @@ class RustTwoStepAnalysis(Analysis):
                             d["new_code_response"] = response
 
                         print("      execute new code (with new tests)")
-                        res2 = self.executor.execute("new_code", test_keyword, d, input_path, output_path)
-                        log("Results after step 2", str(res2))
+                        exec_results = self.executor.execute("new_code", test_keyword, d, input_path, output_path)
+                        res2 = exec_results.results
+                        comp_errors = exec_results.comp_errors
+                        log("Results after step 2", str(exec_results))
 
                         evaluated2 = self.evaluate(res2)
                         d["results"]["(new_code, new_tests)"] = list(res2)
-                        amount_res2 = self.result_numbers(res2)
+                        amount_res2 = exec_results.results_numbers
 
                         if evaluated2 == 0:
-                            self.log_error(output_path, "S2 Error in generated code", d, res2)
+                            self.log_error(output_path, "S2 Error in generated code", d, exec_results)
                             d["verdict"] = f"NoInco; error; step 2 (C'+T'); {str(amount_res)}; {str(amount_res2)}"
 
                         else:
@@ -187,7 +216,7 @@ class RustTwoStepAnalysis(Analysis):
             "id": item.get("id"),
             "file_name": os.path.basename(item.get("code_file_path", "")),
             "file_path": item.get("code_file_path"),
-            "module_name": parent_name,
+            "class_name": parent_name,
             "function_name": item.get("signature", {}).get("name"),
             "full_function_signature": build_signature(item, doc=False),
             "verdict": item.get("verdict"),
@@ -216,10 +245,10 @@ class RustTwoStepAnalysis(Analysis):
 
         return metric
 
-    def log_error(self, output_path, header, d, res):
+    def log_error(self, output_path, header, d, exec_results):
         with open(os.path.join(output_path, "errors.txt"), "a") as f:
             f.write(header + "\n")
-            f.write(str(res))
+            f.write(str(exec_results.results))
             f.write("\n------\nTests:\n")
             f.write(f"{d.get('new_tests', '')}\n")
             f.write("------\nCode:\n")
@@ -227,10 +256,13 @@ class RustTwoStepAnalysis(Analysis):
             if "new_code" in d:
                 f.write("\n------\nGenerated code:\n")
                 f.write(d["new_code"])
+            if exec_results.comp_errors:
+                f.write("\n------\nCompiler errors:\n")
+                f.write(exec_results.comp_errors)
+            if exec_results.parsed_file:
+                f.write("\n------\nParsed file:\n")
+                f.write(exec_results.parsed_file)
             f.write("\n-----------------------\n")
-
-    def result_numbers(self, res):
-        return len(res[0]), len(res[1]), len(res[2])
 
     def evaluate(self, res):
         if res[0] == [] and res[1] == [] and res[2] == []:
@@ -256,6 +288,16 @@ class RustTwoStepAnalysis(Analysis):
             "incos": 0,
             "likely_incos": 0,
         }
+        repair_stats = {
+            "total_repair_steps": 0,
+            "total_attempted_repairs": 0,
+            "successful_repairs": 0,
+            "successful_after_first_try": 0,
+            "successful_after_second_try": 0,
+            "successful_after_third_try": 0,
+            "failed_repairs": 0,
+            "code_errors": 0,
+        }
         incos = []
         likely_incos = []
 
@@ -272,6 +314,32 @@ class RustTwoStepAnalysis(Analysis):
             parsed = self.parse_verdict(verdict)
             print(d["signature"]["name"], "\t", verdict)
 
+            if "repairsteps" not in d:
+                if "tests_pre_repairstep_3" in d:
+                    d["repairsteps"] = 3
+                elif "tests_pre_repairstep_2" in d:
+                    d["repairsteps"] = 2
+                elif "tests_pre_repairstep_1" in d:
+                    d["repairsteps"] = 1
+
+            if "repairsteps" in d:
+                rep_steps = d["repairsteps"]
+                repair_stats["total_repair_steps"] += rep_steps
+                repair_stats["total_attempted_repairs"] += 1
+
+                if rep_steps == 1:
+                    repair_stats["successful_after_first_try"] += 1
+                    repair_stats["successful_repairs"] += 1
+                elif rep_steps == 2:
+                    repair_stats["successful_after_second_try"] += 1
+                    repair_stats["successful_repairs"] += 1
+                elif rep_steps == 3:
+                    if parsed["step_info"] == "step 2 (C'+T')" or (parsed["step_info"] == "step 1 (C +T')" and parsed["test_result"] == "pass"):
+                        repair_stats["successful_after_third_try"] += 1
+                        repair_stats["successful_repairs"] += 1
+                    else:
+                        repair_stats["failed_repairs"] += 1
+
             if parsed["step_info"] == "step 1 (C +T')":
                 if parsed["test_result"] == "pass":
                     general_stats["Step1_passed"] += 1
@@ -285,6 +353,7 @@ class RustTwoStepAnalysis(Analysis):
                     general_stats["Step2_passed"] += 1
                 elif parsed["test_result"] == "error":
                     general_stats["Step2_error"] += 1
+                    repair_stats["code_errors"] += 1
                 elif parsed["test_result"] == "fail":
                     general_stats["Step2_failed"] += 1
 
@@ -302,6 +371,8 @@ class RustTwoStepAnalysis(Analysis):
         print("likely incos:", len(likely_incos))
 
         for key, value in general_stats.items():
+            print(f"{key}: {value}")
+        for key, value in repair_stats.items():
             print(f"{key}: {value}")
 
         print("Incos:")

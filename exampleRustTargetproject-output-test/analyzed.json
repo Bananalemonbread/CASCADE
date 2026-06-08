@@ -69,23 +69,23 @@
             "(code, new_tests)": [
                 [],
                 [
-                    "injected_test_mod_cascade::test_return_a_with_i32_max",
                     "injected_test_mod_cascade::test_return_a_with_arbitrary_value",
-                    "injected_test_mod_cascade::test_return_a_with_negative_integer",
+                    "injected_test_mod_cascade::test_return_a_with_i32_max",
                     "injected_test_mod_cascade::test_return_a_with_i32_min",
-                    "injected_test_mod_cascade::test_return_a_with_positive_integer",
-                    "injected_test_mod_cascade::test_return_a_with_zero"
+                    "injected_test_mod_cascade::test_return_a_with_zero",
+                    "injected_test_mod_cascade::test_return_a_with_negative_integer",
+                    "injected_test_mod_cascade::test_return_a_with_positive_integer"
                 ],
                 []
             ],
             "(new_code, new_tests)": [
                 [
                     "injected_test_mod_cascade::test_return_a_with_arbitrary_value",
-                    "injected_test_mod_cascade::test_return_a_with_negative_integer",
                     "injected_test_mod_cascade::test_return_a_with_i32_max",
-                    "injected_test_mod_cascade::test_return_a_with_zero",
+                    "injected_test_mod_cascade::test_return_a_with_i32_min",
+                    "injected_test_mod_cascade::test_return_a_with_negative_integer",
                     "injected_test_mod_cascade::test_return_a_with_positive_integer",
-                    "injected_test_mod_cascade::test_return_a_with_i32_min"
+                    "injected_test_mod_cascade::test_return_a_with_zero"
                 ],
                 [],
                 []
@@ -98,15 +98,16 @@
             "f2f": [],
             "p2f": [],
             "f2p": [
-                "injected_test_mod_cascade::test_return_a_with_i32_max",
                 "injected_test_mod_cascade::test_return_a_with_arbitrary_value",
-                "injected_test_mod_cascade::test_return_a_with_negative_integer",
+                "injected_test_mod_cascade::test_return_a_with_i32_max",
                 "injected_test_mod_cascade::test_return_a_with_i32_min",
-                "injected_test_mod_cascade::test_return_a_with_positive_integer",
-                "injected_test_mod_cascade::test_return_a_with_zero"
+                "injected_test_mod_cascade::test_return_a_with_zero",
+                "injected_test_mod_cascade::test_return_a_with_negative_integer",
+                "injected_test_mod_cascade::test_return_a_with_positive_integer"
             ]
         },
-        "verdict": "INCO; pass; step 2 (C'+T'); (0, 6, 0); (6, 0, 0); p2p: 0, f2f: 0, p2f: 0, f2p: 6"
+        "verdict": "INCO; pass; step 2 (C'+T'); (0, 6, 0); (6, 0, 0); p2p: 0, f2f: 0, p2f: 0, f2p: 6",
+        "repair_history": []
     },
     {
         "doc": "# [doc = \" Returns the sum of `a` and `b`.\"]",
@@ -178,9 +179,9 @@
             "(code, new_tests)": [
                 [
                     "injected_test_mod_cascade::test_add_basic_negative_integers",
-                    "injected_test_mod_cascade::test_add_basic_positive_integers",
                     "injected_test_mod_cascade::test_add_both_zeros",
                     "injected_test_mod_cascade::test_add_mixed_signs_result_negative",
+                    "injected_test_mod_cascade::test_add_basic_positive_integers",
                     "injected_test_mod_cascade::test_add_mixed_signs_result_positive",
                     "injected_test_mod_cascade::test_add_near_max_boundary",
                     "injected_test_mod_cascade::test_add_near_min_boundary",
@@ -192,6 +193,7 @@
             ]
         },
         "new_tests": "\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n    fn test_add_basic_positive_integers() {\n      // If the inputs are positive integers (e.g., 1 and 2), then the function should return their mathematical sum (3). This verifies the core 'sum of a and b' requirement for standard positive cases.\n      assert_eq!(add(1, 2), 3);\n    }\n\n    #[test]\n    fn test_add_basic_negative_integers() {\n      // If the inputs are negative integers (e.g., -1 and -2), then the function should return their mathematical sum (-3). This ensures correct handling of negative values.\n      assert_eq!(add(-1, -2), -3);\n    }\n\n    #[test]\n    fn test_add_mixed_signs_result_positive() {\n      // If the inputs have mixed signs and the positive magnitude is larger (e.g., -5 and 10), then the function should return the correct positive sum (5). This verifies subtraction logic within addition.\n      assert_eq!(add(-5, 10), 5);\n    }\n\n    #[test]\n    fn test_add_mixed_signs_result_negative() {\n      // If the inputs have mixed signs and the negative magnitude is larger (e.g., 5 and -10), then the function should return the correct negative sum (-5). This verifies subtraction logic within addition.\n      assert_eq!(add(5, -10), -5);\n    }\n\n    #[test]\n    fn test_add_zero_identity_left() {\n      // If the first argument is zero (e.g., 0 and 5), then the function should return the second argument (5). This tests the additive identity property.\n      assert_eq!(add(0, 5), 5);\n    }\n\n    #[test]\n    fn test_add_zero_identity_right() {\n      // If the second argument is zero (e.g., 5 and 0), then the function should return the first argument (5). This tests the additive identity property.\n      assert_eq!(add(5, 0), 5);\n    }\n\n    #[test]\n    fn test_add_both_zeros() {\n      // If both arguments are zero (0 and 0), then the function should return 0. This is a minimal edge case for the additive identity.\n      assert_eq!(add(0, 0), 0);\n    }\n\n    #[test]\n    fn test_add_near_max_boundary() {\n      // If the inputs are near the i32 maximum but do not overflow (e.g., i32::MAX - 1 and 1), then the function should return i32::MAX. This verifies correctness at the upper boundary of the type range.\n      assert_eq!(add(i32::MAX - 1, 1), i32::MAX);\n    }\n\n    #[test]\n    fn test_add_near_min_boundary() {\n      // If the inputs are near the i32 minimum but do not underflow (e.g., i32::MIN + 1 and -1), then the function should return i32::MIN. This verifies correctness at the lower boundary of the type range.\n      assert_eq!(add(i32::MIN + 1, -1), i32::MIN);\n    }\n}",
-        "verdict": "NoInco; pass; step 1 (C +T'); (9, 0, 0); ; "
+        "verdict": "NoInco; pass; step 1 (C +T'); (9, 0, 0); ; ",
+        "repair_history": []
     }
 ]
