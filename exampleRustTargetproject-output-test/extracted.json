@@ -1,0 +1,112 @@
+[
+    {
+        "doc": "# [doc = \" Returns `a`.\"]",
+        "signature": {
+            "name": "return_a",
+            "returns": "-> i32",
+            "params": [
+                "a : i32"
+            ],
+            "modifier": "pub",
+            "annotations": [],
+            "traits": ""
+        },
+        "language": "Rust",
+        "parent": [
+            {
+                "name": "root module",
+                "doc": "",
+                "attributes": [],
+                "other_methods": [
+                    {
+                        "doc": "# [doc = \" Returns the sum of `a` and `b`.\"]",
+                        "attributes": [],
+                        "signature": {
+                            "name": "add",
+                            "returns": "-> i32",
+                            "params": [
+                                "a : i32",
+                                "b : i32"
+                            ],
+                            "modifier": "pub",
+                            "annotations": [],
+                            "traits": ""
+                        },
+                        "code": "{ a + b }"
+                    }
+                ],
+                "variables": [],
+                "imports": [],
+                "parent_type": "Module",
+                "impl_type": "",
+                "constructors": null,
+                "extends": null,
+                "implements": null,
+                "namespace": null,
+                "generics": []
+            }
+        ],
+        "code": "{ 29 }",
+        "code_file_path": "src/lib.rs",
+        "code_file_content": "/// Returns the sum of `a` and `b`.\npub fn add(a: i32, b: i32) -> i32 {\n    a + b\n}\n\n/// Returns `a`.\npub fn return_a(a: i32) -> i32 {\n    29\n}",
+        "id": 2,
+        "tests": [],
+        "called_functions": null,
+        "use_statement_path": "use exampleRustTargetproject::return_a;"
+    },
+    {
+        "doc": "# [doc = \" Returns the sum of `a` and `b`.\"]",
+        "signature": {
+            "name": "add",
+            "returns": "-> i32",
+            "params": [
+                "a : i32",
+                "b : i32"
+            ],
+            "modifier": "pub",
+            "annotations": [],
+            "traits": ""
+        },
+        "language": "Rust",
+        "parent": [
+            {
+                "name": "root module",
+                "doc": "",
+                "attributes": [],
+                "other_methods": [
+                    {
+                        "doc": "# [doc = \" Returns `a`.\"]",
+                        "attributes": [],
+                        "signature": {
+                            "name": "return_a",
+                            "returns": "-> i32",
+                            "params": [
+                                "a : i32"
+                            ],
+                            "modifier": "pub",
+                            "annotations": [],
+                            "traits": ""
+                        },
+                        "code": "{ 29 }"
+                    }
+                ],
+                "variables": [],
+                "imports": [],
+                "parent_type": "Module",
+                "impl_type": "",
+                "constructors": null,
+                "extends": null,
+                "implements": null,
+                "namespace": null,
+                "generics": []
+            }
+        ],
+        "code": "{ a + b }",
+        "code_file_path": "src/lib.rs",
+        "code_file_content": "/// Returns the sum of `a` and `b`.\npub fn add(a: i32, b: i32) -> i32 {\n    a + b\n}\n\n/// Returns `a`.\npub fn return_a(a: i32) -> i32 {\n    29\n}",
+        "id": 1,
+        "tests": [],
+        "called_functions": null,
+        "use_statement_path": "use exampleRustTargetproject::add;"
+    }
+]
