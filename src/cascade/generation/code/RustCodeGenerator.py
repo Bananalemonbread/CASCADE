@@ -128,3 +128,31 @@ class RustCodeGenerator(Generator):
             fixed_code += letter
 
         return "{" + fixed_code + "}"
+
+
+    def repair(self, context, input_path, output_path, errors, key):
+        system_prompt = ("You are an Expert Rust developer. You will fix provided compilation errors in provided code without changing its functionality. "
+                         "Follow the documentation as close as possible. "
+                         "Handle errors properly, and ensure all calls are correct. Do not use any new imports. "
+                         "The code should compile without errors. Respond only with the function."
+                         )
+
+        module_name = context["parent"][-1]["name"] if context.get("parent") else "unknown module"
+        prompt = (f"The following errors occurred during compilation of the Rust module: {module_name}.\nErrors:\n```\n{errors}\n```\n\n"
+                  "Fix the errors in the following function while still following the documentation as close as possible:\n"
+                  f"```rust\n{build_signature(context, doc=True) + context[key]}\n```"
+                  )
+
+        promptlist = []
+        promptlist.append({"role": "system", "content": system_prompt})
+        promptlist.append({"role": "user", "content": prompt})
+
+        res = self.prompt_executor.execute(promptlist).model_dump()
+        promptlist.append(res['choices'][0]['message'])
+
+        repair_response = {"prompt": promptlist, "response": res}
+
+        new_code = res["choices"][0]["message"]["content"]
+        new_code = self.extract_code(new_code, context, res, output_path)
+
+        return new_code, repair_response

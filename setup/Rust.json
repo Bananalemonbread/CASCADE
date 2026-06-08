@@ -1,6 +1,6 @@
 {
    "Extraction"    : { "name": "RustExtraction",  "kwargs" : {}},
-   "CodeGenerator": { "name": "GPT4oRustCodeGenerator", "kwargs" : {}},
+   "CodeGenerator": { "name": "RustCodeGenerator", "kwargs" : {}},
    "TestGenerator": { "name": "GPT4oRustTestGenerator", "kwargs" : {"no_original_tests" :  true}},
    "Analysis"      : { "name": "TreeAnalysis",  "kwargs" : {"no_original_tests" :  true, "debug":  1, "regenerate" : false}},
    "Executor"      : { "name": "RustExecutor",   "kwargs" : {"image": "rust:latest"}},
