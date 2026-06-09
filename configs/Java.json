@@ -1,0 +1,14 @@
+{
+   "Extraction"    : { "name": "JavaExtraction",  "kwargs" : {}},
+   "CodeGenerator": { "name": "JavaCodeGenerator", "kwargs" : {"model": "gpt-4o-mini-2024-07-18"}},
+   "TestGenerator": { "name": "MultiStepJavaTestGenerator", "kwargs" : {"model": "gpt-4o-mini-2024-07-18"}},
+   "Analysis"      : { "name": "JavaTwoStepAnalysis",  "kwargs" : {}},
+   "Executor"      : { "name": "MavenJavaExecutor",   "kwargs" : {}},
+   "FilterFunctions"  : [
+      { "name": "NoTestsFilterFunction", "kwargs" : {}},
+      { "name": "ContainsFilterFunction", "kwargs" : {"key":"doc", "content":"@inheritDoc" , "invert":true}},
+      { "name": "CheckLengthFilterFunction", "kwargs" : {"key":"code", "op":">", "val":0}},
+      { "name": "CheckLengthFilterFunction", "kwargs" : {"key":"doc", "op":">", "val":12}},
+      { "name": "ContainsFilterFunction", "kwargs" : {"key":"signature.modifier", "content":"public"}}
+   ]
+}
