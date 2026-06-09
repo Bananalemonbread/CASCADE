@@ -1,22 +1,20 @@
 {
-   "Extraction"    : { "name": "PythonExtraction",  "kwargs" : {}},
-   "CodeGenerator": { "name": "PythonCodeGenerator", "kwargs" : {
-      "model": "llm3",
-      "base_url": "https://llm3-compute.cms.hu-berlin.de/v1",
-      "api_key": "ollama"
-   }},
-   "TestGenerator": { "name": "MultiStepPythonTestGenerator", "kwargs" : {
-      "model": "llm3",
-      "base_url": "https://llm3-compute.cms.hu-berlin.de/v1",
-      "api_key": "ollama"
-   }},
-   "Analysis"      : { "name": "PythonTwoStepAnalysis",  "kwargs" : {}},
-   "Executor"      : { "name": "PythonExecutor",   "kwargs" : {}},
-   "FilterFunctions"  : [
-      { "name": "NoTestsFilterFunction", "kwargs" : {}},
-      { "name": "ContainsFilterFunction", "kwargs" : {"key":"doc", "content":"@inheritDoc" , "invert":true}},
-      { "name": "CheckLengthFilterFunction", "kwargs" : {"key":"code", "op":">", "val":0}},
-      { "name": "CheckLengthFilterFunction", "kwargs" : {"key":"doc", "op":">", "val":12}},
-      { "name": "ContainsFilterFunction", "kwargs" : {"key":"signature.modifier", "content":"public"}}
-   ]
+  "Extraction": { "name": "PythonExtraction", "kwargs": {} },
+  "CodeGenerator": { "name": "PythonCodeGenerator", "kwargs": {
+    "model": "llm3",
+    "base_url": "https://llm3-compute.cms.hu-berlin.de/v1",
+    "api_key": "ollama"
+  }},
+  "TestGenerator": { "name": "MultiStepPythonTestGenerator", "kwargs": {
+    "model": "llm3",
+    "base_url": "https://llm3-compute.cms.hu-berlin.de/v1",
+    "api_key": "ollama"
+  }},
+  "Analysis": { "name": "PythonTwoStepAnalysis", "kwargs": { "debug": 1, "regenerate": false }},
+  "Executor": { "name": "PythonExecutor", "kwargs": { "image": "python:3.12" }},
+  "FilterFunctions": [
+    { "name": "NoTestsFilterFunction", "kwargs": {} },
+    { "name": "CheckLengthFilterFunction", "kwargs": {"key": "code", "op": ">", "val": 0 }},
+    { "name": "CheckLengthFilterFunction", "kwargs": {"key": "doc", "op": ">", "val": 3 }}
+  ]
 }
