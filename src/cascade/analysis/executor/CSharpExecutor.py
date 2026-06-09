@@ -3,7 +3,7 @@ import tempfile
 import json
 import os
 
-from cascade.analysis.executor.AnalysisExecutor import AnalysisExecutor, succeeded, failed, errored
+from cascade.analysis.executor.AnalysisExecutor import AnalysisExecutor
 from cascade.analysis.executor.builders.CSharpBuilder import CSharpBuilder
 from cascade.utils.DockerizedWrapper import DockerizedWrapper
 from cascade.utils.CSharpUtils import run_modification
@@ -19,7 +19,7 @@ class CSharpExecutor(AnalysisExecutor):
                                      set_up_command="dotnet workload restore --verbosity quiet; dotnet build",
                                      set_up_args=f"--verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true")
 
-    def execute(self, code: str, tests: str, context: dict, input_path, output_path: str) -> (succeeded, failed, errored):
+    def execute(self, code: str, tests: str, context: dict, input_path, output_path: str):
         # because the input_path points to the .sln file of the project
         input_path = os.path.dirname(input_path)
         with tempfile.TemporaryDirectory() as temp_dir:
