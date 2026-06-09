@@ -31,6 +31,7 @@ class MultiStepPythonTestGenerator(Generator):
         self.model = model
         self.max_prompt_tokens = max_prompt_tokens
 
+
     def build_prompt(self, context):
         # enc = tiktoken.encoding_for_model(self.model)   # this could be used to ensure the prompt is not too long.
 
@@ -64,6 +65,7 @@ class MultiStepPythonTestGenerator(Generator):
             "Add or adjust imports as needed. Use only pytest, the Python standard library, "
             "and imports from the project itself. Instantiate every object you use and call "
             "functions or methods with the correct Python signatures. "
+            "Use the imports already present in the test module skeleton; do not guess alternate module names. "
             "Use pytest.raises for expected exceptions. If the function under test is async, "
             "write appropriate async pytest tests. "
             "Respond with the complete filled pytest test module only:\n"
@@ -78,6 +80,7 @@ class MultiStepPythonTestGenerator(Generator):
         promptlist.append({"role": "user", "content": prompt})
 
         return promptlist
+
 
     def generate(self, context, input_path, output_path, response_step2=None):
         results_path = os.path.join(output_path, "results.txt")
@@ -143,7 +146,15 @@ class MultiStepPythonTestGenerator(Generator):
 
         prompt_step2.append(response_step2a["choices"][0]["message"])
 
-        prompt_step2.append({"role": "user", "content": "Make sure that this module is syntactically correct and pytest-runnable without errors. Check if everything that is used is imported correctly and all exceptions are properly caught. Reply with the correct class only"})
+        prompt_step2.append({
+            "role": "user",
+            "content": (
+                "Make sure that this module is syntactically correct and pytest-runnable without errors. "
+                "Keep the exact project import from the provided test module skeleton unless it is syntactically invalid. "
+                "Check if everything that is used is imported correctly and all exceptions are properly caught. "
+                "Reply with the complete corrected pytest test module only."
+            )
+        })
 
         response_step2b = self.prompt_executor.execute(prompt_step2).model_dump()
         chat_history.append(copy.deepcopy(prompt_step2))
@@ -158,9 +169,9 @@ class MultiStepPythonTestGenerator(Generator):
 
         if new_tests == "":
             with open(results_path, "w") as f:
-                f.write("Negative, No syntactically correct test class generated")
+                f.write("Negative, No syntactically correct test module generated")
             with open(errors_path, "w") as f:
-                f.write(f"No syntactically correct test class generated \nResponse text:\n{response_text}")
+                f.write(f"No syntactically correct test module generated \nResponse text:\n{response_text}")
         print("      Test generation finished")
         return new_tests, chat_history
 
@@ -171,14 +182,18 @@ class MultiStepPythonTestGenerator(Generator):
         if imports and not imports.endswith("\n"):
             imports += "\n"
 
-        if "import pytest\n" not in imports and "import pytest\r\n":
+        if "import pytest\n" not in imports and "import pytest\r\n" not in imports:
             imports += "import pytest\n"
+
+        target_import = self.build_target_import(context)
+        if target_import and target_import not in imports:
+            imports += target_import
 
         imports += "\n# add all other needed imports here\n\n"
 
         functions = ""
         for test in context["test_list"]:
-            test_name = test["test_name"]
+            test_name = self.to_python_test_name(test["test_name"])
             test_description = test["test_description"].replace('"""', '\\"\\"\\"')
 
             functions += (
@@ -189,6 +204,32 @@ class MultiStepPythonTestGenerator(Generator):
 
         return imports + functions.rstrip() + "\n"
     
+    def build_target_import(self, context):
+        signature = context.get("signature", {})
+        function_name = signature.get("name")
+        if not function_name or signature.get("is_method"):
+            return ""
+
+        module_name = context.get("module_name")
+        if module_name:
+            return f"from {module_name} import {function_name}\n"
+
+        import_path = context.get("import_path", "")
+        if "." in import_path:
+            module_path, name = import_path.rsplit(".", 1)
+            if name == function_name:
+                return f"from {module_path} import {function_name}\n"
+
+        return ""
+
+
+    def to_python_test_name(self, name):
+        name = re.sub(r"[^0-9a-zA-Z_]+", "_", name).strip("_")
+        if not name.startswith("test_"):
+            name = "test_" + name.removeprefix("test").strip("_")
+        return name.lower()
+    
+
     def extract_tests(self, new_tests, context, response, output_path):
         code_blocks = re.findall(r"```python(.*?)\n\s*```", new_tests, flags=re.DOTALL)
         new_tests = ""
@@ -196,7 +237,7 @@ class MultiStepPythonTestGenerator(Generator):
         if code_blocks:
             sorted_code_blocks = sorted(code_blocks, key=len, reverse=True)
             for code_block in sorted_code_blocks:
-                if check_syntax(code_block, "class", output_path):
+                if check_syntax(code_block, "module", output_path):
                     new_tests = code_block
                     break
         else:
@@ -216,13 +257,16 @@ class MultiStepPythonTestGenerator(Generator):
 
         tree = subprocess.check_output(["tree", "-P", "*.py", "--charset=ascii", input_path]).decode("utf-8")
 
-        system_prompt = "You are an expert Python developer. You will fix compilation errors in a provided test class and return the entire repaired class. Use tools to find out more about classes instead of making assumptions."
+        system_prompt = "You are an expert Python developer. You will fix syntax, runtime and import errors in a provided test module and return the entire repaired module. Use tools to find out more about modules instead of making assumptions."
 
-        prompt = (f"During the compilation of my test class some errors occurred.\nErrors:\n```\n{errors}\n```\n\nTest module:\n```python\n{context[key]}\n```\n"
-                  "Dont change the content of the tests, but make sure that the module compiles without errors. " 
-                  "Check if all necessary imports are present and if all exceptions are properly caught. "
-                  f"If you need to add imports, use the following directory structure:\n```\n{tree}\n```\n\nNow fix the module so that it compiles without errors, and respond with the entire fixed class."
-                  )
+        prompt = (
+            f"Some errors occurred while validating or running my pytest test module.\nErrors:\n```\n{errors}\n```\n\n"
+            f"Test module:\n```python\n{context[key]}\n```\n"
+            "Do not change the intended behavior of the tests, but make sure the module is syntactically valid "
+            "and can run under pytest. Check imports, function calls, expected exceptions, and async handling. "
+            f"If you need to add imports, use the following directory structure:\n```\n{tree}\n```\n\n"
+            "Now fix the module and respond with the entire corrected pytest test module only."
+        )
 
         promptlist = []
         promptlist.append({"role": "system", "content": system_prompt})
@@ -299,10 +343,10 @@ class MultiStepPythonTestGenerator(Generator):
                 continue
 
             if "test_name" in et and "test_description" in et:
-                base_name = et["test_name"].replace("test", "").replace("Test", "").replace("TEST", "").strip()
+                base_name = self.to_python_test_name(et["test_name"])
                 seen_names[base_name] = seen_names.get(base_name, 0) + 1
                 ct = {
-                    "test_name": (f"test{base_name}" if seen_names[base_name] == 1 else f"test{base_name}{seen_names[base_name]}"),
+                    "test_name": (base_name if seen_names[base_name] == 1 else f"{base_name}_{seen_names[base_name]}"),
                     "test_description": et["test_description"]
                 }
                 clean_test_list.append(ct)

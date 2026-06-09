@@ -4,12 +4,10 @@ from cascade.generation.Generator import Generator
 from cascade.generation.executor.OpenAICaller import OpenAICaller
 from cascade.utils.PythonUtils import repair_helper_functions, get_repair_helper_functions, build_context, build_signature
 
-import os
-import copy
 import tiktoken
 import json
 
-class JavaCodeGenerator(Generator):
+class PythonCodeGenerator(Generator):
     def __init__(self,
                  max_attempts=1,
                  max_tokens=16000,
@@ -44,29 +42,32 @@ class JavaCodeGenerator(Generator):
                          "The code should be syntactically valid Python. Respond only with the function body."
                          )
 
-        packg_and_imports = f"package {context['package']};\n\n" + "".join(context["parent"]["imports"]) + "\n"
+        prompt_start = (
+            f"The function you need to implement is `{context['signature']['name']}({params})`.\n"
+            "Here is the Python module or class context it is situated in:\n"
+            "```python\n"
+        )
 
-        prompt_start = f"The function you need to implement is `{context['signature']['name']}({params})`\nHere is the class it is situated in\n```java\n" + packg_and_imports
         prompt_finisher = (
-            "\n    # write the function body for this function. "
+            "\n    # implement only the function body here. "
             "Take the documentation as literal as possible.\n"
             "```\n"
             "Now respond with the working implemented function body."
         )
 
-        prompt = prompt_start +  build_context(context, doc=True)  + prompt_finisher
+        prompt = prompt_start +  build_context(context, doc=True, imports=True)  + prompt_finisher
 
         if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            prompt = prompt_start + build_context(context, doc=True, no_fields=True) + prompt_finisher
+            prompt = prompt_start + build_context(context, doc=True, imports=True, no_fields=True) + prompt_finisher
 
         if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            prompt = prompt_start + build_context(context, doc=True, no_fields=True, no_constructors=True) + prompt_finisher
+            prompt = prompt_start + build_context(context, doc=True, imports=True, no_fields=True, no_constructors=True) + prompt_finisher
 
         if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            prompt = prompt_start + build_context(context, doc=True, no_fields=True, no_constructors=True, no_other_method_docs=True) + prompt_finisher
+            prompt = prompt_start + build_context(context, doc=True, imports=True, no_fields=True, no_constructors=True, no_other_method_docs=True) + prompt_finisher
 
         if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            prompt = prompt_start + build_context(context, doc=True, no_fields=True, no_constructors=True,  no_other_method_docs=True, no_other_methods=True) + prompt_finisher
+            prompt = prompt_start + build_context(context, doc=True, imports=True, no_fields=True, no_constructors=True,  no_other_method_docs=True, no_other_methods=True) + prompt_finisher
 
         if len(enc.encode(prompt)) > self.max_prompt_tokens:
             return []
@@ -102,7 +103,8 @@ class JavaCodeGenerator(Generator):
         if code_blocks:
             new_code = code_blocks[0]
         else:
-            new_code = new_code.split("```java")[-1].strip()
+            new_code = re.sub(r"^```(?:python|py)?\s*", "", new_code.strip())
+            new_code = re.sub(r"\s*```$", "", new_code).strip()
 
         return self.try_to_fix(new_code, context, response)
 
