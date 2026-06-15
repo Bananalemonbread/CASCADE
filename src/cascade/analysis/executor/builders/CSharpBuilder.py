@@ -77,7 +77,7 @@ class CSharpBuilder(Builder):
             image=new_image_name
         )
         self.old_image_name = image
-        self.set_up_commands = set_up_command
+        self.set_up_command = set_up_command
         self.set_up_args = set_up_args
 
     def eval_function(self, output):

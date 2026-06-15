@@ -1,23 +1,56 @@
-import shutil
-import tempfile
 import json
 import os
+import shutil
+import tempfile
+import uuid
 
 from cascade.analysis.executor.AnalysisExecutor import AnalysisExecutor
+from cascade.analysis.executor.ExecutionResults import ExecutionResults
 from cascade.analysis.executor.builders.CSharpBuilder import CSharpBuilder
-from cascade.utils.DockerizedWrapper import DockerizedWrapper
 from cascade.utils.CSharpUtils import run_modification
+from cascade.utils.DockerizedWrapper import DockerizedWrapper
 
 class CSharpExecutor(AnalysisExecutor):
-    def __init__(self, debug=False, image="mcr.microsoft.com/dotnet/sdk:8.0", framework = "net8.0"):
+    def __init__(
+                 self,
+                 debug=False,
+                 dotnet_args="",
+                 set_up_dotnet_command="build",
+                 set_up_dotnet_args="",
+                 image="mcr.microsoft.com/dotnet/sdk:8.0",
+                 framework="net9.0"
+                ):
+        
         super().__init__()
         self.debug = debug
         self.test_report_filename = "$HOME/test_result.trx"
-        self.builder = CSharpBuilder(image=image,
-                                     new_image_name=f"dot{framework}",
-                                     dotnet_args=f"%p --filter %t --framework {framework} /p:EnableWindowsTargeting=true --logger \"trx;LogFileName={self.test_report_filename}\" ",
-                                     set_up_command="dotnet workload restore --verbosity quiet; dotnet build",
-                                     set_up_args=f"--verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true")
+
+        image_name_id = str(uuid.uuid4())
+
+        standard_dotnet_args = (
+            f"--framework {framework} "
+            "/p:EnableWindowsTargeting=true "
+            f"--logger \"trx;LogFileName={self.test_report_filename}\""
+        )
+
+        if dotnet_args == "":
+            dotnet_args = standard_dotnet_args
+
+        if set_up_dotnet_args == "":
+            set_up_dotnet_args = (
+                "--verbosity quiet "
+                "/p:WarningLevel=0 "
+                "/p:EnableWindowsTargeting=true"
+            )
+
+        self.builder = CSharpBuilder(
+            image=image,
+            new_image_name=image_name_id,
+            dotnet_args=dotnet_args,
+            set_up_command=f"dotnet {set_up_dotnet_command}",
+            set_up_args=set_up_dotnet_args,
+            timeout=300,
+        )
 
     def execute(self, code: str, tests: str, context: dict, input_path, output_path: str):
         # because the input_path points to the .sln file of the project

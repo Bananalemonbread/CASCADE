@@ -1,0 +1,322 @@
+[
+    {
+        "id": 0,
+        "language": "Python",
+        "doc": "\"\"\"Adds two numbers \"\"\"",
+        "signature": {
+            "name": "add",
+            "params": [
+                "a: int",
+                "b: int"
+            ],
+            "returns": "",
+            "decorators": [],
+            "is_async": false,
+            "is_method": false
+        },
+        "parent": [
+            {
+                "name": "root module",
+                "parent_type": "Module",
+                "imports": [],
+                "variables": [],
+                "other_methods": [
+                    {
+                        "doc": "\"\"\"Substracts two integers \"\"\"",
+                        "signature": {
+                            "name": "sub",
+                            "params": [
+                                "a: int",
+                                "b: int"
+                            ],
+                            "returns": "",
+                            "decorators": [],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "def sub(a: int, b: int):\n    \"\"\" Substracts two integers \"\"\"\n    return a - b"
+                    },
+                    {
+                        "doc": "\"\"\"Multiplies two numbers \"\"\"",
+                        "signature": {
+                            "name": "mul",
+                            "params": [
+                                "a: int",
+                                "b: int"
+                            ],
+                            "returns": "",
+                            "decorators": [],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "def mul(a: int, b: int):\n    \"\"\" Multiplies two numbers \"\"\"\n    return a / b"
+                    },
+                    {
+                        "doc": "\"\"\"Returns the value of a \"\"\"",
+                        "signature": {
+                            "name": "ret_a",
+                            "params": [
+                                "a",
+                                "b"
+                            ],
+                            "returns": "",
+                            "decorators": [],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "def ret_a(a, b):\n    \"\"\" Returns the value of a \"\"\"\n    return b"
+                    }
+                ],
+                "constructors": []
+            }
+        ],
+        "code": "return a + b",
+        "code_file_path": "calc.py",
+        "code_file_content": "def add(a: int, b: int):\n    \"\"\" Adds two numbers \"\"\"\n    return a + b\n\ndef sub(a: int, b: int):\n    \"\"\" Substracts two integers \"\"\"\n    return a - b\n\ndef mul(a: int, b: int):\n    \"\"\" Multiplies two numbers \"\"\"\n    return a/b\n\ndef ret_a(a, b):\n    \"\"\" Returns the value of a \"\"\"\n    return b",
+        "tests": [],
+        "called_functions": [],
+        "module_name": "calc",
+        "qualified_name": "add",
+        "import_path": "calc.add"
+    },
+    {
+        "id": 1,
+        "language": "Python",
+        "doc": "\"\"\"Substracts two integers \"\"\"",
+        "signature": {
+            "name": "sub",
+            "params": [
+                "a: int",
+                "b: int"
+            ],
+            "returns": "",
+            "decorators": [],
+            "is_async": false,
+            "is_method": false
+        },
+        "parent": [
+            {
+                "name": "root module",
+                "parent_type": "Module",
+                "imports": [],
+                "variables": [],
+                "other_methods": [
+                    {
+                        "doc": "\"\"\"Adds two numbers \"\"\"",
+                        "signature": {
+                            "name": "add",
+                            "params": [
+                                "a: int",
+                                "b: int"
+                            ],
+                            "returns": "",
+                            "decorators": [],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "def add(a: int, b: int):\n    \"\"\" Adds two numbers \"\"\"\n    return a + b"
+                    },
+                    {
+                        "doc": "\"\"\"Multiplies two numbers \"\"\"",
+                        "signature": {
+                            "name": "mul",
+                            "params": [
+                                "a: int",
+                                "b: int"
+                            ],
+                            "returns": "",
+                            "decorators": [],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "def mul(a: int, b: int):\n    \"\"\" Multiplies two numbers \"\"\"\n    return a / b"
+                    },
+                    {
+                        "doc": "\"\"\"Returns the value of a \"\"\"",
+                        "signature": {
+                            "name": "ret_a",
+                            "params": [
+                                "a",
+                                "b"
+                            ],
+                            "returns": "",
+                            "decorators": [],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "def ret_a(a, b):\n    \"\"\" Returns the value of a \"\"\"\n    return b"
+                    }
+                ],
+                "constructors": []
+            }
+        ],
+        "code": "return a - b",
+        "code_file_path": "calc.py",
+        "code_file_content": "def add(a: int, b: int):\n    \"\"\" Adds two numbers \"\"\"\n    return a + b\n\ndef sub(a: int, b: int):\n    \"\"\" Substracts two integers \"\"\"\n    return a - b\n\ndef mul(a: int, b: int):\n    \"\"\" Multiplies two numbers \"\"\"\n    return a/b\n\ndef ret_a(a, b):\n    \"\"\" Returns the value of a \"\"\"\n    return b",
+        "tests": [],
+        "called_functions": [],
+        "module_name": "calc",
+        "qualified_name": "sub",
+        "import_path": "calc.sub"
+    },
+    {
+        "id": 2,
+        "language": "Python",
+        "doc": "\"\"\"Multiplies two numbers \"\"\"",
+        "signature": {
+            "name": "mul",
+            "params": [
+                "a: int",
+                "b: int"
+            ],
+            "returns": "",
+            "decorators": [],
+            "is_async": false,
+            "is_method": false
+        },
+        "parent": [
+            {
+                "name": "root module",
+                "parent_type": "Module",
+                "imports": [],
+                "variables": [],
+                "other_methods": [
+                    {
+                        "doc": "\"\"\"Adds two numbers \"\"\"",
+                        "signature": {
+                            "name": "add",
+                            "params": [
+                                "a: int",
+                                "b: int"
+                            ],
+                            "returns": "",
+                            "decorators": [],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "def add(a: int, b: int):\n    \"\"\" Adds two numbers \"\"\"\n    return a + b"
+                    },
+                    {
+                        "doc": "\"\"\"Substracts two integers \"\"\"",
+                        "signature": {
+                            "name": "sub",
+                            "params": [
+                                "a: int",
+                                "b: int"
+                            ],
+                            "returns": "",
+                            "decorators": [],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "def sub(a: int, b: int):\n    \"\"\" Substracts two integers \"\"\"\n    return a - b"
+                    },
+                    {
+                        "doc": "\"\"\"Returns the value of a \"\"\"",
+                        "signature": {
+                            "name": "ret_a",
+                            "params": [
+                                "a",
+                                "b"
+                            ],
+                            "returns": "",
+                            "decorators": [],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "def ret_a(a, b):\n    \"\"\" Returns the value of a \"\"\"\n    return b"
+                    }
+                ],
+                "constructors": []
+            }
+        ],
+        "code": "return a/b",
+        "code_file_path": "calc.py",
+        "code_file_content": "def add(a: int, b: int):\n    \"\"\" Adds two numbers \"\"\"\n    return a + b\n\ndef sub(a: int, b: int):\n    \"\"\" Substracts two integers \"\"\"\n    return a - b\n\ndef mul(a: int, b: int):\n    \"\"\" Multiplies two numbers \"\"\"\n    return a/b\n\ndef ret_a(a, b):\n    \"\"\" Returns the value of a \"\"\"\n    return b",
+        "tests": [],
+        "called_functions": [],
+        "module_name": "calc",
+        "qualified_name": "mul",
+        "import_path": "calc.mul"
+    },
+    {
+        "id": 3,
+        "language": "Python",
+        "doc": "\"\"\"Returns the value of a \"\"\"",
+        "signature": {
+            "name": "ret_a",
+            "params": [
+                "a",
+                "b"
+            ],
+            "returns": "",
+            "decorators": [],
+            "is_async": false,
+            "is_method": false
+        },
+        "parent": [
+            {
+                "name": "root module",
+                "parent_type": "Module",
+                "imports": [],
+                "variables": [],
+                "other_methods": [
+                    {
+                        "doc": "\"\"\"Adds two numbers \"\"\"",
+                        "signature": {
+                            "name": "add",
+                            "params": [
+                                "a: int",
+                                "b: int"
+                            ],
+                            "returns": "",
+                            "decorators": [],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "def add(a: int, b: int):\n    \"\"\" Adds two numbers \"\"\"\n    return a + b"
+                    },
+                    {
+                        "doc": "\"\"\"Substracts two integers \"\"\"",
+                        "signature": {
+                            "name": "sub",
+                            "params": [
+                                "a: int",
+                                "b: int"
+                            ],
+                            "returns": "",
+                            "decorators": [],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "def sub(a: int, b: int):\n    \"\"\" Substracts two integers \"\"\"\n    return a - b"
+                    },
+                    {
+                        "doc": "\"\"\"Multiplies two numbers \"\"\"",
+                        "signature": {
+                            "name": "mul",
+                            "params": [
+                                "a: int",
+                                "b: int"
+                            ],
+                            "returns": "",
+                            "decorators": [],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "def mul(a: int, b: int):\n    \"\"\" Multiplies two numbers \"\"\"\n    return a / b"
+                    }
+                ],
+                "constructors": []
+            }
+        ],
+        "code": "return b",
+        "code_file_path": "calc.py",
+        "code_file_content": "def add(a: int, b: int):\n    \"\"\" Adds two numbers \"\"\"\n    return a + b\n\ndef sub(a: int, b: int):\n    \"\"\" Substracts two integers \"\"\"\n    return a - b\n\ndef mul(a: int, b: int):\n    \"\"\" Multiplies two numbers \"\"\"\n    return a/b\n\ndef ret_a(a, b):\n    \"\"\" Returns the value of a \"\"\"\n    return b",
+        "tests": [],
+        "called_functions": [],
+        "module_name": "calc",
+        "qualified_name": "ret_a",
+        "import_path": "calc.ret_a"
+    }
+]

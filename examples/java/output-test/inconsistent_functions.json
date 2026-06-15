@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "file_name": "Calculator.java",
+        "file_path": "src/main/java/example/Calculator.java",
+        "class_name": "Calculator",
+        "function_name": "subtract",
+        "full_function_signature": "public  int subtract(int a, int b)",
+        "verdict": "INCO; fail; step 2 (C'+T'); (1, 11, 0); (11, 1, 0); p2p: 1, f2f: 1, p2f: 0, f2p: 10",
+        "failed_testcases": [
+            "test_subtract_max_int_from_min_int_overflow_behavior"
+        ],
+        "errored_testcases": [],
+        "failing_testcases": [
+            "test_subtract_max_int_from_min_int_overflow_behavior"
+        ]
+    }
+]
