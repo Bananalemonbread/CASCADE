@@ -1,0 +1,290 @@
+[
+    {
+        "package": "example",
+        "doc": "/**\n * Returns the sum of a and b.\n */\n",
+        "signature": {
+            "name": "add",
+            "returns": "int",
+            "params": [
+                "int a",
+                "int b"
+            ],
+            "modifier": [
+                "public "
+            ],
+            "annotations": [],
+            "generics": [],
+            "exceptions": []
+        },
+        "language": "Java",
+        "parent": {
+            "name": "Calculator",
+            "doc": "/**\n */\n",
+            "imports": [],
+            "constructors": [],
+            "implements": [],
+            "extends": [],
+            "modifiers": [
+                "public "
+            ],
+            "kind": "class",
+            "other_methods": [
+                {
+                    "doc": "/**\n * Returns the difference a - b.\n */\n",
+                    "signature": {
+                        "name": "subtract",
+                        "returns": "int",
+                        "params": [
+                            "int a",
+                            "int b"
+                        ],
+                        "modifier": [
+                            "public "
+                        ],
+                        "annotations": [],
+                        "generics": [],
+                        "exceptions": []
+                    },
+                    "code": "{\n    return a * b;\n}"
+                },
+                {
+                    "doc": "/**\n */\n",
+                    "signature": {
+                        "name": "dummy1",
+                        "returns": "int",
+                        "params": [],
+                        "modifier": [
+                            "public "
+                        ],
+                        "annotations": [],
+                        "generics": [],
+                        "exceptions": []
+                    },
+                    "code": "{\n    return 0;\n}"
+                },
+                {
+                    "doc": "/**\n * dummy method that does nothing and has no code\n */\n",
+                    "signature": {
+                        "name": "dummy2",
+                        "returns": "void",
+                        "params": [],
+                        "modifier": [
+                            "public "
+                        ],
+                        "annotations": [],
+                        "generics": [],
+                        "exceptions": []
+                    },
+                    "code": "{\n}"
+                }
+            ],
+            "variables": [],
+            "generics": []
+        },
+        "code": "{\n    return a + b;\n}",
+        "code_file_path": "src/main/java/example/Calculator.java",
+        "called_functions": [],
+        "tests": "package example;\n\nimport org.junit.jupiter.api.Test;\nimport static org.junit.jupiter.api.Assertions.assertEquals;\n\nclass CalculatorTest {\n\n    @Test\n    void addReturnsSum() {\n        Calculator calculator = new Calculator();\n        assertEquals(5, calculator.add(2, 3));\n    }\n\n    @Test\n    void subtractActuallyMultiplies() {\n        Calculator calculator = new Calculator();\n        assertEquals(6, calculator.subtract(2, 3));\n    }\n}\n",
+        "test_imports": [
+            "import org.junit.jupiter.api.Test;\n",
+            "import static org.junit.jupiter.api.Assertions.assertEquals;\n"
+        ],
+        "test_package": "example",
+        "test_file_path": "src/test/java/example/CalculatorTest.java",
+        "id": 0,
+        "junit_version": "5.10.2",
+        "verdict": "Error during analysis: Generation failed. because of repeated errors."
+    },
+    {
+        "package": "example",
+        "doc": "/**\n * Returns the difference a - b.\n */\n",
+        "signature": {
+            "name": "subtract",
+            "returns": "int",
+            "params": [
+                "int a",
+                "int b"
+            ],
+            "modifier": [
+                "public "
+            ],
+            "annotations": [],
+            "generics": [],
+            "exceptions": []
+        },
+        "language": "Java",
+        "parent": {
+            "name": "Calculator",
+            "doc": "/**\n */\n",
+            "imports": [],
+            "constructors": [],
+            "implements": [],
+            "extends": [],
+            "modifiers": [
+                "public "
+            ],
+            "kind": "class",
+            "other_methods": [
+                {
+                    "doc": "/**\n * Returns the sum of a and b.\n */\n",
+                    "signature": {
+                        "name": "add",
+                        "returns": "int",
+                        "params": [
+                            "int a",
+                            "int b"
+                        ],
+                        "modifier": [
+                            "public "
+                        ],
+                        "annotations": [],
+                        "generics": [],
+                        "exceptions": []
+                    },
+                    "code": "{\n    return a + b;\n}"
+                },
+                {
+                    "doc": "/**\n */\n",
+                    "signature": {
+                        "name": "dummy1",
+                        "returns": "int",
+                        "params": [],
+                        "modifier": [
+                            "public "
+                        ],
+                        "annotations": [],
+                        "generics": [],
+                        "exceptions": []
+                    },
+                    "code": "{\n    return 0;\n}"
+                },
+                {
+                    "doc": "/**\n * dummy method that does nothing and has no code\n */\n",
+                    "signature": {
+                        "name": "dummy2",
+                        "returns": "void",
+                        "params": [],
+                        "modifier": [
+                            "public "
+                        ],
+                        "annotations": [],
+                        "generics": [],
+                        "exceptions": []
+                    },
+                    "code": "{\n}"
+                }
+            ],
+            "variables": [],
+            "generics": []
+        },
+        "code": "{\n    return a * b;\n}",
+        "code_file_path": "src/main/java/example/Calculator.java",
+        "called_functions": [],
+        "tests": "package example;\n\nimport org.junit.jupiter.api.Test;\nimport static org.junit.jupiter.api.Assertions.assertEquals;\n\nclass CalculatorTest {\n\n    @Test\n    void addReturnsSum() {\n        Calculator calculator = new Calculator();\n        assertEquals(5, calculator.add(2, 3));\n    }\n\n    @Test\n    void subtractActuallyMultiplies() {\n        Calculator calculator = new Calculator();\n        assertEquals(6, calculator.subtract(2, 3));\n    }\n}\n",
+        "test_imports": [
+            "import org.junit.jupiter.api.Test;\n",
+            "import static org.junit.jupiter.api.Assertions.assertEquals;\n"
+        ],
+        "test_package": "example",
+        "test_file_path": "src/test/java/example/CalculatorTest.java",
+        "id": 1,
+        "junit_version": "5.10.2",
+        "verdict": "Error during analysis: Generation failed. because of repeated errors."
+    },
+    {
+        "package": "example",
+        "doc": "/**\n * dummy method that does nothing and has no code\n */\n",
+        "signature": {
+            "name": "dummy2",
+            "returns": "void",
+            "params": [],
+            "modifier": [
+                "public "
+            ],
+            "annotations": [],
+            "generics": [],
+            "exceptions": []
+        },
+        "language": "Java",
+        "parent": {
+            "name": "Calculator",
+            "doc": "/**\n */\n",
+            "imports": [],
+            "constructors": [],
+            "implements": [],
+            "extends": [],
+            "modifiers": [
+                "public "
+            ],
+            "kind": "class",
+            "other_methods": [
+                {
+                    "doc": "/**\n * Returns the sum of a and b.\n */\n",
+                    "signature": {
+                        "name": "add",
+                        "returns": "int",
+                        "params": [
+                            "int a",
+                            "int b"
+                        ],
+                        "modifier": [
+                            "public "
+                        ],
+                        "annotations": [],
+                        "generics": [],
+                        "exceptions": []
+                    },
+                    "code": "{\n    return a + b;\n}"
+                },
+                {
+                    "doc": "/**\n * Returns the difference a - b.\n */\n",
+                    "signature": {
+                        "name": "subtract",
+                        "returns": "int",
+                        "params": [
+                            "int a",
+                            "int b"
+                        ],
+                        "modifier": [
+                            "public "
+                        ],
+                        "annotations": [],
+                        "generics": [],
+                        "exceptions": []
+                    },
+                    "code": "{\n    return a * b;\n}"
+                },
+                {
+                    "doc": "/**\n */\n",
+                    "signature": {
+                        "name": "dummy1",
+                        "returns": "int",
+                        "params": [],
+                        "modifier": [
+                            "public "
+                        ],
+                        "annotations": [],
+                        "generics": [],
+                        "exceptions": []
+                    },
+                    "code": "{\n    return 0;\n}"
+                }
+            ],
+            "variables": [],
+            "generics": []
+        },
+        "code": "{\n}",
+        "code_file_path": "src/main/java/example/Calculator.java",
+        "called_functions": [],
+        "tests": "package example;\n\nimport org.junit.jupiter.api.Test;\nimport static org.junit.jupiter.api.Assertions.assertEquals;\n\nclass CalculatorTest {\n\n    @Test\n    void addReturnsSum() {\n        Calculator calculator = new Calculator();\n        assertEquals(5, calculator.add(2, 3));\n    }\n\n    @Test\n    void subtractActuallyMultiplies() {\n        Calculator calculator = new Calculator();\n        assertEquals(6, calculator.subtract(2, 3));\n    }\n}\n",
+        "test_imports": [
+            "import org.junit.jupiter.api.Test;\n",
+            "import static org.junit.jupiter.api.Assertions.assertEquals;\n"
+        ],
+        "test_package": "example",
+        "test_file_path": "src/test/java/example/CalculatorTest.java",
+        "id": 3,
+        "junit_version": "5.10.2",
+        "verdict": "Error during analysis: Generation failed. because of repeated errors."
+    }
+]

@@ -1,6 +1,9 @@
 import os
 import re
 import json
+import fnmatch
+import shutil
+import subprocess
 
 from cascade.generation.Generator import Generator
 from cascade.generation.executor.OpenAICaller import OpenAICaller
@@ -125,6 +128,31 @@ class MultiStepTestGenerator(Generator):
 
     def duplicate_test_name(self, name, count):
         return f"{name}{count}"
+
+    def source_tree(self, input_path, pattern):
+        if shutil.which("tree"):
+            try:
+                return subprocess.check_output(
+                    ["tree", "-P", pattern, "--charset=ascii", input_path],
+                ).decode("utf-8")
+            except subprocess.SubprocessError:
+                pass
+
+        lines = [str(input_path)]
+        for root, dirs, files in os.walk(input_path):
+            dirs.sort()
+            files = sorted(file for file in files if fnmatch.fnmatch(file, pattern))
+            if not files:
+                continue
+
+            depth = os.path.relpath(root, input_path).count(os.sep)
+            indent = "    " * max(depth, 0)
+            if root != input_path:
+                lines.append(f"{indent}|-- {os.path.basename(root)}/")
+            for file in files:
+                lines.append(f"{indent}    |-- {file}")
+
+        return "\n".join(lines)
 
 
     def build_signature(self, context, doc=True):

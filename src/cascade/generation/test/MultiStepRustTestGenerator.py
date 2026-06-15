@@ -1,7 +1,6 @@
 import copy
 import os
 import re
-import subprocess
 
 from cascade.generation.test.MultiStepTestGenerator import MultiStepTestGenerator
 from cascade.utils.RustUtils import build_context, check_syntax, \
@@ -202,7 +201,7 @@ class MultiStepRustTestGenerator(MultiStepTestGenerator):
     def repair(self, context, input_path, output_path, errors, key):
         response_history = []
 
-        tree = subprocess.check_output(["tree", "-P", "*.rs", "--charset=ascii", input_path]).decode("utf-8")
+        tree = self.source_tree(input_path, "*.rs")
 
         system_prompt = (
             "You are an expert Rust developer. "

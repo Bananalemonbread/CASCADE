@@ -6,10 +6,11 @@ from cascade.analysis.executor.builders.Builder import Builder
 
 class PythonBuilder(Builder):
     def __init__(self, image="python:3.12", timeout=120):
+        test_output_file = "cascade_pytest_output.txt"
         test_pattern = (
             "python -m pip install pytest >/tmp/pytest-install.log 2>&1; "
-            f"timeout {timeout} python -m pytest -q %t --tb=short > output 2>&1; "
-            "status=$?; cat output > out; echo \"[PYTEST_EXIT_CODE] $status\" >> out; cat output"
+            f"timeout {timeout} python -m pytest -q %t --tb=short > {test_output_file} 2>&1; "
+            f"status=$?; cat {test_output_file} > out; echo \"[PYTEST_EXIT_CODE] $status\" >> out; cat {test_output_file}"
         )
         super().__init__(
             test_pattern=test_pattern,

@@ -1,0 +1,149 @@
+S1 Error in tests
+[[], [], []]
+------
+Tests:
+
+#[cfg(test)]
+mod injected_test_mod_cascade {
+   use super::*;
+
+    #[test]
+    fn test_add_two_positive_integers() {
+      // If the function is called with two positive integers (e.g., 5 and 10), then it must return their mathematical sum (15). This verifies basic addition functionality for positive operands as described by 'Returns the sum of a and b'.
+      assert_eq!(add(5, 10), 15);
+    }
+
+    #[test]
+    fn test_add_two_negative_integers() {
+      // If the function is called with two negative integers (e.g., -5 and -10), then it must return their mathematical sum (-15). This ensures the function correctly handles negative inputs and produces the correct negative result.
+      assert_eq!(add(-5, -10), -15);
+    }
+
+    #[test]
+    fn test_add_mixed_sign_positive_then_negative() {
+      // If the function is called with a positive integer and a negative integer where the positive magnitude is larger (e.g., 10 and -5), then it must return the correct positive difference (5). This verifies correct handling of mixed signs resulting in a positive sum.
+      assert_eq!(add(10, -5), 5);
+    }
+
+    #[test]
+    fn test_add_mixed_sign_negative_then_positive() {
+      // If the function is called with a negative integer and a positive integer where the positive magnitude is larger (e.g., -5 and 10), then it must return the correct positive difference (5). This verifies commutativity and correct handling of mixed signs regardless of argument order.
+      assert_eq!(add(-5, 10), 5);
+    }
+
+    #[test]
+    fn test_add_zero_and_positive_integer() {
+      // If the function is called with zero and a positive integer (e.g., 0 and 5), then it must return the positive integer (5). This tests the additive identity property for zero as the first argument.
+      assert_eq!(add(0, 5), 5);
+    }
+
+    #[test]
+    fn test_add_positive_integer_and_zero() {
+      // If the function is called with a positive integer and zero (e.g., 5 and 0), then it must return the positive integer (5). This tests the additive identity property for zero as the second argument.
+      assert_eq!(add(5, 0), 5);
+    }
+
+    #[test]
+    fn test_add_zero_and_zero() {
+      // If the function is called with zero and zero, then it must return zero. This verifies the base case of adding two zeros.
+      assert_eq!(add(0, 0), 0);
+    }
+
+    #[test]
+    fn test_add_max_i32_and_zero() {
+      // If the function is called with i32::MAX and 0, then it must return i32::MAX. This ensures the function correctly handles the maximum possible value for i32 when no overflow occurs, verifying boundary behavior for valid sums.
+      assert_eq!(add(i32::MAX, 0), i32::MAX);
+    }
+
+    #[test]
+    fn test_add_min_i32_and_zero() {
+      // If the function is called with i32::MIN and 0, then it must return i32::MIN. This ensures the function correctly handles the minimum possible value for i32 when no overflow occurs, verifying boundary behavior for valid sums.
+      assert_eq!(add(i32::MIN, 0), i32::MIN);
+    }
+
+    #[test]
+    fn test_add_large_positive_sum_within_bounds() {
+      // If the function is called with two large positive integers whose sum is within i32 bounds (e.g., 1_000_000_000 and 1_000_000_000), then it must return the correct sum (2_000_000_000). This verifies correctness for large numbers that do not cause overflow.
+      assert_eq!(add(1_000_000_000, 1_000_000_000), 2_000_000_000);
+    }
+
+    #[test]
+    fn test_add_large_negative_sum_within_bounds() {
+      // If the function is called with two large negative integers whose sum is within i32 bounds (e.g., -1_000_000_000 and -1_000_000_000), then it must return the correct sum (-2_000_000_000). This verifies correctness for large negative numbers that do not cause overflow.
+      assert_eq!(add(-1_000_000_000, -1_000_000_000), -2_000_000_000);
+    }
+}
+------
+Code:
+{ a + b }
+------
+Parsed file:
+cat: output: Is a directory
+
+-----------------------
+S1 Error in tests
+[[], [], []]
+------
+Tests:
+
+#[cfg(test)]
+mod injected_test_mod_cascade {
+   use super::*;
+
+    #[test]
+      fn test_return_a_zero() {
+      // If the input `a` is 0, then the function must return 0. This verifies the identity property for the neutral element of addition and ensures no off-by-one or sign-flip errors occur for zero.
+      let result = return_a(0);
+      assert_eq!(result, 0);
+      }
+
+    #[test]
+      fn test_return_a_positive_small() {
+      // If the input `a` is a small positive integer (e.g., 1), then the function must return that same positive integer. This verifies the function correctly handles positive inputs without modification.
+      let result = return_a(1);
+      assert_eq!(result, 1);
+      }
+
+    #[test]
+      fn test_return_a_negative_small() {
+      // If the input `a` is a small negative integer (e.g., -1), then the function must return that same negative integer. This verifies the function correctly preserves the sign bit for negative inputs.
+      let result = return_a(-1);
+      assert_eq!(result, -1);
+      }
+
+    #[test]
+      fn test_return_a_i32_max() {
+      // If the input `a` is `i32::MAX` (2147483647), then the function must return `i32::MAX`. This verifies the function handles the upper boundary of the `i32` type without overflow or truncation.
+      let result = return_a(i32::MAX);
+      assert_eq!(result, i32::MAX);
+      }
+
+    #[test]
+      fn test_return_a_i32_min() {
+      // If the input `a` is `i32::MIN` (-2147483648), then the function must return `i32::MIN`. This verifies the function handles the lower boundary of the `i32` type, which is critical because `i32::MIN` behaves uniquely in two's complement arithmetic (e.g., negation overflows).
+      let result = return_a(i32::MIN);
+      assert_eq!(result, i32::MIN);
+      }
+
+    #[test]
+      fn test_return_a_arbitrary_positive() {
+      // If the input `a` is an arbitrary positive integer within the range (e.g., 42), then the function must return 42. This confirms the identity behavior holds for non-boundary positive values.
+      let result = return_a(42);
+      assert_eq!(result, 42);
+      }
+
+    #[test]
+      fn test_return_a_arbitrary_negative() {
+      // If the input `a` is an arbitrary negative integer within the range (e.g., -42), then the function must return -42. This confirms the identity behavior holds for non-boundary negative values.
+      let result = return_a(-42);
+      assert_eq!(result, -42);
+      }
+}
+------
+Code:
+{ 29 }
+------
+Parsed file:
+cat: output: Is a directory
+
+-----------------------

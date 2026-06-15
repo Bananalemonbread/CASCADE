@@ -20,7 +20,8 @@ class RustExecutor(AnalysisExecutor):
                                      set_up_command="cargo fetch; cargo build --tests",
                                      set_up_args="")
 
-        self.pattern = f"echo \"[INFO] Tests run starting!\" > output;export RUSTFLAGS=\"-Awarnings\"; timeout {timeout} cargo build --tests; timeout {timeout} cargo test %placeholder {rust_args} > output 2>&1; cat output"
+        self.test_output_file = "cascade_test_output.txt"
+        self.pattern = f"echo \"[INFO] Tests run starting!\" > {self.test_output_file};export RUSTFLAGS=\"-Awarnings\"; timeout {timeout} cargo build --tests; timeout {timeout} cargo test %placeholder {rust_args} > {self.test_output_file} 2>&1; cat {self.test_output_file}"
 
     def build_execution_results(self, result, comp_errors=None, parsed_file=""):
         exec_results = ExecutionResults()
@@ -95,7 +96,7 @@ class RustExecutor(AnalysisExecutor):
                 "directory": temp_dir,
                 "command": #f"pwd; ls; cat -n {context['code_file_path']}; cat -n {test['test_file_path']};"
                            f"cat -n {test['test_file_path']}; {run_test_command}",
-                "eval_command": f"cat output",
+                "eval_command": f"cat {self.test_output_file}",
                 "eval_function": eval_and_capture
             }
 

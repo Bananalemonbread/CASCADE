@@ -2,7 +2,6 @@ import copy
 import json
 import os
 import re
-import subprocess
 #import tiktoken
 
 from cascade.generation.test.MultiStepTestGenerator import MultiStepTestGenerator
@@ -232,7 +231,7 @@ class MultiStepPythonTestGenerator(MultiStepTestGenerator):
         tools = get_repair_helper_functions()
         #tools = None
 
-        tree = subprocess.check_output(["tree", "-P", "*.py", "--charset=ascii", input_path]).decode("utf-8")
+        tree = self.source_tree(input_path, "*.py")
 
         system_prompt = "You are an expert Python developer. You will fix syntax, runtime and import errors in a provided test module and return the entire repaired module. Use tools to find out more about modules instead of making assumptions."
 

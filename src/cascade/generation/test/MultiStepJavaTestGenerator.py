@@ -2,7 +2,6 @@ import copy
 import json
 import os
 import re
-import subprocess
 #import tiktoken
 
 from cascade.generation.test.MultiStepTestGenerator import MultiStepTestGenerator
@@ -192,7 +191,7 @@ class MultiStepJavaTestGenerator(MultiStepTestGenerator):
         tools = get_repair_helper_functions()
         #tools = None
 
-        tree = subprocess.check_output(["tree", "-P", "*.java", "--charset=ascii", input_path]).decode("utf-8")
+        tree = self.source_tree(input_path, "*.java")
 
         system_prompt = "You are an expert Java developer. You will fix compilation errors in a provided test class and return the entire repaired class. Use tools to find out more about classes instead of making assumptions."
 

@@ -1,0 +1,26 @@
+[
+    {
+        "id": 2,
+        "file_name": "calc.py",
+        "file_path": "calc.py",
+        "class_name": null,
+        "function_name": "mul",
+        "full_function_signature": "def mul(a: int, b: int):",
+        "verdict": "INCO; pass; step 2 (C'+T'); (0, 9, 0); (14, 0, 0); p2p: 0, f2f: 0, p2f: 0, f2p: 0",
+        "failed_testcases": [],
+        "errored_testcases": [],
+        "failing_testcases": []
+    },
+    {
+        "id": 3,
+        "file_name": "calc.py",
+        "file_path": "calc.py",
+        "class_name": null,
+        "function_name": "ret_a",
+        "full_function_signature": "def ret_a(a, b):",
+        "verdict": "INCO; pass; step 2 (C'+T'); (0, 14, 0); (14, 0, 0); p2p: 0, f2f: 0, p2f: 0, f2p: 0",
+        "failed_testcases": [],
+        "errored_testcases": [],
+        "failing_testcases": []
+    }
+]
