@@ -1,11 +1,9 @@
 import copy
-import json
 import os
 import re
 import subprocess
 
-from cascade.generation.Generator import Generator
-from cascade.generation.executor.OpenAICaller import OpenAICaller
+from cascade.generation.test.MultiStepTestGenerator import MultiStepTestGenerator
 from cascade.utils.RustUtils import build_context, check_syntax, \
 build_signature
 
@@ -14,29 +12,27 @@ def is_public(c) -> bool:
     return False #TODO: later refactor lol...
     #return "pub" in c["signature"]["modifier"]
 
-class MultiStepRustTestGenerator(Generator):
-    def __init__(self,
-                 model="gpt-4o-mini-2024-07-18",
-                 max_attempts=1, delay=3,
-                 max_tokens=16000,
-                 temperature=0,
-                 max_prompt_tokens=8000,
-                 freq_penalty=0.0, dummy=False,
-                 base_url=None, api_key=None #Base url if used with vllm,  for example: "http://127.0.0.1:8000/v1"
-                 ):
-        
-        super().__init__()
-        self.prompt_executor = OpenAICaller(max_attempts=max_attempts, model=model,
-                                            max_tokens=max_tokens,
-                                            temperature=temperature,
-                                            delay=delay,
-                                            freq_penalty=freq_penalty,
-                                            dummy=dummy,
-                                            api_key=api_key,
-                                            base_url=base_url)
-        
-        self.model = model
-        self.max_prompt_tokens = max_prompt_tokens
+class MultiStepRustTestGenerator(MultiStepTestGenerator):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def normalize_test_name(self, name):
+        name = str(name).strip()
+        name = re.sub(r"^(test_?|Test_?|TEST_?)", "", name)
+        name = re.sub(r"(.)([A-Z][a-z]+)", r"\1_\2", name)
+        name = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", name)
+        name = re.sub(r"[^a-zA-Z0-9_]", "_", name)
+        name = re.sub(r"_+", "_", name).strip("_").lower()
+
+        if not name:
+            name = "generated_case"
+        if name[0].isdigit():
+            name = "case_" + name
+
+        return "test_" + name
+
+    def duplicate_test_name(self, name, count):
+        return f"{name}_{count}"
 
     def build_prompt(self, context):
         test_framework_instruction = (
@@ -272,82 +268,3 @@ class MultiStepRustTestGenerator(Generator):
                 })
 
         return last_new_tests, response_history
-
-    def extract_json_list(self, output_path, response_text):
-        def log_json_error(error_message):
-            print(error_message)
-            results_path = os.path.join(output_path, "results.txt")
-            errors_path = os.path.join(output_path, "errors.txt")
-            with open(results_path, "w") as f:
-                f.write("Negative, JSON test extraction error")
-            with open(errors_path, "w") as f:
-                f.write(f"Could not parse JSON: {error_message}\nResponse text:\n{response_text}")
-
-        def to_rust_test_name(name):
-            name = name.strip()
-
-            # Remove common test prefixes first, then add one clean `test_` prefix later.
-            name = re.sub(r"^(test_?|Test_?|TEST_?)", "", name)
-
-            # Convert camelCase / PascalCase boundaries to underscores.
-            name = re.sub(r"(.)([A-Z][a-z]+)", r"\1_\2", name)
-            name = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", name)
-
-            
-            name = re.sub(r"[^a-zA-Z0-9_]", "_", name)
-
-            name = re.sub(r"_+", "_", name).strip("_").lower()
-
-            if not name:
-                name = "generated_case"
-
-            # Rust identifiers cannot start with a digit.
-            if name[0].isdigit():
-                name = "case_" + name
-
-            return "test_" + name
-
-        json_blocks = re.findall(r"```json\s*(.*?)\s*```", response_text, flags=re.DOTALL)
-
-        json_text = json_blocks[0].strip() if json_blocks else response_text.strip()
-
-        try:
-            extracted_test_list = json.loads(json_text)
-        except json.JSONDecodeError as e:
-            log_json_error(str(e))
-            return []
-
-        if not isinstance(extracted_test_list, list):
-            log_json_error("Extracted JSON is not a list")
-            return []
-
-        clean_test_list = []
-        seen_names = {}
-
-        for et in extracted_test_list:
-            if not isinstance(et, dict):
-                continue
-
-            if "test_name" not in et or "test_description" not in et:
-                continue
-
-            base_name = to_rust_test_name(str(et["test_name"]))
-            seen_names[base_name] = seen_names.get(base_name, 0) + 1
-
-            test_name = base_name
-            if seen_names[base_name] > 1:
-                test_name = f"{base_name}_{seen_names[base_name]}"
-
-            clean_test_list.append({
-                "test_name": test_name,
-                "test_description": str(et["test_description"])
-            })
-
-        if clean_test_list == []:
-            log_json_error("No test case with the correct keys found in extracted JSON")
-            return []
-
-        test_names = [test["test_name"] for test in clean_test_list]
-        print(f"      Got {len(clean_test_list)} potential tests:\n        {'\n        '.join(test_names)}")
-
-        return clean_test_list

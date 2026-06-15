@@ -1,6 +1,6 @@
-import copy
 import os
 import re
+import json
 
 from cascade.generation.Generator import Generator
 from cascade.generation.executor.OpenAICaller import OpenAICaller
@@ -19,6 +19,7 @@ class MultiStepTestGenerator(Generator):
         self.prompt_executor = OpenAICaller(
             max_attempts=max_attempts,
             model=model,
+            delay=delay,
             max_tokens=max_tokens,
             temperature=temperature,
             freq_penalty=freq_penalty,
@@ -32,6 +33,76 @@ class MultiStepTestGenerator(Generator):
 
     def generate(self, context, input_path, output_path,  response_step2=None):
         raise NotImplementedError
+
+    def build_prompt(self, context):
+        raise NotImplementedError
+
+    def extract_tests(self, new_tests, context, response, output_path):
+        raise NotImplementedError
+
+    def repair(self, context, input_path, output_path, errors, key):
+        raise NotImplementedError
+
+    def extract_json_list(self, output_path, response_text):
+        # extract json list from response
+        def log_json_error(error_message):
+            """Logs the JSON error to results.txt and errors.txt"""
+            print(error_message)
+            results_path = os.path.join(output_path, "results.txt")
+            errors_path = os.path.join(output_path, "errors.txt")
+            
+            with open(results_path, "w") as f:
+                f.write("Negative, JSON test extraction error")
+            with open(errors_path, "w") as f:
+                f.write(f"Could not parse JSON: {error_message}\nResponse text:\n{response_text}")
+
+        json_blocks = re.findall(r"```json\s*(.*?)\s*```", response_text, flags=re.DOTALL)
+        json_text = json_blocks[0].strip() if json_blocks else response_text.strip()
+
+        try:
+            extracted_test_list = json.loads(json_text)
+
+        except json.JSONDecodeError as e:
+            log_json_error(str(e))
+            return []
+
+        if not isinstance(extracted_test_list, list):
+            log_json_error("Extracted JSON is not a list")
+            return []
+
+        clean_test_list = []
+        seen_names = {}
+        for et in extracted_test_list:
+            if not isinstance(et, dict):
+                continue
+
+            if "test_name" in et and "test_description" in et:
+                base_name = self.normalize_test_name(et["test_name"])
+                seen_names[base_name] = seen_names.get(base_name, 0) + 1
+                test_name = base_name
+                if seen_names[base_name] > 1:
+                    test_name = self.duplicate_test_name(base_name, seen_names[base_name])
+                ct = {
+                    "test_name": test_name,
+                    "test_description": str(et["test_description"])
+                }
+                clean_test_list.append(ct)
+        if clean_test_list == []:
+            log_json_error("No test case with the correct keys found in extracted JSON")
+            return []
+
+        test_names = [test['test_name'] for test in clean_test_list]
+        print(f"      Got {len(clean_test_list)} potential tests:\n        {'\n        '.join(test_names)}")
+        return  clean_test_list
+
+    def normalize_test_name(self, name):
+        base_name = str(name).replace("test", "").replace("Test", "").replace("TEST", "").strip()
+        if not base_name:
+            base_name = "GeneratedCase"
+        return f"test{base_name}"
+
+    def duplicate_test_name(self, name, count):
+        return f"{name}{count}"
 
 
     def build_signature(self, context, doc=True):

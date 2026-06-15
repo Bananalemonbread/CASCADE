@@ -5,31 +5,14 @@ import re
 import subprocess
 #import tiktoken
 
-from cascade.generation.Generator import Generator
-from cascade.generation.executor.OpenAICaller import OpenAICaller
+from cascade.generation.test.MultiStepTestGenerator import MultiStepTestGenerator
 from cascade.utils.JavaUtils import build_context, check_syntax, repair_helper_functions, get_repair_helper_functions, \
     build_signature
 
 
-class MultiStepJavaTestGenerator(Generator):
-    def __init__(self,
-                 model="gpt-4o-mini-2024-07-18",
-                 max_attempts=1, delay=3,
-                 max_tokens=16000,
-                 temperature=0,
-                 max_prompt_tokens=8000,
-                 freq_penalty=0.0, dummy=False,
-                 base_url=None, api_key=None #Base url if used with vllm,  for example: "http://127.0.0.1:8000/v1"
-                 ):
-
-        super().__init__()
-        self.prompt_executor = OpenAICaller(max_attempts=max_attempts, model=model,
-                                            max_tokens=max_tokens, temperature=temperature,
-                                            delay=delay, freq_penalty=freq_penalty, dummy=dummy,
-                                            api_key=api_key, base_url=base_url)
-
-        self.model = model
-        self.max_prompt_tokens = max_prompt_tokens
+class MultiStepJavaTestGenerator(MultiStepTestGenerator):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.is_junit3 = False
 
@@ -267,54 +250,3 @@ class MultiStepJavaTestGenerator(Generator):
         response_history.append(copy.deepcopy(promptlist))
         response_history.append(res)
         return new_tests, response_history
-
-
-    def extract_json_list(self, output_path, response_text):
-        # extract json list from response
-        def log_json_error(error_message):
-            """Logs the JSON error to results.txt and errors.txt."""
-            print(error_message)
-            results_path = os.path.join(output_path, "results.txt")
-            errors_path = os.path.join(output_path, "errors.txt")
-            with open(results_path, "w") as f:
-                f.write("Negative, JSON test extraction error")
-            with open(errors_path, "w") as f:
-                f.write(f"Could not parse JSON: {error_message}\nResponse text:\n{response_text}")
-
-        json_blocks = re.findall(r"```json\s*(.*?)\s*```", response_text, flags=re.DOTALL)
-        json_text = json_blocks[0].strip() if json_blocks else response_text.strip()
-
-        try:
-            extracted_test_list = json.loads(json_text)
-
-        except json.JSONDecodeError as e:
-            log_json_error(str(e))
-            return []
-
-        if not isinstance(extracted_test_list, list):
-            log_json_error("Extracted JSON is not a list")
-            return []
-
-        # make sure that all tests begin with test (e.g. instead of ending) and adding numbers to test cases that have the name
-        # also check if the elements have the correct keys.
-        clean_test_list = []
-        seen_names = {}
-        for et in extracted_test_list:
-            if not isinstance(et, dict):
-                continue
-
-            if "test_name" in et and "test_description" in et:
-                base_name = et["test_name"].replace("test", "").replace("Test", "").replace("TEST", "").strip()
-                seen_names[base_name] = seen_names.get(base_name, 0) + 1
-                ct = {
-                    "test_name": (f"test{base_name}" if seen_names[base_name] == 1 else f"test{base_name}{seen_names[base_name]}"),
-                    "test_description": et["test_description"]
-                }
-                clean_test_list.append(ct)
-        if clean_test_list == []:
-            log_json_error("No test case with the correct keys found in extracted JSON")
-            return []
-
-        test_names = [test['test_name'] for test in clean_test_list]
-        print(f"      Got {len(clean_test_list)} potential tests:\n        {'\n        '.join(test_names)}")
-        return  clean_test_list
