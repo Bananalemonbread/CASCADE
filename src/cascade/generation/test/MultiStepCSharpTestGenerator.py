@@ -9,18 +9,16 @@ from cascade.generation.executor.OpenAICaller import OpenAICaller
 from cascade.utils.CSharpUtils import build_context, build_tests, check_syntax, build_test_first_method
 
 
-class GPT4oCSharpTestGenerator(Generator):
-    def __init__(self, max_attempts=1, max_tokens=10000, temperature=0, delay=3, max_prompt_tokens=6000,
-                 model="gpt-4o-mini-2024-07-18", freq_penalty=0.0, dummy=False, base_url=None, api_key=None):
+class MultiStepCSharpTestGenerator(Generator):
+    def __init__(self, max_attempts=1, max_tokens=10000, temperature=0, delay=3, max_prompt_tokens=6000, model="gpt-4o-mini-2024-07-18", freq_penalty=0.0, dummy=False):
         super().__init__()
         self.model = model
         self.max_prompt_tokens = max_prompt_tokens
         self.prompt_executor = OpenAICaller(max_attempts=max_attempts, model=model, max_tokens=max_tokens, temperature=temperature,
-                                                            delay=delay, freq_penalty=freq_penalty, dummy=dummy,
-                                                            base_url=base_url, api_key=api_key)
+                                                            delay=delay, freq_penalty=freq_penalty, dummy=dummy)
 
     def build_prompt(self, context):
-        enc = tiktoken.get_encoding("o200k_base")
+        enc = tiktoken.encoding_for_model(self.model)
 
         system_prompt = f"Write C# unit tests for the method {context['signature']['name']}. Respond only with the completion of the tests."
 

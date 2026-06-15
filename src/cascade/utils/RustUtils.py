@@ -198,25 +198,3 @@ def run_modification(project_dir, entry, code, tests):
         text=True,
         capture_output=True
     )
-
-#################
-### TESTING STUFF MANUALLY
-#################
-"""
-import json
-
-json_file_path = "/Users/mar/Desktop/Masterarbeit/extracted.json"
-
-# Load the JSON file into a dictionary
-with open(json_file_path, "r", encoding="utf-8") as file:
-    data = json.load(file)
-
-
-p = run_modification("/Users/mar/Desktop/Masterarbeit/dummy_project/testing-rust2", "/Users/mar/Desktop/Masterarbeit/entry.json", "code" , "new_tests")
-run_extraction("/Users/mar/Desktop/Masterarbeit/dummy_project/testing-rust2", "/Users/mar/Desktop")
-print(check_syntax(build_signature(data[0]) + data[0]["code"][0:], None))
-for c in data:
-    if len(c["tests"]) > 0:
-        print(build_tests(c, "BITTE HIER TEST SCHREIBEN JA?"))
-        print("--------\n")
-"""
