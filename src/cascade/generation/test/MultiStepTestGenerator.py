@@ -6,6 +6,8 @@ from cascade.generation.Generator import Generator
 from cascade.generation.executor.OpenAICaller import OpenAICaller
 
 class MultiStepTestGenerator(Generator):
+    code_block_names = []
+
     def __init__(self,
                  model="gpt-4o-mini-2024-07-18",
                  max_attempts=1, delay=3,
@@ -37,8 +39,28 @@ class MultiStepTestGenerator(Generator):
     def build_prompt(self, context):
         raise NotImplementedError
 
-    def extract_tests(self, new_tests, context, response, output_path):
+    def check_generated_tests_syntax(self, code, output_path):
         raise NotImplementedError
+
+    def extract_tests(self, new_tests, context, response, output_path):
+        pattern = r"```(?:" + "|".join(self.code_block_names) + r")(.*?)\n\s*```"
+        code_blocks = re.findall(pattern, new_tests, flags=re.DOTALL)
+        extracted_tests = ""
+
+        if code_blocks:
+            sorted_code_blocks = sorted(code_blocks, key=len, reverse=True)
+            for code_block in sorted_code_blocks:
+                if self.check_generated_tests_syntax(code_block, output_path):
+                    extracted_tests = code_block
+                    break
+        else:
+            print("      no code block could be extracted for generated Tests")
+            errors_path = os.path.join(output_path, "errors.txt")
+            with open(errors_path, "a") as f:
+                f.write(f"Could not get tests from response:\n{response}")
+
+
+        return extracted_tests
 
     def repair(self, context, input_path, output_path, errors, key):
         raise NotImplementedError

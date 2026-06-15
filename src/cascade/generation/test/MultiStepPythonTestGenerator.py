@@ -11,6 +11,8 @@ from cascade.utils.PythonUtils import build_context, check_syntax, repair_helper
 
 
 class MultiStepPythonTestGenerator(MultiStepTestGenerator):
+    code_block_names = ["python", "py"]
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -218,25 +220,11 @@ class MultiStepPythonTestGenerator(MultiStepTestGenerator):
     def duplicate_test_name(self, name, count):
         return f"{name}_{count}"
     
+    def check_syntax(self, code, output_path):
+        raise NotImplementedError
 
-    def extract_tests(self, new_tests, context, response, output_path):
-        code_blocks = re.findall(r"```python(.*?)\n\s*```", new_tests, flags=re.DOTALL)
-        new_tests = ""
-
-        if code_blocks:
-            sorted_code_blocks = sorted(code_blocks, key=len, reverse=True)
-            for code_block in sorted_code_blocks:
-                if check_syntax(code_block, "module", output_path):
-                    new_tests = code_block
-                    break
-        else:
-            print("      no code block could be extracted for generated Tests")
-            errors_path = os.path.join(output_path, "errors.txt")
-            with open(errors_path, "a") as f:
-                f.write(f"Could not get tests from response:\n{response}")
-
-
-        return new_tests
+    def check_generated_tests_syntax(self, code, output_path):
+        return check_syntax(code, "module", output_path)
 
 
     def repair(self, context, input_path, output_path, errors, key):
