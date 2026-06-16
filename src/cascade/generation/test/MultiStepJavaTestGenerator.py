@@ -11,6 +11,11 @@ from cascade.utils.JavaUtils import build_context, check_syntax, repair_helper_f
 
 class MultiStepJavaTestGenerator(MultiStepTestGenerator):
     code_block_names = ["java"]
+    language_name = "Java"
+    signature_block_name = "java"
+    test_artifact_name = "test class"
+    test_kind_name = "unit tests"
+    test_name_rule = "a descriptive test method name starting with 'test'"
 
 
     def __init__(self, **kwargs):
@@ -58,94 +63,7 @@ class MultiStepJavaTestGenerator(MultiStepTestGenerator):
         promptlist.append({"role": "user", "content": prompt})
 
         return promptlist
-
-    def generate(self, context, input_path, output_path, response_step2=None):
-        results_path = os.path.join(output_path, "results.txt")
-        errors_path = os.path.join(output_path, "errors.txt")
-
-        chat_history = []
-        print("      Test generation Phase 1")
-        # first given the method documentation and signature, we want to extract possible testcases or properties.
-        prompt_step1 = [
-            {"role": "system",
-             "content": "You are an expert Java developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behavior specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."},
-            {"role": "user",
-             "content": f"Give a complete description of the behavior that we should test when we want to asure that the code matches its documentation from the following Java method:\n```java\n{build_signature(context, doc=True)}\n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."}
-        ]
-
-        chat_history.append(copy.deepcopy(prompt_step1))
-        response_step1a = self.prompt_executor.execute(prompt_step1).model_dump()
-        chat_history.append(response_step1a)
-
-        if not response_step1a["choices"]:
-            print("      error during generation")
-            with open(errors_path, "a") as f:
-                f.write(f"error during test generation of {context["signature"]["name"]}")
-
-            return "", chat_history
-
-        prompt_step1.append(response_step1a["choices"][0]["message"])
-
-        # now the goal is to convert this text into a usable format and extract the testable properties
-        prompt_json_list = {"role": "user", "content": f"Now turn this into a JSON array of unit tests we should write for test driven development. Each entry in the array should have: \"test_name\": a descriptive test method name starting with 'test' and \"test_description\": a detailed description for the developer of what this tests should do and which specific behavior from the documentation it tests. In particular, I want testable statements of the 'if this then that' type.\nFocus on those tests that follow directly from the documentation, e.g. no performance based ones."}
-
-        # possible alterations to later filter out unnecessary tests
-        # To ensure the correctness of the `uniqueIterable` method, we can derive several testable behavior specifications based on the provided documentation.
-        # Here are the key behaviors to test, structured in an "if this then that" format:
-        # classes:
-        #  - "directly from documentation"
-        #  - "additional meaningful tests"
-        #  - "performance and integration"
-        #  - "compile time tests (e.g. for return types)"
-
-        prompt_step1.append(prompt_json_list)
-
-        response_step1b = self.prompt_executor.execute(prompt_step1).model_dump()
-        response_text = response_step1b["choices"][0]["message"]["content"]
-
-
-        test_list = self.extract_json_list(output_path, response_text)
-
-        chat_history.append(copy.deepcopy(prompt_step1))
-        chat_history.append(response_step1b)
-
-        if not test_list:
-            with open(errors_path, "a") as f:
-                f.write("error during test extraction from json")
-            return "", chat_history
-
-
-        context["test_list"] = test_list
-
-        print("      Test generation Phase 2")
-        # now we have a list of testable properties, we want to generate a testclass filled with these.
-        prompt_step2 = self.build_prompt(context)
-
-        response_step2a = self.prompt_executor.execute(prompt_step2).model_dump()
-
-        prompt_step2.append(response_step2a["choices"][0]["message"])
-
-        prompt_step2.append({"role": "user", "content": "Make sure that this class compiles without errors. Check if everything that is used is imported correctly and all exceptions are properly caught. Reply with the correct class only"})
-
-        response_step2b = self.prompt_executor.execute(prompt_step2).model_dump()
-        chat_history.append(copy.deepcopy(prompt_step2))
-        chat_history.append(response_step2b)
-
-        new_tests = self.extract_tests(response_step2b["choices"][0]["message"]["content"], context, response_step2b, output_path)
-
-        # this is a fallback if the second reply did not include a code block
-        if new_tests == "":
-            new_tests = self.extract_tests(response_step2a["choices"][0]["message"]["content"], context, response_step2b, output_path)
-        # prompt_step2.append({"role": "assistant", "content": f"```java\n{new_tests}\n```"})
-
-        if new_tests == "":
-            with open(results_path, "w") as f:
-                f.write("Negative, No syntactically correct test class generated")
-            with open(errors_path, "w") as f:
-                f.write(f"No syntactically correct test class generated \nResponse text:\n{response_text}")
-        print("      Test generation finished")
-        return new_tests, chat_history
-
+    
 
     def build_tests(self, context):
         packg_declaration = f"package {context['test_package']};\n\n"
@@ -177,6 +95,14 @@ class MultiStepJavaTestGenerator(MultiStepTestGenerator):
                 functions += f"\n    @Test\n    public void {test['test_name']}() {{\n        // {test['test_description']}\n    }}\n\n"
 
         return packg_declaration + imports + class_definition + functions + "\n}"
+
+
+    def build_signature(self, context, doc=True):
+        return build_signature(context, doc=doc)
+
+
+    def build_context(self, context, *args, **kwargs):
+        return build_context(context, *args, **kwargs)
 
     
     def check_syntax(self, code, output_path):

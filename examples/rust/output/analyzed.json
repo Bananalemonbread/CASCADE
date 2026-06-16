@@ -1,238 +1,5 @@
 [
     {
-        "doc": "# [doc = \" Returns the sum of `a` and `b`.\"]",
-        "signature": {
-            "name": "add",
-            "returns": "-> i32",
-            "params": [
-                "a : i32",
-                "b : i32"
-            ],
-            "modifier": "pub",
-            "annotations": [],
-            "traits": ""
-        },
-        "language": "Rust",
-        "parent": [
-            {
-                "name": "root module",
-                "doc": "",
-                "attributes": [],
-                "other_methods": [
-                    {
-                        "doc": "# [doc = \" Returns `a`.\"]",
-                        "attributes": [],
-                        "signature": {
-                            "name": "return_a",
-                            "returns": "-> i32",
-                            "params": [
-                                "a : i32"
-                            ],
-                            "modifier": "pub",
-                            "annotations": [],
-                            "traits": ""
-                        },
-                        "code": "{ 29 }"
-                    }
-                ],
-                "variables": [],
-                "imports": [],
-                "parent_type": "Module",
-                "impl_type": "",
-                "constructors": null,
-                "extends": null,
-                "implements": null,
-                "namespace": null,
-                "generics": []
-            }
-        ],
-        "code": "{ a + b }",
-        "code_file_path": "src/lib.rs",
-        "code_file_content": "/// Returns the sum of `a` and `b`.\npub fn add(a: i32, b: i32) -> i32 {\n    a + b\n}\n\n/// Returns `a`.\npub fn return_a(a: i32) -> i32 {\n    29\n}",
-        "id": 1,
-        "tests": [
-            {
-                "test_file_path": "src/lib.rs",
-                "tests": "",
-                "test_imports": [],
-                "test_class_name": "",
-                "test_runner": "",
-                "test_as_context": null,
-                "test_type": "",
-                "project_path": "",
-                "test_namespace": ""
-            }
-        ],
-        "called_functions": null,
-        "use_statement_path": "use rust::add;",
-        "results": {
-            "(code, new_tests)": [
-                [
-                    "injected_test_mod_cascade::test_add_large_negative_sum_within_bounds",
-                    "injected_test_mod_cascade::test_add_max_i32_and_zero",
-                    "injected_test_mod_cascade::test_add_mixed_sign_negative_then_positive",
-                    "injected_test_mod_cascade::test_add_mixed_sign_positive_then_negative",
-                    "injected_test_mod_cascade::test_add_min_i32_and_zero",
-                    "injected_test_mod_cascade::test_add_positive_integer_and_zero",
-                    "injected_test_mod_cascade::test_add_large_positive_sum_within_bounds",
-                    "injected_test_mod_cascade::test_add_two_positive_integers",
-                    "injected_test_mod_cascade::test_add_zero_and_positive_integer",
-                    "injected_test_mod_cascade::test_add_zero_and_zero",
-                    "injected_test_mod_cascade::test_add_two_negative_integers"
-                ],
-                [],
-                []
-            ]
-        },
-        "new_tests": "\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n    fn test_add_two_positive_integers() {\n      // If the function is called with two positive integers (e.g., 5 and 10), then it must return their mathematical sum (15). This verifies basic addition functionality for positive operands as described by 'Returns the sum of a and b'.\n      assert_eq!(add(5, 10), 15);\n    }\n\n    #[test]\n    fn test_add_two_negative_integers() {\n      // If the function is called with two negative integers (e.g., -5 and -10), then it must return their mathematical sum (-15). This ensures the function correctly handles negative inputs and produces the correct negative result.\n      assert_eq!(add(-5, -10), -15);\n    }\n\n    #[test]\n    fn test_add_mixed_sign_positive_then_negative() {\n      // If the function is called with a positive integer and a negative integer where the positive magnitude is larger (e.g., 10 and -5), then it must return the correct positive difference (5). This verifies correct handling of mixed signs resulting in a positive sum.\n      assert_eq!(add(10, -5), 5);\n    }\n\n    #[test]\n    fn test_add_mixed_sign_negative_then_positive() {\n      // If the function is called with a negative integer and a positive integer where the positive magnitude is larger (e.g., -5 and 10), then it must return the correct positive difference (5). This verifies commutativity and correct handling of mixed signs regardless of argument order.\n      assert_eq!(add(-5, 10), 5);\n    }\n\n    #[test]\n    fn test_add_zero_and_positive_integer() {\n      // If the function is called with zero and a positive integer (e.g., 0 and 5), then it must return the positive integer (5). This tests the additive identity property for zero as the first argument.\n      assert_eq!(add(0, 5), 5);\n    }\n\n    #[test]\n    fn test_add_positive_integer_and_zero() {\n      // If the function is called with a positive integer and zero (e.g., 5 and 0), then it must return the positive integer (5). This tests the additive identity property for zero as the second argument.\n      assert_eq!(add(5, 0), 5);\n    }\n\n    #[test]\n    fn test_add_zero_and_zero() {\n      // If the function is called with zero and zero, then it must return zero. This verifies the base case of adding two zeros.\n      assert_eq!(add(0, 0), 0);\n    }\n\n    #[test]\n    fn test_add_max_i32_and_zero() {\n      // If the function is called with i32::MAX and 0, then it must return i32::MAX. This ensures the function correctly handles the maximum possible value for i32 when no overflow occurs, verifying boundary behavior for valid sums.\n      assert_eq!(add(i32::MAX, 0), i32::MAX);\n    }\n\n    #[test]\n    fn test_add_min_i32_and_zero() {\n      // If the function is called with i32::MIN and 0, then it must return i32::MIN. This ensures the function correctly handles the minimum possible value for i32 when no overflow occurs, verifying boundary behavior for valid sums.\n      assert_eq!(add(i32::MIN, 0), i32::MIN);\n    }\n\n    #[test]\n    fn test_add_large_positive_sum_within_bounds() {\n      // If the function is called with two large positive integers whose sum is within i32 bounds (e.g., 1_000_000_000 and 1_000_000_000), then it must return the correct sum (2_000_000_000). This verifies correctness for large numbers that do not cause overflow.\n      assert_eq!(add(1_000_000_000, 1_000_000_000), 2_000_000_000);\n    }\n\n    #[test]\n    fn test_add_large_negative_sum_within_bounds() {\n      // If the function is called with two large negative integers whose sum is within i32 bounds (e.g., -1_000_000_000 and -1_000_000_000), then it must return the correct sum (-2_000_000_000). This verifies correctness for large negative numbers that do not cause overflow.\n      assert_eq!(add(-1_000_000_000, -1_000_000_000), -2_000_000_000);\n    }\n}",
-        "new_tests_history": [
-            [
-                {
-                    "role": "system",
-                    "content": "You are an expert Rust developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behavior specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
-                },
-                {
-                    "role": "user",
-                    "content": "Give a complete description of the behavior that we should test when we want to asure that the code matches its documentation from the following Rust method:\n```Rust\n# [doc = \" Returns the sum of `a` and `b`.\"]\npub fn add(a : i32, b : i32) -> i32 \n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
-                }
-            ],
-            [
-                {
-                    "role": "system",
-                    "content": "You are an expert Rust developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behavior specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
-                },
-                {
-                    "role": "user",
-                    "content": "Give a complete description of the behavior that we should test when we want to asure that the code matches its documentation from the following Rust method:\n```Rust\n# [doc = \" Returns the sum of `a` and `b`.\"]\npub fn add(a : i32, b : i32) -> i32 \n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
-                },
-                {
-                    "content": "Based on the documentation `\" Returns the sum of `a` and `b`.\"` and the signature `pub fn add(a : i32, b : i32) -> i32`, the behavior specifications for unit testing are as follows:\n\n### 1. Correctness of Addition (Happy Path)\nThe function must return the mathematical sum of the two input integers.\n*   **Test Case 1 (Positive Integers):**\n    *   Input: `a = 5`, `b = 10`\n    *   Expected Output: `15`\n    *   Rationale: Verifies basic addition of positive numbers.\n*   **Test Case 2 (Negative Integers):**\n    *   Input: `a = -5`, `b = -10`\n    *   Expected Output: `-15`\n    *   Rationale: Verifies handling of negative operands.\n*   **Test Case 3 (Mixed Signs):**\n    *   Input: `a = 10`, `b = -5`\n    *   Expected Output: `5`\n    *   Rationale: Verifies subtraction behavior inherent in adding a negative number.\n    *   Input: `a = -5`, `b = 10`\n    *   Expected Output: `5`\n    *   Rationale: Verifies commutativity with mixed signs.\n*   **Test Case 4 (Zero Operand):**\n    *   Input: `a = 0`, `b = 5`\n    *   Expected Output: `5`\n    *   Rationale: Verifies identity property of zero.\n    *   Input: `a = 5`, `b = 0`\n    *   Expected Output: `5`\n    *   Rationale: Verifies identity property of zero in reverse.\n*   **Test Case 5 (Both Zeros):**\n    *   Input: `a = 0`, `b = 0`\n    *   Expected Output: `0`\n    *   Rationale: Verifies base case of zero.\n\n### 2. Edge Cases for `i32` Bounds\nSince the return type is `i32`, we must consider overflow behavior. However, the documentation *only* states \"Returns the sum\". It does *not* specify overflow handling (e.g., panicking, wrapping, or saturating). In standard Rust, `+` for `i32` in debug mode panics on overflow and wraps in release mode. To strictly test \"faithfulness to documentation,\" we test the mathematical sum where it fits in `i32`. If the documentation implies standard integer arithmetic without explicit overflow handling, we typically test that valid sums are returned correctly. **Crucially, the documentation does not specify behavior for overflow, so we cannot assert a specific outcome for overflow (panic vs wrap) based *only* on the text. However, to ensure the function is bug-free for valid inputs, we test the boundaries of valid sums.**\n\n*   **Test Case 6 (Maximum Positive Sum):**\n    *   Input: `a = i32::MAX`, `b = 0`\n    *   Expected Output: `i32::MAX`\n    *   Rationale: Verifies handling of maximum value when no overflow occurs.\n*   **Test Case 7 (Minimum Negative Sum):**\n    *   Input: `a = i32::MIN`, `b = 0`\n    *   Expected Output: `i32::MIN`\n    *   Rationale: Verifies handling of minimum value when no overflow occurs.\n*   **Test Case 8 (Sum at Boundary):**\n    *   Input: `a = i32::MAX / 2`, `b = i32::MAX / 2`\n    *   Expected Output: `i32::MAX` (if `i32::MAX` is odd, this might be `i32::MAX - 1`, so use `a = 1_000_000_000`, `b = 1_000_000_000` -> `2_000_000_000` which is < `i32::MAX`)\n    *   Expected Output: `2_000_000_000`\n    *   Rationale: Verifies large positive sums that do not overflow.\n*   **Test Case 9 (Large Negative Sum):**\n    *   Input: `a = -1_000_000_000`, `b = -1_000_000_000`\n    *   Expected Output: `-2_000_000_000`\n    *   Rationale: Verifies large negative sums that do not overflow.\n\n### 3. No Additional Assumptions\n*   **Do NOT test for overflow behavior (panic/wrap/saturate)** because the documentation `\" Returns the sum of `a` and `b`.\"` does not specify what happens when the sum exceeds `i32` limits. Testing for a specific overflow outcome would be making an assumption not stated in the documentation.\n*   **Do NOT test for input validation** (e.g., rejecting negative numbers) because the documentation does not state any restrictions on the input values.\n*   **Do NOT test for side effects** because the documentation implies a pure function (returns the sum).\n\n### Summary of Test Cases to Implement:\n1.  `add(5, 10) == 15`\n2.  `add(-5, -10) == -15`\n3.  `add(10, -5) == 5`\n4.  `add(-5, 10) == 5`\n5.  `add(0, 5) == 5`\n6.  `add(5, 0) == 5`\n7.  `add(0, 0) == 0`\n8.  `add(i32::MAX, 0) == i32::MAX`\n9.  `add(i32::MIN, 0) == i32::MIN`\n10. `add(1_000_000_000, 1_000_000_000) == 2_000_000_000`\n11. `add(-1_000_000_000, -1_000_000_000) == -2_000_000_000`\n\nThese tests ensure that the function correctly computes the sum for all valid `i32` results, as described by the documentation.",
-                    "refusal": null,
-                    "role": "assistant",
-                    "annotations": null,
-                    "audio": null,
-                    "function_call": null,
-                    "tool_calls": null,
-                    "provider_specific_fields": {
-                        "refusal": null,
-                        "reasoning": null
-                    }
-                },
-                {
-                    "role": "user",
-                    "content": "Now turn this into a JSON array of Rust tests we should write for test driven development. Each entry in the array should have: \"test_name\": a descriptive Rust test method name in snake_case starting with 'test_', and \"test_description\": a detailed description for the developer of what this tests should do and which specific behavior from the documentation it tests. In particular, I want testable statements of the 'if this then that' type.\nFocus on those tests that follow directly from the documentation, e.g. no performance based ones."
-                }
-            ],
-            {
-                "id": "chatcmpl-81691236d20fae4a",
-                "choices": [
-                    {
-                        "finish_reason": "stop",
-                        "index": 0,
-                        "logprobs": null,
-                        "message": {
-                            "content": "[\n  {\n    \"test_name\": \"test_add_two_positive_integers\",\n    \"test_description\": \"If the function is called with two positive integers (e.g., 5 and 10), then it must return their mathematical sum (15). This verifies basic addition functionality for positive operands as described by 'Returns the sum of a and b'.\"\n  },\n  {\n    \"test_name\": \"test_add_two_negative_integers\",\n    \"test_description\": \"If the function is called with two negative integers (e.g., -5 and -10), then it must return their mathematical sum (-15). This ensures the function correctly handles negative inputs and produces the correct negative result.\"\n  },\n  {\n    \"test_name\": \"test_add_mixed_sign_positive_then_negative\",\n    \"test_description\": \"If the function is called with a positive integer and a negative integer where the positive magnitude is larger (e.g., 10 and -5), then it must return the correct positive difference (5). This verifies correct handling of mixed signs resulting in a positive sum.\"\n  },\n  {\n    \"test_name\": \"test_add_mixed_sign_negative_then_positive\",\n    \"test_description\": \"If the function is called with a negative integer and a positive integer where the positive magnitude is larger (e.g., -5 and 10), then it must return the correct positive difference (5). This verifies commutativity and correct handling of mixed signs regardless of argument order.\"\n  },\n  {\n    \"test_name\": \"test_add_zero_and_positive_integer\",\n    \"test_description\": \"If the function is called with zero and a positive integer (e.g., 0 and 5), then it must return the positive integer (5). This tests the additive identity property for zero as the first argument.\"\n  },\n  {\n    \"test_name\": \"test_add_positive_integer_and_zero\",\n    \"test_description\": \"If the function is called with a positive integer and zero (e.g., 5 and 0), then it must return the positive integer (5). This tests the additive identity property for zero as the second argument.\"\n  },\n  {\n    \"test_name\": \"test_add_zero_and_zero\",\n    \"test_description\": \"If the function is called with zero and zero, then it must return zero. This verifies the base case of adding two zeros.\"\n  },\n  {\n    \"test_name\": \"test_add_max_i32_and_zero\",\n    \"test_description\": \"If the function is called with i32::MAX and 0, then it must return i32::MAX. This ensures the function correctly handles the maximum possible value for i32 when no overflow occurs, verifying boundary behavior for valid sums.\"\n  },\n  {\n    \"test_name\": \"test_add_min_i32_and_zero\",\n    \"test_description\": \"If the function is called with i32::MIN and 0, then it must return i32::MIN. This ensures the function correctly handles the minimum possible value for i32 when no overflow occurs, verifying boundary behavior for valid sums.\"\n  },\n  {\n    \"test_name\": \"test_add_large_positive_sum_within_bounds\",\n    \"test_description\": \"If the function is called with two large positive integers whose sum is within i32 bounds (e.g., 1_000_000_000 and 1_000_000_000), then it must return the correct sum (2_000_000_000). This verifies correctness for large numbers that do not cause overflow.\"\n  },\n  {\n    \"test_name\": \"test_add_large_negative_sum_within_bounds\",\n    \"test_description\": \"If the function is called with two large negative integers whose sum is within i32 bounds (e.g., -1_000_000_000 and -1_000_000_000), then it must return the correct sum (-2_000_000_000). This verifies correctness for large negative numbers that do not cause overflow.\"\n  }\n]",
-                            "refusal": null,
-                            "role": "assistant",
-                            "annotations": null,
-                            "audio": null,
-                            "function_call": null,
-                            "tool_calls": null,
-                            "provider_specific_fields": {
-                                "refusal": null,
-                                "reasoning": null
-                            }
-                        },
-                        "provider_specific_fields": {
-                            "stop_reason": null,
-                            "token_ids": null
-                        }
-                    }
-                ],
-                "created": 1781525237,
-                "model": "llm3",
-                "object": "chat.completion",
-                "service_tier": null,
-                "system_fingerprint": null,
-                "usage": {
-                    "completion_tokens": 908,
-                    "prompt_tokens": 1782,
-                    "total_tokens": 2690,
-                    "completion_tokens_details": null,
-                    "prompt_tokens_details": null
-                }
-            },
-            [
-                {
-                    "role": "system",
-                    "content": "You are an expert Rust developer. You will generate unit tests for the specific function add(a : i32, b : i32). Use Rust's built-in test framework with #[test] and cargo test. Do not use external test crates such as rstest, proptest, quickcheck, or quicktest. You can import anything from the project itself. Make sure all function signatures and calls are correct. Handle Result, Option, panic behavior, and error cases appropriately when relevant. The code should compile on its own without errors."
-                },
-                {
-                    "role": "user",
-                    "content": "The interesting function under test is:\n```rust\n# [doc = \" Returns the sum of `a` and `b`.\"]\npub fn add(a : i32, b : i32) -> i32 \n```\n\nThe other functions will be tested later. Fill in Rust unit tests for the provided test module below. This is for test driven development, so the tests should be designed to fail if the later implementation does not exactly conform to the documentation.\n\nThis is the parent module or item context the function under test resides in:\n## Parent context\n```rust\n\n# [doc = \" Returns the sum of `a` and `b`.\"]\npub fn add(a : i32, b : i32) -> i32 \n```\n\nAdd any necessary `use` statements from the project itself. Every value you use must be properly constructed. Match function signatures and calls exactly, including ownership, borrowing, lifetimes, generics, and trait bounds. Handle Result, Option, panic behavior, and error cases appropriately when relevant. Use idiomatic Rust assertions such as assert!, assert_eq!, assert_ne!, matches!, and unwrap_err() where appropriate. Respond with the filled Rust test module only:\n\n```rust\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n      fn test_add_two_positive_integers() {\n      // If the function is called with two positive integers (e.g., 5 and 10), then it must return their mathematical sum (15). This verifies basic addition functionality for positive operands as described by 'Returns the sum of a and b'.\n      }\n\n    #[test]\n      fn test_add_two_negative_integers() {\n      // If the function is called with two negative integers (e.g., -5 and -10), then it must return their mathematical sum (-15). This ensures the function correctly handles negative inputs and produces the correct negative result.\n      }\n\n    #[test]\n      fn test_add_mixed_sign_positive_then_negative() {\n      // If the function is called with a positive integer and a negative integer where the positive magnitude is larger (e.g., 10 and -5), then it must return the correct positive difference (5). This verifies correct handling of mixed signs resulting in a positive sum.\n      }\n\n    #[test]\n      fn test_add_mixed_sign_negative_then_positive() {\n      // If the function is called with a negative integer and a positive integer where the positive magnitude is larger (e.g., -5 and 10), then it must return the correct positive difference (5). This verifies commutativity and correct handling of mixed signs regardless of argument order.\n      }\n\n    #[test]\n      fn test_add_zero_and_positive_integer() {\n      // If the function is called with zero and a positive integer (e.g., 0 and 5), then it must return the positive integer (5). This tests the additive identity property for zero as the first argument.\n      }\n\n    #[test]\n      fn test_add_positive_integer_and_zero() {\n      // If the function is called with a positive integer and zero (e.g., 5 and 0), then it must return the positive integer (5). This tests the additive identity property for zero as the second argument.\n      }\n\n    #[test]\n      fn test_add_zero_and_zero() {\n      // If the function is called with zero and zero, then it must return zero. This verifies the base case of adding two zeros.\n      }\n\n    #[test]\n      fn test_add_max_i32_and_zero() {\n      // If the function is called with i32::MAX and 0, then it must return i32::MAX. This ensures the function correctly handles the maximum possible value for i32 when no overflow occurs, verifying boundary behavior for valid sums.\n      }\n\n    #[test]\n      fn test_add_min_i32_and_zero() {\n      // If the function is called with i32::MIN and 0, then it must return i32::MIN. This ensures the function correctly handles the minimum possible value for i32 when no overflow occurs, verifying boundary behavior for valid sums.\n      }\n\n    #[test]\n      fn test_add_large_positive_sum_within_bounds() {\n      // If the function is called with two large positive integers whose sum is within i32 bounds (e.g., 1_000_000_000 and 1_000_000_000), then it must return the correct sum (2_000_000_000). This verifies correctness for large numbers that do not cause overflow.\n      }\n\n    #[test]\n      fn test_add_large_negative_sum_within_bounds() {\n      // If the function is called with two large negative integers whose sum is within i32 bounds (e.g., -1_000_000_000 and -1_000_000_000), then it must return the correct sum (-2_000_000_000). This verifies correctness for large negative numbers that do not cause overflow.\n      }\n}\n\n```"
-                },
-                {
-                    "content": "```rust\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n      fn test_add_two_positive_integers() {\n      // If the function is called with two positive integers (e.g., 5 and 10), then it must return their mathematical sum (15). This verifies basic addition functionality for positive operands as described by 'Returns the sum of a and b'.\n      assert_eq!(add(5, 10), 15);\n      }\n\n    #[test]\n      fn test_add_two_negative_integers() {\n      // If the function is called with two negative integers (e.g., -5 and -10), then it must return their mathematical sum (-15). This ensures the function correctly handles negative inputs and produces the correct negative result.\n      assert_eq!(add(-5, -10), -15);\n      }\n\n    #[test]\n      fn test_add_mixed_sign_positive_then_negative() {\n      // If the function is called with a positive integer and a negative integer where the positive magnitude is larger (e.g., 10 and -5), then it must return the correct positive difference (5). This verifies correct handling of mixed signs resulting in a positive sum.\n      assert_eq!(add(10, -5), 5);\n      }\n\n    #[test]\n      fn test_add_mixed_sign_negative_then_positive() {\n      // If the function is called with a negative integer and a positive integer where the positive magnitude is larger (e.g., -5 and 10), then it must return the correct positive difference (5). This verifies commutativity and correct handling of mixed signs regardless of argument order.\n      assert_eq!(add(-5, 10), 5);\n      }\n\n    #[test]\n      fn test_add_zero_and_positive_integer() {\n      // If the function is called with zero and a positive integer (e.g., 0 and 5), then it must return the positive integer (5). This tests the additive identity property for zero as the first argument.\n      assert_eq!(add(0, 5), 5);\n      }\n\n    #[test]\n      fn test_add_positive_integer_and_zero() {\n      // If the function is called with a positive integer and zero (e.g., 5 and 0), then it must return the positive integer (5). This tests the additive identity property for zero as the second argument.\n      assert_eq!(add(5, 0), 5);\n      }\n\n    #[test]\n      fn test_add_zero_and_zero() {\n      // If the function is called with zero and zero, then it must return zero. This verifies the base case of adding two zeros.\n      assert_eq!(add(0, 0), 0);\n      }\n\n    #[test]\n      fn test_add_max_i32_and_zero() {\n      // If the function is called with i32::MAX and 0, then it must return i32::MAX. This ensures the function correctly handles the maximum possible value for i32 when no overflow occurs, verifying boundary behavior for valid sums.\n      assert_eq!(add(i32::MAX, 0), i32::MAX);\n      }\n\n    #[test]\n      fn test_add_min_i32_and_zero() {\n      // If the function is called with i32::MIN and 0, then it must return i32::MIN. This ensures the function correctly handles the minimum possible value for i32 when no overflow occurs, verifying boundary behavior for valid sums.\n      assert_eq!(add(i32::MIN, 0), i32::MIN);\n      }\n\n    #[test]\n      fn test_add_large_positive_sum_within_bounds() {\n      // If the function is called with two large positive integers whose sum is within i32 bounds (e.g., 1_000_000_000 and 1_000_000_000), then it must return the correct sum (2_000_000_000). This verifies correctness for large numbers that do not cause overflow.\n      assert_eq!(add(1_000_000_000, 1_000_000_000), 2_000_000_000);\n      }\n\n    #[test]\n      fn test_add_large_negative_sum_within_bounds() {\n      // If the function is called with two large negative integers whose sum is within i32 bounds (e.g., -1_000_000_000 and -1_000_000_000), then it must return the correct sum (-2_000_000_000). This verifies correctness for large negative numbers that do not cause overflow.\n      assert_eq!(add(-1_000_000_000, -1_000_000_000), -2_000_000_000);\n      }\n}\n```",
-                    "refusal": null,
-                    "role": "assistant",
-                    "annotations": null,
-                    "audio": null,
-                    "function_call": null,
-                    "tool_calls": null,
-                    "provider_specific_fields": {
-                        "refusal": null,
-                        "reasoning": null
-                    }
-                },
-                {
-                    "role": "user",
-                    "content": "Make sure that this Rust test module compiles without errors. Check imports, module paths, ownership, borrowing, lifetimes, generics, trait bounds, Result, Option, and panic behavior. Reply with the corrected Rust test module only."
-                }
-            ],
-            {
-                "id": "chatcmpl-917a441381aab4d9",
-                "choices": [
-                    {
-                        "finish_reason": "stop",
-                        "index": 0,
-                        "logprobs": null,
-                        "message": {
-                            "content": "```rust\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n    fn test_add_two_positive_integers() {\n      // If the function is called with two positive integers (e.g., 5 and 10), then it must return their mathematical sum (15). This verifies basic addition functionality for positive operands as described by 'Returns the sum of a and b'.\n      assert_eq!(add(5, 10), 15);\n    }\n\n    #[test]\n    fn test_add_two_negative_integers() {\n      // If the function is called with two negative integers (e.g., -5 and -10), then it must return their mathematical sum (-15). This ensures the function correctly handles negative inputs and produces the correct negative result.\n      assert_eq!(add(-5, -10), -15);\n    }\n\n    #[test]\n    fn test_add_mixed_sign_positive_then_negative() {\n      // If the function is called with a positive integer and a negative integer where the positive magnitude is larger (e.g., 10 and -5), then it must return the correct positive difference (5). This verifies correct handling of mixed signs resulting in a positive sum.\n      assert_eq!(add(10, -5), 5);\n    }\n\n    #[test]\n    fn test_add_mixed_sign_negative_then_positive() {\n      // If the function is called with a negative integer and a positive integer where the positive magnitude is larger (e.g., -5 and 10), then it must return the correct positive difference (5). This verifies commutativity and correct handling of mixed signs regardless of argument order.\n      assert_eq!(add(-5, 10), 5);\n    }\n\n    #[test]\n    fn test_add_zero_and_positive_integer() {\n      // If the function is called with zero and a positive integer (e.g., 0 and 5), then it must return the positive integer (5). This tests the additive identity property for zero as the first argument.\n      assert_eq!(add(0, 5), 5);\n    }\n\n    #[test]\n    fn test_add_positive_integer_and_zero() {\n      // If the function is called with a positive integer and zero (e.g., 5 and 0), then it must return the positive integer (5). This tests the additive identity property for zero as the second argument.\n      assert_eq!(add(5, 0), 5);\n    }\n\n    #[test]\n    fn test_add_zero_and_zero() {\n      // If the function is called with zero and zero, then it must return zero. This verifies the base case of adding two zeros.\n      assert_eq!(add(0, 0), 0);\n    }\n\n    #[test]\n    fn test_add_max_i32_and_zero() {\n      // If the function is called with i32::MAX and 0, then it must return i32::MAX. This ensures the function correctly handles the maximum possible value for i32 when no overflow occurs, verifying boundary behavior for valid sums.\n      assert_eq!(add(i32::MAX, 0), i32::MAX);\n    }\n\n    #[test]\n    fn test_add_min_i32_and_zero() {\n      // If the function is called with i32::MIN and 0, then it must return i32::MIN. This ensures the function correctly handles the minimum possible value for i32 when no overflow occurs, verifying boundary behavior for valid sums.\n      assert_eq!(add(i32::MIN, 0), i32::MIN);\n    }\n\n    #[test]\n    fn test_add_large_positive_sum_within_bounds() {\n      // If the function is called with two large positive integers whose sum is within i32 bounds (e.g., 1_000_000_000 and 1_000_000_000), then it must return the correct sum (2_000_000_000). This verifies correctness for large numbers that do not cause overflow.\n      assert_eq!(add(1_000_000_000, 1_000_000_000), 2_000_000_000);\n    }\n\n    #[test]\n    fn test_add_large_negative_sum_within_bounds() {\n      // If the function is called with two large negative integers whose sum is within i32 bounds (e.g., -1_000_000_000 and -1_000_000_000), then it must return the correct sum (-2_000_000_000). This verifies correctness for large negative numbers that do not cause overflow.\n      assert_eq!(add(-1_000_000_000, -1_000_000_000), -2_000_000_000);\n    }\n}\n```",
-                            "refusal": null,
-                            "role": "assistant",
-                            "annotations": null,
-                            "audio": null,
-                            "function_call": null,
-                            "tool_calls": null,
-                            "provider_specific_fields": {
-                                "refusal": null,
-                                "reasoning": null
-                            }
-                        },
-                        "provider_specific_fields": {
-                            "stop_reason": null,
-                            "token_ids": null
-                        }
-                    }
-                ],
-                "created": 1781525256,
-                "model": "llm3",
-                "object": "chat.completion",
-                "service_tier": null,
-                "system_fingerprint": null,
-                "usage": {
-                    "completion_tokens": 1129,
-                    "prompt_tokens": 2437,
-                    "total_tokens": 3566,
-                    "completion_tokens_details": null,
-                    "prompt_tokens_details": null
-                }
-            }
-        ],
-        "repair_history": [],
-        "verdict": "NoInco; pass; step 1 (C +T'); (11, 0, 0); ; "
-    },
-    {
         "doc": "# [doc = \" Returns `a`.\"]",
         "signature": {
             "name": "return_a",
@@ -302,78 +69,51 @@
             "(code, new_tests)": [
                 [],
                 [
-                    "injected_test_mod_cascade::test_return_a_arbitrary_negative",
-                    "injected_test_mod_cascade::test_return_a_arbitrary_positive",
-                    "injected_test_mod_cascade::test_return_a_positive_small",
-                    "injected_test_mod_cascade::test_return_a_i32_max",
-                    "injected_test_mod_cascade::test_return_a_i32_min",
-                    "injected_test_mod_cascade::test_return_a_negative_small",
-                    "injected_test_mod_cascade::test_return_a_zero"
+                    "injected_test_mod_cascade::test_return_i32_max",
+                    "injected_test_mod_cascade::test_return_i32_min",
+                    "injected_test_mod_cascade::test_return_negative_one",
+                    "injected_test_mod_cascade::test_return_negative_arbitrary",
+                    "injected_test_mod_cascade::test_return_one",
+                    "injected_test_mod_cascade::test_return_positive_arbitrary",
+                    "injected_test_mod_cascade::test_return_zero"
                 ],
                 []
             ],
             "(new_code, new_tests)": [
                 [
-                    "injected_test_mod_cascade::test_return_a_arbitrary_negative",
-                    "injected_test_mod_cascade::test_return_a_arbitrary_positive",
-                    "injected_test_mod_cascade::test_return_a_i32_max",
-                    "injected_test_mod_cascade::test_return_a_i32_min",
-                    "injected_test_mod_cascade::test_return_a_negative_small",
-                    "injected_test_mod_cascade::test_return_a_zero",
-                    "injected_test_mod_cascade::test_return_a_positive_small"
+                    "injected_test_mod_cascade::test_return_i32_min",
+                    "injected_test_mod_cascade::test_return_i32_max",
+                    "injected_test_mod_cascade::test_return_negative_arbitrary",
+                    "injected_test_mod_cascade::test_return_negative_one",
+                    "injected_test_mod_cascade::test_return_one",
+                    "injected_test_mod_cascade::test_return_zero",
+                    "injected_test_mod_cascade::test_return_positive_arbitrary"
                 ],
                 [],
                 []
             ]
         },
-        "new_tests": "\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n      fn test_return_a_zero() {\n      // If the input `a` is 0, then the function must return 0. This verifies the identity property for the neutral element of addition and ensures no off-by-one or sign-flip errors occur for zero.\n      let result = return_a(0);\n      assert_eq!(result, 0);\n      }\n\n    #[test]\n      fn test_return_a_positive_small() {\n      // If the input `a` is a small positive integer (e.g., 1), then the function must return that same positive integer. This verifies the function correctly handles positive inputs without modification.\n      let result = return_a(1);\n      assert_eq!(result, 1);\n      }\n\n    #[test]\n      fn test_return_a_negative_small() {\n      // If the input `a` is a small negative integer (e.g., -1), then the function must return that same negative integer. This verifies the function correctly preserves the sign bit for negative inputs.\n      let result = return_a(-1);\n      assert_eq!(result, -1);\n      }\n\n    #[test]\n      fn test_return_a_i32_max() {\n      // If the input `a` is `i32::MAX` (2147483647), then the function must return `i32::MAX`. This verifies the function handles the upper boundary of the `i32` type without overflow or truncation.\n      let result = return_a(i32::MAX);\n      assert_eq!(result, i32::MAX);\n      }\n\n    #[test]\n      fn test_return_a_i32_min() {\n      // If the input `a` is `i32::MIN` (-2147483648), then the function must return `i32::MIN`. This verifies the function handles the lower boundary of the `i32` type, which is critical because `i32::MIN` behaves uniquely in two's complement arithmetic (e.g., negation overflows).\n      let result = return_a(i32::MIN);\n      assert_eq!(result, i32::MIN);\n      }\n\n    #[test]\n      fn test_return_a_arbitrary_positive() {\n      // If the input `a` is an arbitrary positive integer within the range (e.g., 42), then the function must return 42. This confirms the identity behavior holds for non-boundary positive values.\n      let result = return_a(42);\n      assert_eq!(result, 42);\n      }\n\n    #[test]\n      fn test_return_a_arbitrary_negative() {\n      // If the input `a` is an arbitrary negative integer within the range (e.g., -42), then the function must return -42. This confirms the identity behavior holds for non-boundary negative values.\n      let result = return_a(-42);\n      assert_eq!(result, -42);\n      }\n}",
+        "new_tests": "\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n      fn test_return_zero() {\n      // If the input argument 'a' is 0, then the function must return 0. This tests the identity behavior for the additive identity of i32.\n      assert_eq!(return_a(0), 0);\n      }\n\n    #[test]\n      fn test_return_i32_max() {\n      // If the input argument 'a' is i32::MAX, then the function must return i32::MAX. This tests the identity behavior at the upper boundary of the i32 type.\n      assert_eq!(return_a(i32::MAX), i32::MAX);\n      }\n\n    #[test]\n      fn test_return_i32_min() {\n      // If the input argument 'a' is i32::MIN, then the function must return i32::MIN. This tests the identity behavior at the lower boundary of the i32 type.\n      assert_eq!(return_a(i32::MIN), i32::MIN);\n      }\n\n    #[test]\n      fn test_return_positive_arbitrary() {\n      // If the input argument 'a' is a positive integer (e.g., 42), then the function must return that same positive integer (42). This tests the identity behavior for a typical positive value.\n      assert_eq!(return_a(42), 42);\n      }\n\n    #[test]\n      fn test_return_negative_arbitrary() {\n      // If the input argument 'a' is a negative integer (e.g., -42), then the function must return that same negative integer (-42). This tests the identity behavior for a typical negative value.\n      assert_eq!(return_a(-42), -42);\n      }\n\n    #[test]\n      fn test_return_one() {\n      // If the input argument 'a' is 1, then the function must return 1. This tests the identity behavior for the multiplicative identity of i32.\n      assert_eq!(return_a(1), 1);\n      }\n\n    #[test]\n      fn test_return_negative_one() {\n      // If the input argument 'a' is -1, then the function must return -1. This tests the identity behavior for the negative unit value.\n      assert_eq!(return_a(-1), -1);\n      }\n}",
         "new_tests_history": [
             [
                 {
                     "role": "system",
-                    "content": "You are an expert Rust developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behavior specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
+                    "content": "You are an expert Rust developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behaviour specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
                 },
                 {
                     "role": "user",
-                    "content": "Give a complete description of the behavior that we should test when we want to asure that the code matches its documentation from the following Rust method:\n```Rust\n# [doc = \" Returns `a`.\"]\npub fn return_a(a : i32) -> i32 \n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
-                }
-            ],
-            [
-                {
-                    "role": "system",
-                    "content": "You are an expert Rust developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behavior specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
-                },
-                {
-                    "role": "user",
-                    "content": "Give a complete description of the behavior that we should test when we want to asure that the code matches its documentation from the following Rust method:\n```Rust\n# [doc = \" Returns `a`.\"]\npub fn return_a(a : i32) -> i32 \n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
-                },
-                {
-                    "content": "Based on the provided Rust method signature and documentation, here is the complete description of the behavior that should be tested to ensure the code matches its documentation:\n\n### Method Under Test\n```rust\npub fn return_a(a: i32) -> i32\n```\n\n### Documentation Specification\n> \"Returns `a`.\"\n\n### Required Test Cases\n\nTo ensure the function is bug-free and faithful to its documentation, the following behavior must be verified. Since the input and output types are `i32` (a 32-bit signed integer), the tests must cover the full range of valid values and ensure the identity transformation is preserved.\n\n#### 1. Identity Property for Zero\nThe function must return the exact input value when the input is zero.\n- **Input**: `0`\n- **Expected Output**: `0`\n- **Rationale**: Zero is a neutral element and a common edge case in integer arithmetic and logic.\n\n#### 2. Identity Property for Positive Values\nThe function must return the exact input value for positive integers.\n- **Input**: `1`\n- **Expected Output**: `1`\n- **Input**: `100`\n- **Expected Output**: `100`\n- **Rationale**: Confirms the function handles standard positive cases correctly.\n\n#### 3. Identity Property for Negative Values\nThe function must return the exact input value for negative integers.\n- **Input**: `-1`\n- **Expected Output**: `-1`\n- **Input**: `-100`\n- **Expected Output**: `-100`\n- **Rationale**: Confirms the function correctly preserves the sign bit and does not perform any unintended sign conversion or absolute value operation.\n\n#### 4. Identity Property for Maximum `i32` Value\nThe function must return the exact input value for the maximum representable `i32`.\n- **Input**: `i32::MAX` (2147483647)\n- **Expected Output**: `i32::MAX`\n- **Rationale**: Tests the upper boundary of the type. Although the function is a simple return, this ensures no implicit overflow or panic occurs during parameter handling (unlikely for a simple return, but essential for complete type coverage).\n\n#### 5. Identity Property for Minimum `i32` Value\nThe function must return the exact input value for the minimum representable `i32`.\n- **Input**: `i32::MIN` (-2147483648)\n- **Expected Output**: `i32::MIN`\n- **Rationale**: Tests the lower boundary of the type. This is critical because `i32::MIN` has unique behavior in some arithmetic operations (e.g., negation overflows), so it is important to verify the function returns it unchanged.\n\n#### 6. Arbitrary Representative Values\nThe function must return the exact input value for arbitrary non-boundary values.\n- **Input**: `42`\n- **Expected Output**: `42`\n- **Input**: `-42`\n- **Expected Output**: `-42`\n- **Rationale**: Provides additional confidence that the function does not contain hidden conditional logic that might affect non-extreme values.\n\n### Summary of Testing Strategy\nThe core specification is that `return_a(a) == a` for all `a: i32`. Since `i32` has a finite number of values (2^32), testing every value is impractical, but testing the **boundaries** (`i32::MIN`, `i32::MAX`), the **neutral element** (`0`), and **representative samples** from each sign category (positive and negative) provides sufficient coverage to ensure the function behaves as an identity function across the entire domain of `i32`.\n\nNo other behaviors (such as side effects, mutability, or error handling) are mentioned in the documentation, so no tests should be designed to detect them.",
-                    "refusal": null,
-                    "role": "assistant",
-                    "annotations": null,
-                    "audio": null,
-                    "function_call": null,
-                    "tool_calls": null,
-                    "provider_specific_fields": {
-                        "refusal": null,
-                        "reasoning": null
-                    }
-                },
-                {
-                    "role": "user",
-                    "content": "Now turn this into a JSON array of Rust tests we should write for test driven development. Each entry in the array should have: \"test_name\": a descriptive Rust test method name in snake_case starting with 'test_', and \"test_description\": a detailed description for the developer of what this tests should do and which specific behavior from the documentation it tests. In particular, I want testable statements of the 'if this then that' type.\nFocus on those tests that follow directly from the documentation, e.g. no performance based ones."
+                    "content": "Give a complete description of the behavior that we should test when we want to assure that the code matches its documentation from the following method\n```rust\n# [doc = \" Returns `a`.\"]\npub fn return_a(a : i32) -> i32 \n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
                 }
             ],
             {
-                "id": "chatcmpl-bfb941b883e91576",
+                "id": "chatcmpl-979bc49c6b072302",
                 "choices": [
                     {
                         "finish_reason": "stop",
                         "index": 0,
                         "logprobs": null,
                         "message": {
-                            "content": "[\n  {\n    \"test_name\": \"test_return_a_zero\",\n    \"test_description\": \"If the input `a` is 0, then the function must return 0. This verifies the identity property for the neutral element of addition and ensures no off-by-one or sign-flip errors occur for zero.\"\n  },\n  {\n    \"test_name\": \"test_return_a_positive_small\",\n    \"test_description\": \"If the input `a` is a small positive integer (e.g., 1), then the function must return that same positive integer. This verifies the function correctly handles positive inputs without modification.\"\n  },\n  {\n    \"test_name\": \"test_return_a_negative_small\",\n    \"test_description\": \"If the input `a` is a small negative integer (e.g., -1), then the function must return that same negative integer. This verifies the function correctly preserves the sign bit for negative inputs.\"\n  },\n  {\n    \"test_name\": \"test_return_a_i32_max\",\n    \"test_description\": \"If the input `a` is `i32::MAX` (2147483647), then the function must return `i32::MAX`. This verifies the function handles the upper boundary of the `i32` type without overflow or truncation.\"\n  },\n  {\n    \"test_name\": \"test_return_a_i32_min\",\n    \"test_description\": \"If the input `a` is `i32::MIN` (-2147483648), then the function must return `i32::MIN`. This verifies the function handles the lower boundary of the `i32` type, which is critical because `i32::MIN` behaves uniquely in two's complement arithmetic (e.g., negation overflows).\"\n  },\n  {\n    \"test_name\": \"test_return_a_arbitrary_positive\",\n    \"test_description\": \"If the input `a` is an arbitrary positive integer within the range (e.g., 42), then the function must return 42. This confirms the identity behavior holds for non-boundary positive values.\"\n  },\n  {\n    \"test_name\": \"test_return_a_arbitrary_negative\",\n    \"test_description\": \"If the input `a` is an arbitrary negative integer within the range (e.g., -42), then the function must return -42. This confirms the identity behavior holds for non-boundary negative values.\"\n  }\n]",
+                            "content": "Based on the provided documentation and method signature, here is the complete behavior specification for testing `return_a`.\n\n### Method Signature\n```rust\npub fn return_a(a: i32) -> i32\n```\n\n### Documentation\n> \"Returns `a`.\"\n\n### Analysis\n1.  **Input**: The function takes a single argument `a` of type `i32`.\n2.  **Output**: The function returns a value of type `i32`.\n3.  **Behavior**: The function returns the input value `a` unchanged.\n4.  **Constraints**: The documentation makes no mention of:\n    -   Panic conditions (e.g., for specific values).\n    -   Side effects.\n    -   Mutability of the input (Rust's `i32` is passed by value/copy, so this is implicit but relevant for correctness).\n    -   Any transformation or computation.\n\n### Testable Behavior Specifications\n\nTo assure the code matches its documentation, we must verify that the return value is **exactly equal** to the input argument `a` for all possible inputs. Since `i32` is a primitive type with a finite and well-defined range, we should test representative edge cases to ensure no implicit overflow, underflow, or identity issues occur.\n\n#### Test Cases:\n1.  **Zero**: Verify `return_a(0) == 0`.\n2.  **Positive Minimum**: Verify `return_a(1) == 1`.\n3.  **Positive Maximum**: Verify `return_a(i32::MAX) == i32::MAX`.\n4.  **Negative Minimum**: Verify `return_a(-1) == -1`.\n5.  **Negative Maximum**: Verify `return_a(i32::MIN) == i32::MIN`.\n6.  **Arbitrary Positive**: Verify `return_a(42) == 42`.\n7.  **Arbitrary Negative**: Verify `return_a(-42) == -42`.\n\n### Corresponding Unit Tests (Rust)\n\n```rust\n#[cfg(test)]\nmod tests {\n    use super::*;\n\n    #[test]\n    fn test_return_zero() {\n        assert_eq!(return_a(0), 0);\n    }\n\n    #[test]\n    fn test_return_positive_one() {\n        assert_eq!(return_a(1), 1);\n    }\n\n    #[test]\n    fn test_return_i32_max() {\n        assert_eq!(return_a(i32::MAX), i32::MAX);\n    }\n\n    #[test]\n    fn test_return_negative_one() {\n        assert_eq!(return_a(-1), -1);\n    }\n\n    #[test]\n    fn test_return_i32_min() {\n        assert_eq!(return_a(i32::MIN), i32::MIN);\n    }\n\n    #[test]\n    fn test_return_arbitrary_positive() {\n        assert_eq!(return_a(42), 42);\n    }\n\n    #[test]\n    fn test_return_arbitrary_negative() {\n        assert_eq!(return_a(-42), -42);\n    }\n}\n```\n\n### Summary\nThe sole behavior to test is **identity**: the function must return its input unchanged. The test suite above covers the full range of `i32` values, ensuring no edge-case bugs (like overflow/underflow due to incorrect implementation) exist. No other behaviors are implied by the documentation.",
                             "refusal": null,
                             "role": "assistant",
                             "annotations": null,
@@ -391,15 +131,81 @@
                         }
                     }
                 ],
-                "created": 1781525275,
+                "created": 1781603434,
                 "model": "llm3",
                 "object": "chat.completion",
                 "service_tier": null,
                 "system_fingerprint": null,
                 "usage": {
-                    "completion_tokens": 545,
-                    "prompt_tokens": 1126,
-                    "total_tokens": 1671,
+                    "completion_tokens": 758,
+                    "prompt_tokens": 157,
+                    "total_tokens": 915,
+                    "completion_tokens_details": null,
+                    "prompt_tokens_details": null
+                }
+            },
+            [
+                {
+                    "role": "system",
+                    "content": "You are an expert Rust developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behaviour specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
+                },
+                {
+                    "role": "user",
+                    "content": "Give a complete description of the behavior that we should test when we want to assure that the code matches its documentation from the following method\n```rust\n# [doc = \" Returns `a`.\"]\npub fn return_a(a : i32) -> i32 \n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
+                },
+                {
+                    "content": "Based on the provided documentation and method signature, here is the complete behavior specification for testing `return_a`.\n\n### Method Signature\n```rust\npub fn return_a(a: i32) -> i32\n```\n\n### Documentation\n> \"Returns `a`.\"\n\n### Analysis\n1.  **Input**: The function takes a single argument `a` of type `i32`.\n2.  **Output**: The function returns a value of type `i32`.\n3.  **Behavior**: The function returns the input value `a` unchanged.\n4.  **Constraints**: The documentation makes no mention of:\n    -   Panic conditions (e.g., for specific values).\n    -   Side effects.\n    -   Mutability of the input (Rust's `i32` is passed by value/copy, so this is implicit but relevant for correctness).\n    -   Any transformation or computation.\n\n### Testable Behavior Specifications\n\nTo assure the code matches its documentation, we must verify that the return value is **exactly equal** to the input argument `a` for all possible inputs. Since `i32` is a primitive type with a finite and well-defined range, we should test representative edge cases to ensure no implicit overflow, underflow, or identity issues occur.\n\n#### Test Cases:\n1.  **Zero**: Verify `return_a(0) == 0`.\n2.  **Positive Minimum**: Verify `return_a(1) == 1`.\n3.  **Positive Maximum**: Verify `return_a(i32::MAX) == i32::MAX`.\n4.  **Negative Minimum**: Verify `return_a(-1) == -1`.\n5.  **Negative Maximum**: Verify `return_a(i32::MIN) == i32::MIN`.\n6.  **Arbitrary Positive**: Verify `return_a(42) == 42`.\n7.  **Arbitrary Negative**: Verify `return_a(-42) == -42`.\n\n### Corresponding Unit Tests (Rust)\n\n```rust\n#[cfg(test)]\nmod tests {\n    use super::*;\n\n    #[test]\n    fn test_return_zero() {\n        assert_eq!(return_a(0), 0);\n    }\n\n    #[test]\n    fn test_return_positive_one() {\n        assert_eq!(return_a(1), 1);\n    }\n\n    #[test]\n    fn test_return_i32_max() {\n        assert_eq!(return_a(i32::MAX), i32::MAX);\n    }\n\n    #[test]\n    fn test_return_negative_one() {\n        assert_eq!(return_a(-1), -1);\n    }\n\n    #[test]\n    fn test_return_i32_min() {\n        assert_eq!(return_a(i32::MIN), i32::MIN);\n    }\n\n    #[test]\n    fn test_return_arbitrary_positive() {\n        assert_eq!(return_a(42), 42);\n    }\n\n    #[test]\n    fn test_return_arbitrary_negative() {\n        assert_eq!(return_a(-42), -42);\n    }\n}\n```\n\n### Summary\nThe sole behavior to test is **identity**: the function must return its input unchanged. The test suite above covers the full range of `i32` values, ensuring no edge-case bugs (like overflow/underflow due to incorrect implementation) exist. No other behaviors are implied by the documentation.",
+                    "refusal": null,
+                    "role": "assistant",
+                    "annotations": null,
+                    "audio": null,
+                    "function_call": null,
+                    "tool_calls": null,
+                    "provider_specific_fields": {
+                        "refusal": null,
+                        "reasoning": null
+                    }
+                },
+                {
+                    "role": "user",
+                    "content": "Now turn this into a JSON array of Rust tests we should write for test driven development. Each entry in the array should have: \"test_name\": a descriptive Rust test method name in snake_case starting with 'test_', \"test_description\": a detailed description for the developer of what this test should do and which specific behavior from the documentation it tests. In particular, I want testable statements of the 'if this then that' type.\nFocus on those tests that follow directly from the documentation, e.g. no performance based ones."
+                }
+            ],
+            {
+                "id": "chatcmpl-87dbf4d1fb319562",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "logprobs": null,
+                        "message": {
+                            "content": "[\n  {\n    \"test_name\": \"test_return_zero\",\n    \"test_description\": \"If the input argument 'a' is 0, then the function must return 0. This tests the identity behavior for the additive identity of i32.\"\n  },\n  {\n    \"test_name\": \"test_return_i32_max\",\n    \"test_description\": \"If the input argument 'a' is i32::MAX, then the function must return i32::MAX. This tests the identity behavior at the upper boundary of the i32 type.\"\n  },\n  {\n    \"test_name\": \"test_return_i32_min\",\n    \"test_description\": \"If the input argument 'a' is i32::MIN, then the function must return i32::MIN. This tests the identity behavior at the lower boundary of the i32 type.\"\n  },\n  {\n    \"test_name\": \"test_return_positive_arbitrary\",\n    \"test_description\": \"If the input argument 'a' is a positive integer (e.g., 42), then the function must return that same positive integer (42). This tests the identity behavior for a typical positive value.\"\n  },\n  {\n    \"test_name\": \"test_return_negative_arbitrary\",\n    \"test_description\": \"If the input argument 'a' is a negative integer (e.g., -42), then the function must return that same negative integer (-42). This tests the identity behavior for a typical negative value.\"\n  },\n  {\n    \"test_name\": \"test_return_one\",\n    \"test_description\": \"If the input argument 'a' is 1, then the function must return 1. This tests the identity behavior for the multiplicative identity of i32.\"\n  },\n  {\n    \"test_name\": \"test_return_negative_one\",\n    \"test_description\": \"If the input argument 'a' is -1, then the function must return -1. This tests the identity behavior for the negative unit value.\"\n  }\n]",
+                            "refusal": null,
+                            "role": "assistant",
+                            "annotations": null,
+                            "audio": null,
+                            "function_call": null,
+                            "tool_calls": null,
+                            "provider_specific_fields": {
+                                "refusal": null,
+                                "reasoning": null
+                            }
+                        },
+                        "provider_specific_fields": {
+                            "stop_reason": null,
+                            "token_ids": null
+                        }
+                    }
+                ],
+                "created": 1781603441,
+                "model": "llm3",
+                "object": "chat.completion",
+                "service_tier": null,
+                "system_fingerprint": null,
+                "usage": {
+                    "completion_tokens": 448,
+                    "prompt_tokens": 1032,
+                    "total_tokens": 1480,
                     "completion_tokens_details": null,
                     "prompt_tokens_details": null
                 }
@@ -411,10 +217,10 @@
                 },
                 {
                     "role": "user",
-                    "content": "The interesting function under test is:\n```rust\n# [doc = \" Returns `a`.\"]\npub fn return_a(a : i32) -> i32 \n```\n\nThe other functions will be tested later. Fill in Rust unit tests for the provided test module below. This is for test driven development, so the tests should be designed to fail if the later implementation does not exactly conform to the documentation.\n\nThis is the parent module or item context the function under test resides in:\n## Parent context\n```rust\n\n# [doc = \" Returns `a`.\"]\npub fn return_a(a : i32) -> i32 \n```\n\nAdd any necessary `use` statements from the project itself. Every value you use must be properly constructed. Match function signatures and calls exactly, including ownership, borrowing, lifetimes, generics, and trait bounds. Handle Result, Option, panic behavior, and error cases appropriately when relevant. Use idiomatic Rust assertions such as assert!, assert_eq!, assert_ne!, matches!, and unwrap_err() where appropriate. Respond with the filled Rust test module only:\n\n```rust\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n      fn test_return_a_zero() {\n      // If the input `a` is 0, then the function must return 0. This verifies the identity property for the neutral element of addition and ensures no off-by-one or sign-flip errors occur for zero.\n      }\n\n    #[test]\n      fn test_return_a_positive_small() {\n      // If the input `a` is a small positive integer (e.g., 1), then the function must return that same positive integer. This verifies the function correctly handles positive inputs without modification.\n      }\n\n    #[test]\n      fn test_return_a_negative_small() {\n      // If the input `a` is a small negative integer (e.g., -1), then the function must return that same negative integer. This verifies the function correctly preserves the sign bit for negative inputs.\n      }\n\n    #[test]\n      fn test_return_a_i32_max() {\n      // If the input `a` is `i32::MAX` (2147483647), then the function must return `i32::MAX`. This verifies the function handles the upper boundary of the `i32` type without overflow or truncation.\n      }\n\n    #[test]\n      fn test_return_a_i32_min() {\n      // If the input `a` is `i32::MIN` (-2147483648), then the function must return `i32::MIN`. This verifies the function handles the lower boundary of the `i32` type, which is critical because `i32::MIN` behaves uniquely in two's complement arithmetic (e.g., negation overflows).\n      }\n\n    #[test]\n      fn test_return_a_arbitrary_positive() {\n      // If the input `a` is an arbitrary positive integer within the range (e.g., 42), then the function must return 42. This confirms the identity behavior holds for non-boundary positive values.\n      }\n\n    #[test]\n      fn test_return_a_arbitrary_negative() {\n      // If the input `a` is an arbitrary negative integer within the range (e.g., -42), then the function must return -42. This confirms the identity behavior holds for non-boundary negative values.\n      }\n}\n\n```"
+                    "content": "The interesting function under test is:\n```rust\n# [doc = \" Returns `a`.\"]\npub fn return_a(a : i32) -> i32 \n```\n\nThe other functions will be tested later. Fill in Rust unit tests for the provided test module below. This is for test driven development, so the tests should be designed to fail if the later implementation does not exactly conform to the documentation.\n\nThis is the parent module or item context the function under test resides in:\n## Parent context\n```rust\n\n# [doc = \" Returns `a`.\"]\npub fn return_a(a : i32) -> i32 \n```\n\nAdd any necessary `use` statements from the project itself. Every value you use must be properly constructed. Match function signatures and calls exactly, including ownership, borrowing, lifetimes, generics, and trait bounds. Handle Result, Option, panic behavior, and error cases appropriately when relevant. Use idiomatic Rust assertions such as assert!, assert_eq!, assert_ne!, matches!, and unwrap_err() where appropriate. Respond with the filled Rust test module only:\n\n```rust\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n      fn test_return_zero() {\n      // If the input argument 'a' is 0, then the function must return 0. This tests the identity behavior for the additive identity of i32.\n      }\n\n    #[test]\n      fn test_return_i32_max() {\n      // If the input argument 'a' is i32::MAX, then the function must return i32::MAX. This tests the identity behavior at the upper boundary of the i32 type.\n      }\n\n    #[test]\n      fn test_return_i32_min() {\n      // If the input argument 'a' is i32::MIN, then the function must return i32::MIN. This tests the identity behavior at the lower boundary of the i32 type.\n      }\n\n    #[test]\n      fn test_return_positive_arbitrary() {\n      // If the input argument 'a' is a positive integer (e.g., 42), then the function must return that same positive integer (42). This tests the identity behavior for a typical positive value.\n      }\n\n    #[test]\n      fn test_return_negative_arbitrary() {\n      // If the input argument 'a' is a negative integer (e.g., -42), then the function must return that same negative integer (-42). This tests the identity behavior for a typical negative value.\n      }\n\n    #[test]\n      fn test_return_one() {\n      // If the input argument 'a' is 1, then the function must return 1. This tests the identity behavior for the multiplicative identity of i32.\n      }\n\n    #[test]\n      fn test_return_negative_one() {\n      // If the input argument 'a' is -1, then the function must return -1. This tests the identity behavior for the negative unit value.\n      }\n}\n\n```"
                 },
                 {
-                    "content": "```rust\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n      fn test_return_a_zero() {\n      // If the input `a` is 0, then the function must return 0. This verifies the identity property for the neutral element of addition and ensures no off-by-one or sign-flip errors occur for zero.\n      let result = return_a(0);\n      assert_eq!(result, 0);\n      }\n\n    #[test]\n      fn test_return_a_positive_small() {\n      // If the input `a` is a small positive integer (e.g., 1), then the function must return that same positive integer. This verifies the function correctly handles positive inputs without modification.\n      let result = return_a(1);\n      assert_eq!(result, 1);\n      }\n\n    #[test]\n      fn test_return_a_negative_small() {\n      // If the input `a` is a small negative integer (e.g., -1), then the function must return that same negative integer. This verifies the function correctly preserves the sign bit for negative inputs.\n      let result = return_a(-1);\n      assert_eq!(result, -1);\n      }\n\n    #[test]\n      fn test_return_a_i32_max() {\n      // If the input `a` is `i32::MAX` (2147483647), then the function must return `i32::MAX`. This verifies the function handles the upper boundary of the `i32` type without overflow or truncation.\n      let result = return_a(i32::MAX);\n      assert_eq!(result, i32::MAX);\n      }\n\n    #[test]\n      fn test_return_a_i32_min() {\n      // If the input `a` is `i32::MIN` (-2147483648), then the function must return `i32::MIN`. This verifies the function handles the lower boundary of the `i32` type, which is critical because `i32::MIN` behaves uniquely in two's complement arithmetic (e.g., negation overflows).\n      let result = return_a(i32::MIN);\n      assert_eq!(result, i32::MIN);\n      }\n\n    #[test]\n      fn test_return_a_arbitrary_positive() {\n      // If the input `a` is an arbitrary positive integer within the range (e.g., 42), then the function must return 42. This confirms the identity behavior holds for non-boundary positive values.\n      let result = return_a(42);\n      assert_eq!(result, 42);\n      }\n\n    #[test]\n      fn test_return_a_arbitrary_negative() {\n      // If the input `a` is an arbitrary negative integer within the range (e.g., -42), then the function must return -42. This confirms the identity behavior holds for non-boundary negative values.\n      let result = return_a(-42);\n      assert_eq!(result, -42);\n      }\n}\n\n```",
+                    "content": "```rust\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n      fn test_return_zero() {\n      // If the input argument 'a' is 0, then the function must return 0. This tests the identity behavior for the additive identity of i32.\n      assert_eq!(return_a(0), 0);\n      }\n\n    #[test]\n      fn test_return_i32_max() {\n      // If the input argument 'a' is i32::MAX, then the function must return i32::MAX. This tests the identity behavior at the upper boundary of the i32 type.\n      assert_eq!(return_a(i32::MAX), i32::MAX);\n      }\n\n    #[test]\n      fn test_return_i32_min() {\n      // If the input argument 'a' is i32::MIN, then the function must return i32::MIN. This tests the identity behavior at the lower boundary of the i32 type.\n      assert_eq!(return_a(i32::MIN), i32::MIN);\n      }\n\n    #[test]\n      fn test_return_positive_arbitrary() {\n      // If the input argument 'a' is a positive integer (e.g., 42), then the function must return that same positive integer (42). This tests the identity behavior for a typical positive value.\n      assert_eq!(return_a(42), 42);\n      }\n\n    #[test]\n      fn test_return_negative_arbitrary() {\n      // If the input argument 'a' is a negative integer (e.g., -42), then the function must return that same negative integer (-42). This tests the identity behavior for a typical negative value.\n      assert_eq!(return_a(-42), -42);\n      }\n\n    #[test]\n      fn test_return_one() {\n      // If the input argument 'a' is 1, then the function must return 1. This tests the identity behavior for the multiplicative identity of i32.\n      assert_eq!(return_a(1), 1);\n      }\n\n    #[test]\n      fn test_return_negative_one() {\n      // If the input argument 'a' is -1, then the function must return -1. This tests the identity behavior for the negative unit value.\n      assert_eq!(return_a(-1), -1);\n      }\n}\n```",
                     "refusal": null,
                     "role": "assistant",
                     "annotations": null,
@@ -428,18 +234,18 @@
                 },
                 {
                     "role": "user",
-                    "content": "Make sure that this Rust test module compiles without errors. Check imports, module paths, ownership, borrowing, lifetimes, generics, trait bounds, Result, Option, and panic behavior. Reply with the corrected Rust test module only."
+                    "content": "Make sure that this Rust test module compiles or runs without errors. Check that all imports are correct, all referenced symbols exist, and errors or exceptions are handled appropriately. Reply with the corrected Rust test module only."
                 }
             ],
             {
-                "id": "chatcmpl-99f8cd18f704b9cd",
+                "id": "chatcmpl-a2c8c6a785cae66b",
                 "choices": [
                     {
                         "finish_reason": "stop",
                         "index": 0,
                         "logprobs": null,
                         "message": {
-                            "content": "```rust\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n      fn test_return_a_zero() {\n      // If the input `a` is 0, then the function must return 0. This verifies the identity property for the neutral element of addition and ensures no off-by-one or sign-flip errors occur for zero.\n      let result = return_a(0);\n      assert_eq!(result, 0);\n      }\n\n    #[test]\n      fn test_return_a_positive_small() {\n      // If the input `a` is a small positive integer (e.g., 1), then the function must return that same positive integer. This verifies the function correctly handles positive inputs without modification.\n      let result = return_a(1);\n      assert_eq!(result, 1);\n      }\n\n    #[test]\n      fn test_return_a_negative_small() {\n      // If the input `a` is a small negative integer (e.g., -1), then the function must return that same negative integer. This verifies the function correctly preserves the sign bit for negative inputs.\n      let result = return_a(-1);\n      assert_eq!(result, -1);\n      }\n\n    #[test]\n      fn test_return_a_i32_max() {\n      // If the input `a` is `i32::MAX` (2147483647), then the function must return `i32::MAX`. This verifies the function handles the upper boundary of the `i32` type without overflow or truncation.\n      let result = return_a(i32::MAX);\n      assert_eq!(result, i32::MAX);\n      }\n\n    #[test]\n      fn test_return_a_i32_min() {\n      // If the input `a` is `i32::MIN` (-2147483648), then the function must return `i32::MIN`. This verifies the function handles the lower boundary of the `i32` type, which is critical because `i32::MIN` behaves uniquely in two's complement arithmetic (e.g., negation overflows).\n      let result = return_a(i32::MIN);\n      assert_eq!(result, i32::MIN);\n      }\n\n    #[test]\n      fn test_return_a_arbitrary_positive() {\n      // If the input `a` is an arbitrary positive integer within the range (e.g., 42), then the function must return 42. This confirms the identity behavior holds for non-boundary positive values.\n      let result = return_a(42);\n      assert_eq!(result, 42);\n      }\n\n    #[test]\n      fn test_return_a_arbitrary_negative() {\n      // If the input `a` is an arbitrary negative integer within the range (e.g., -42), then the function must return -42. This confirms the identity behavior holds for non-boundary negative values.\n      let result = return_a(-42);\n      assert_eq!(result, -42);\n      }\n}\n\n```",
+                            "content": "```rust\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n      fn test_return_zero() {\n      // If the input argument 'a' is 0, then the function must return 0. This tests the identity behavior for the additive identity of i32.\n      assert_eq!(return_a(0), 0);\n      }\n\n    #[test]\n      fn test_return_i32_max() {\n      // If the input argument 'a' is i32::MAX, then the function must return i32::MAX. This tests the identity behavior at the upper boundary of the i32 type.\n      assert_eq!(return_a(i32::MAX), i32::MAX);\n      }\n\n    #[test]\n      fn test_return_i32_min() {\n      // If the input argument 'a' is i32::MIN, then the function must return i32::MIN. This tests the identity behavior at the lower boundary of the i32 type.\n      assert_eq!(return_a(i32::MIN), i32::MIN);\n      }\n\n    #[test]\n      fn test_return_positive_arbitrary() {\n      // If the input argument 'a' is a positive integer (e.g., 42), then the function must return that same positive integer (42). This tests the identity behavior for a typical positive value.\n      assert_eq!(return_a(42), 42);\n      }\n\n    #[test]\n      fn test_return_negative_arbitrary() {\n      // If the input argument 'a' is a negative integer (e.g., -42), then the function must return that same negative integer (-42). This tests the identity behavior for a typical negative value.\n      assert_eq!(return_a(-42), -42);\n      }\n\n    #[test]\n      fn test_return_one() {\n      // If the input argument 'a' is 1, then the function must return 1. This tests the identity behavior for the multiplicative identity of i32.\n      assert_eq!(return_a(1), 1);\n      }\n\n    #[test]\n      fn test_return_negative_one() {\n      // If the input argument 'a' is -1, then the function must return -1. This tests the identity behavior for the negative unit value.\n      assert_eq!(return_a(-1), -1);\n      }\n}\n```",
                             "refusal": null,
                             "role": "assistant",
                             "annotations": null,
@@ -457,22 +263,21 @@
                         }
                     }
                 ],
-                "created": 1781525287,
+                "created": 1781603451,
                 "model": "llm3",
                 "object": "chat.completion",
                 "service_tier": null,
                 "system_fingerprint": null,
                 "usage": {
-                    "completion_tokens": 688,
-                    "prompt_tokens": 1625,
-                    "total_tokens": 2313,
+                    "completion_tokens": 542,
+                    "prompt_tokens": 1378,
+                    "total_tokens": 1920,
                     "completion_tokens_details": null,
                     "prompt_tokens_details": null
                 }
             }
         ],
         "repair_history": [],
-        "verdict": "INCO; pass; step 2 (C'+T'); (0, 7, 0); (7, 0, 0); p2p: 0, f2f: 0, p2f: 0, f2p: 7",
         "new_code": "{\n    a\n}",
         "new_code_response": {
             "prompt": [
@@ -486,7 +291,7 @@
                 }
             ],
             "response": {
-                "id": "chatcmpl-97a3cc11d4a4d79f",
+                "id": "chatcmpl-81faa26f428f34ed",
                 "choices": [
                     {
                         "finish_reason": "stop",
@@ -511,7 +316,7 @@
                         }
                     }
                 ],
-                "created": 1781525479,
+                "created": 1781603457,
                 "model": "llm3",
                 "object": "chat.completion",
                 "service_tier": null,
@@ -530,14 +335,288 @@
             "f2f": [],
             "p2f": [],
             "f2p": [
-                "injected_test_mod_cascade::test_return_a_arbitrary_negative",
-                "injected_test_mod_cascade::test_return_a_arbitrary_positive",
-                "injected_test_mod_cascade::test_return_a_positive_small",
-                "injected_test_mod_cascade::test_return_a_i32_max",
-                "injected_test_mod_cascade::test_return_a_i32_min",
-                "injected_test_mod_cascade::test_return_a_negative_small",
-                "injected_test_mod_cascade::test_return_a_zero"
+                "injected_test_mod_cascade::test_return_i32_max",
+                "injected_test_mod_cascade::test_return_i32_min",
+                "injected_test_mod_cascade::test_return_negative_one",
+                "injected_test_mod_cascade::test_return_negative_arbitrary",
+                "injected_test_mod_cascade::test_return_one",
+                "injected_test_mod_cascade::test_return_positive_arbitrary",
+                "injected_test_mod_cascade::test_return_zero"
             ]
-        }
+        },
+        "verdict": "INCO; pass; step 2 (C'+T'); (0, 7, 0); (7, 0, 0); p2p: 0, f2f: 0, p2f: 0, f2p: 7"
+    },
+    {
+        "doc": "# [doc = \" Returns the sum of `a` and `b`.\"]",
+        "signature": {
+            "name": "add",
+            "returns": "-> i32",
+            "params": [
+                "a : i32",
+                "b : i32"
+            ],
+            "modifier": "pub",
+            "annotations": [],
+            "traits": ""
+        },
+        "language": "Rust",
+        "parent": [
+            {
+                "name": "root module",
+                "doc": "",
+                "attributes": [],
+                "other_methods": [
+                    {
+                        "doc": "# [doc = \" Returns `a`.\"]",
+                        "attributes": [],
+                        "signature": {
+                            "name": "return_a",
+                            "returns": "-> i32",
+                            "params": [
+                                "a : i32"
+                            ],
+                            "modifier": "pub",
+                            "annotations": [],
+                            "traits": ""
+                        },
+                        "code": "{ 29 }"
+                    }
+                ],
+                "variables": [],
+                "imports": [],
+                "parent_type": "Module",
+                "impl_type": "",
+                "constructors": null,
+                "extends": null,
+                "implements": null,
+                "namespace": null,
+                "generics": []
+            }
+        ],
+        "code": "{ a + b }",
+        "code_file_path": "src/lib.rs",
+        "code_file_content": "/// Returns the sum of `a` and `b`.\npub fn add(a: i32, b: i32) -> i32 {\n    a + b\n}\n\n/// Returns `a`.\npub fn return_a(a: i32) -> i32 {\n    29\n}",
+        "id": 1,
+        "tests": [
+            {
+                "test_file_path": "src/lib.rs",
+                "tests": "",
+                "test_imports": [],
+                "test_class_name": "",
+                "test_runner": "",
+                "test_as_context": null,
+                "test_type": "",
+                "project_path": "",
+                "test_namespace": ""
+            }
+        ],
+        "called_functions": null,
+        "use_statement_path": "use rust::add;",
+        "results": {
+            "(code, new_tests)": [
+                [
+                    "injected_test_mod_cascade::test_add_commutativity",
+                    "injected_test_mod_cascade::test_add_large_negative_integers",
+                    "injected_test_mod_cascade::test_add_max_i32_with_zero",
+                    "injected_test_mod_cascade::test_add_negative_and_positive_integer",
+                    "injected_test_mod_cascade::test_add_large_positive_integers",
+                    "injected_test_mod_cascade::test_add_min_i32_with_zero",
+                    "injected_test_mod_cascade::test_add_number_to_zero",
+                    "injected_test_mod_cascade::test_add_two_negative_integers",
+                    "injected_test_mod_cascade::test_add_positive_and_negative_integer",
+                    "injected_test_mod_cascade::test_add_two_positive_integers",
+                    "injected_test_mod_cascade::test_add_zero_to_number",
+                    "injected_test_mod_cascade::test_add_zero_to_zero"
+                ],
+                [],
+                []
+            ]
+        },
+        "new_tests": "\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n      fn test_add_two_positive_integers() {\n      // Verifies that adding two positive integers returns their arithmetic sum. If add(2, 3) is called, then the return value should be 5. This tests the basic functionality described in the documentation.\n      assert_eq!(add(2, 3), 5);\n      }\n\n    #[test]\n      fn test_add_two_negative_integers() {\n      // Verifies that adding two negative integers returns their arithmetic sum. If add(-2, -3) is called, then the return value should be -5. This ensures the function handles negative operands correctly.\n      assert_eq!(add(-2, -3), -5);\n      }\n\n    #[test]\n      fn test_add_positive_and_negative_integer() {\n      // Verifies that adding a positive integer and a negative integer returns their arithmetic sum. If add(5, -2) is called, then the return value should be 3. This tests mixed-sign addition.\n      assert_eq!(add(5, -2), 3);\n      }\n\n    #[test]\n      fn test_add_negative_and_positive_integer() {\n      // Verifies that adding a negative integer and a positive integer returns their arithmetic sum. If add(-5, 2) is called, then the return value should be -3. This tests mixed-sign addition with reversed operand order.\n      assert_eq!(add(-5, 2), -3);\n      }\n\n    #[test]\n      fn test_add_zero_to_number() {\n      // Verifies that adding zero to a number returns the original number (identity property). If add(10, 0) is called, then the return value should be 10. This tests the edge case of zero as the second operand.\n      assert_eq!(add(10, 0), 10);\n      }\n\n    #[test]\n      fn test_add_number_to_zero() {\n      // Verifies that adding a number to zero returns the original number (identity property). If add(0, 10) is called, then the return value should be 10. This tests the edge case of zero as the first operand.\n      assert_eq!(add(0, 10), 10);\n      }\n\n    #[test]\n      fn test_add_zero_to_zero() {\n      // Verifies that adding zero to zero returns zero. If add(0, 0) is called, then the return value should be 0. This tests the trivial edge case where both operands are zero.\n      assert_eq!(add(0, 0), 0);\n      }\n\n    #[test]\n      fn test_add_commutativity() {\n      // Verifies that the addition operation is commutative, meaning the order of operands does not affect the sum. If add(a, b) is called, then the result should be equal to add(b, a) for arbitrary integers a and b (e.g., a=7, b=4). This tests an inherent property of the 'sum' described in the documentation.\n      assert_eq!(add(7, 4), add(4, 7));\n      }\n\n    #[test]\n      fn test_add_max_i32_with_zero() {\n      // Verifies that adding the maximum i32 value to zero returns the maximum i32 value. If add(i32::MAX, 0) is called, then the return value should be i32::MAX. This tests the boundary condition at the upper limit of the integer type.\n      assert_eq!(add(i32::MAX, 0), i32::MAX);\n      }\n\n    #[test]\n      fn test_add_min_i32_with_zero() {\n      // Verifies that adding the minimum i32 value to zero returns the minimum i32 value. If add(i32::MIN, 0) is called, then the return value should be i32::MIN. This tests the boundary condition at the lower limit of the integer type.\n      assert_eq!(add(i32::MIN, 0), i32::MIN);\n      }\n\n    #[test]\n      fn test_add_large_positive_integers() {\n      // Verifies that adding two large positive integers within the i32 range returns their correct arithmetic sum. If add(1_000_000_000, 500_000_000) is called, then the return value should be 1_500_000_000. This tests correctness for large values that do not cause overflow.\n      assert_eq!(add(1_000_000_000, 500_000_000), 1_500_000_000);\n      }\n\n    #[test]\n      fn test_add_large_negative_integers() {\n      // Verifies that adding two large negative integers within the i32 range returns their correct arithmetic sum. If add(-1_000_000_000, -500_000_000) is called, then the return value should be -1_500_000_000. This tests correctness for large negative values that do not cause overflow.\n      assert_eq!(add(-1_000_000_000, -500_000_000), -1_500_000_000);\n      }\n}",
+        "new_tests_history": [
+            [
+                {
+                    "role": "system",
+                    "content": "You are an expert Rust developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behaviour specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
+                },
+                {
+                    "role": "user",
+                    "content": "Give a complete description of the behavior that we should test when we want to assure that the code matches its documentation from the following method\n```rust\n# [doc = \" Returns the sum of `a` and `b`.\"]\npub fn add(a : i32, b : i32) -> i32 \n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
+                }
+            ],
+            {
+                "id": "chatcmpl-bec72bb950f1be40",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "logprobs": null,
+                        "message": {
+                            "content": "Based on the provided method signature and documentation, here is the complete description of the behavior to be tested.\n\n### Analysis of Documentation and Signature\n*   **Documentation**: \"Returns the sum of `a` and `b`.\"\n*   **Signature**: `pub fn add(a: i32, b: i32) -> i32`\n*   **Constraints**: The documentation makes **no mention** of error handling, panics, or overflow behavior. It strictly states that the sum is returned. In Rust, `i32` addition in debug mode will panic on overflow, while in release mode it will wrap around. However, the documentation does not specify which behavior is intended in the case of overflow. Since the prompt asks to cover edge cases based **only** on what is stated, and the documentation implies a simple arithmetic sum, we must test the standard arithmetic cases. If the documentation does not specify overflow behavior, strictly speaking, we cannot assert specific behavior for overflow unless we assume standard `i32` semantics. However, to ensure the code is \"bug free and faithful to its documentation,\" we must test that the function returns the mathematical sum for all values where the mathematical sum fits within `i32`, and we must acknowledge that the documentation is silent on overflow.\n\nGiven the strict instruction to \"make no assumptions that are not stated in the documentation,\" we can only definitively test cases where the sum is mathematically correct and fits within the `i32` range. For overflow cases, since the documentation doesn't specify, we should test that the function *executes* without error if it's intended to be safe, or note that the documentation is incomplete. However, in practical unit testing for such a simple function, we test the core functionality: addition.\n\n### Behavior Specifications for Unit Tests\n\n1.  **Basic Positive Addition**:\n    *   **Input**: `a = 1`, `b = 2`\n    *   **Expected Output**: `3`\n    *   **Reasoning**: Verifies the core functionality for small positive integers.\n\n2.  **Basic Negative Addition**:\n    *   **Input**: `a = -1`, `b = -2`\n    *   **Expected Output**: `-3`\n    *   **Reasoning**: Verifies the function handles negative numbers correctly.\n\n3.  **Mixed Sign Addition (Positive + Negative)**:\n    *   **Input**: `a = 5`, `b = -2`\n    *   **Expected Output**: `3`\n    *   **Reasoning**: Verifies correct behavior when operands have different signs.\n\n4.  **Mixed Sign Addition (Negative + Positive)**:\n    *   **Input**: `a = -5`, `b = 2`\n    *   **Expected Output**: `-3`\n    *   **Reasoning**: Verifies correct behavior regardless of operand order for mixed signs.\n\n5.  **Addition with Zero (Identity Element)**:\n    *   **Input**: `a = 10`, `b = 0`\n    *   **Expected Output**: `10`\n    *   **Reasoning**: Verifies that adding zero returns the original number.\n\n6.  **Addition with Zero (Reverse)**:\n    *   **Input**: `a = 0`, `b = 10`\n    *   **Expected Output**: `10`\n    *   **Reasoning**: Verifies that adding zero to the first operand works correctly.\n\n7.  **Addition of Two Zeros**:\n    *   **Input**: `a = 0`, `b = 0`\n    *   **Expected Output**: `0`\n    *   **Reasoning**: Edge case where both operands are zero.\n\n8.  **Large Positive Numbers (Within Range)**:\n    *   **Input**: `a = 1_000_000`, `b = 2_000_000`\n    *   **Expected Output**: `3_000_000`\n    *   **Reasoning**: Verifies correctness for larger numbers well within `i32::MAX`.\n\n9.  **Large Negative Numbers (Within Range)**:\n    *   **Input**: `a = -1_000_000`, `b = -2_000_000`\n    *   **Expected Output**: `-3_000_000`\n    *   **Reasoning**: Verifies correctness for large negative numbers well within `i32::MIN`.\n\n10. **Boundary Case: Near `i32::MAX`**:\n    *   **Input**: `a = i32::MAX`, `b = 0`\n    *   **Expected Output**: `i32::MAX`\n    *   **Reasoning**: Tests behavior at the upper bound of the integer type.\n\n11. **Boundary Case: Near `i32::MIN`**:\n    *   **Input**: `a = i32::MIN`, `b = 0`\n    *   **Expected Output**: `i32::MIN`\n    *   **Reasoning**: Tests behavior at the lower bound of the integer type.\n\n12. **Boundary Case: Sum Equals `i32::MAX`**:\n    *   **Input**: `a = i32::MAX / 2`, `b = i32::MAX / 2`\n    *   **Expected Output**: `i32::MAX` (approximately, depends on exact division)\n    *   **Reasoning**: Specifically, `a = 1_073_741_823`, `b = 1_073_741_823` \u2192 `2_147_483_646` (which is `i32::MAX - 1`). Or `a = i32::MAX`, `b = 0` as above. Let's use `a = 1_000_000_000`, `b = 1_147_483_647` \u2192 `2_147_483_647` (`i32::MAX`).\n\n13. **Boundary Case: Sum Equals `i32::MIN`**:\n    *   **Input**: `a = -1_000_000_000`, `b = -1_147_483_648` \u2192 `-2_147_483_648` (`i32::MIN`)\n    *   **Reasoning**: Tests exact minimum value.\n\n14. **Commutativity**:\n    *   **Test**: Verify `add(a, b) == add(b, a)` for a variety of `a` and `b` values.\n    *   **Reasoning**: Addition is commutative. This is an implicit property of \"sum\".\n\n15. **Associativity**:\n    *   **Test**: Verify `add(a, add(b, c)) == add(add(a, b), c)` for a variety of values.\n    *   **Reasoning**: Addition is associative. This is an implicit property of \"sum\".\n\n### Important Note on Overflow\nThe documentation does **not** specify behavior for overflow (e.g., `a = i32::MAX`, `b = 1`). Since the documentation is silent, we cannot strictly test for a specific outcome (panic vs. wrap) without making assumptions. However, to ensure the code is \"bug free,\" one might argue that the documentation is incomplete if overflow is a possible input. But per the instruction to make no assumptions, we **do not** include overflow tests as \"expected behavior\" tests, but we might note that the documentation should clarify this. For the purpose of extracting testable behavior from the *given* documentation, we stop at the boundaries where the sum is valid.",
+                            "refusal": null,
+                            "role": "assistant",
+                            "annotations": null,
+                            "audio": null,
+                            "function_call": null,
+                            "tool_calls": null,
+                            "provider_specific_fields": {
+                                "refusal": null,
+                                "reasoning": null
+                            }
+                        },
+                        "provider_specific_fields": {
+                            "stop_reason": null,
+                            "token_ids": null
+                        }
+                    }
+                ],
+                "created": 1781603458,
+                "model": "llm3",
+                "object": "chat.completion",
+                "service_tier": null,
+                "system_fingerprint": null,
+                "usage": {
+                    "completion_tokens": 1728,
+                    "prompt_tokens": 169,
+                    "total_tokens": 1897,
+                    "completion_tokens_details": null,
+                    "prompt_tokens_details": null
+                }
+            },
+            [
+                {
+                    "role": "system",
+                    "content": "You are an expert Rust developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behaviour specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
+                },
+                {
+                    "role": "user",
+                    "content": "Give a complete description of the behavior that we should test when we want to assure that the code matches its documentation from the following method\n```rust\n# [doc = \" Returns the sum of `a` and `b`.\"]\npub fn add(a : i32, b : i32) -> i32 \n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
+                },
+                {
+                    "content": "Based on the provided method signature and documentation, here is the complete description of the behavior to be tested.\n\n### Analysis of Documentation and Signature\n*   **Documentation**: \"Returns the sum of `a` and `b`.\"\n*   **Signature**: `pub fn add(a: i32, b: i32) -> i32`\n*   **Constraints**: The documentation makes **no mention** of error handling, panics, or overflow behavior. It strictly states that the sum is returned. In Rust, `i32` addition in debug mode will panic on overflow, while in release mode it will wrap around. However, the documentation does not specify which behavior is intended in the case of overflow. Since the prompt asks to cover edge cases based **only** on what is stated, and the documentation implies a simple arithmetic sum, we must test the standard arithmetic cases. If the documentation does not specify overflow behavior, strictly speaking, we cannot assert specific behavior for overflow unless we assume standard `i32` semantics. However, to ensure the code is \"bug free and faithful to its documentation,\" we must test that the function returns the mathematical sum for all values where the mathematical sum fits within `i32`, and we must acknowledge that the documentation is silent on overflow.\n\nGiven the strict instruction to \"make no assumptions that are not stated in the documentation,\" we can only definitively test cases where the sum is mathematically correct and fits within the `i32` range. For overflow cases, since the documentation doesn't specify, we should test that the function *executes* without error if it's intended to be safe, or note that the documentation is incomplete. However, in practical unit testing for such a simple function, we test the core functionality: addition.\n\n### Behavior Specifications for Unit Tests\n\n1.  **Basic Positive Addition**:\n    *   **Input**: `a = 1`, `b = 2`\n    *   **Expected Output**: `3`\n    *   **Reasoning**: Verifies the core functionality for small positive integers.\n\n2.  **Basic Negative Addition**:\n    *   **Input**: `a = -1`, `b = -2`\n    *   **Expected Output**: `-3`\n    *   **Reasoning**: Verifies the function handles negative numbers correctly.\n\n3.  **Mixed Sign Addition (Positive + Negative)**:\n    *   **Input**: `a = 5`, `b = -2`\n    *   **Expected Output**: `3`\n    *   **Reasoning**: Verifies correct behavior when operands have different signs.\n\n4.  **Mixed Sign Addition (Negative + Positive)**:\n    *   **Input**: `a = -5`, `b = 2`\n    *   **Expected Output**: `-3`\n    *   **Reasoning**: Verifies correct behavior regardless of operand order for mixed signs.\n\n5.  **Addition with Zero (Identity Element)**:\n    *   **Input**: `a = 10`, `b = 0`\n    *   **Expected Output**: `10`\n    *   **Reasoning**: Verifies that adding zero returns the original number.\n\n6.  **Addition with Zero (Reverse)**:\n    *   **Input**: `a = 0`, `b = 10`\n    *   **Expected Output**: `10`\n    *   **Reasoning**: Verifies that adding zero to the first operand works correctly.\n\n7.  **Addition of Two Zeros**:\n    *   **Input**: `a = 0`, `b = 0`\n    *   **Expected Output**: `0`\n    *   **Reasoning**: Edge case where both operands are zero.\n\n8.  **Large Positive Numbers (Within Range)**:\n    *   **Input**: `a = 1_000_000`, `b = 2_000_000`\n    *   **Expected Output**: `3_000_000`\n    *   **Reasoning**: Verifies correctness for larger numbers well within `i32::MAX`.\n\n9.  **Large Negative Numbers (Within Range)**:\n    *   **Input**: `a = -1_000_000`, `b = -2_000_000`\n    *   **Expected Output**: `-3_000_000`\n    *   **Reasoning**: Verifies correctness for large negative numbers well within `i32::MIN`.\n\n10. **Boundary Case: Near `i32::MAX`**:\n    *   **Input**: `a = i32::MAX`, `b = 0`\n    *   **Expected Output**: `i32::MAX`\n    *   **Reasoning**: Tests behavior at the upper bound of the integer type.\n\n11. **Boundary Case: Near `i32::MIN`**:\n    *   **Input**: `a = i32::MIN`, `b = 0`\n    *   **Expected Output**: `i32::MIN`\n    *   **Reasoning**: Tests behavior at the lower bound of the integer type.\n\n12. **Boundary Case: Sum Equals `i32::MAX`**:\n    *   **Input**: `a = i32::MAX / 2`, `b = i32::MAX / 2`\n    *   **Expected Output**: `i32::MAX` (approximately, depends on exact division)\n    *   **Reasoning**: Specifically, `a = 1_073_741_823`, `b = 1_073_741_823` \u2192 `2_147_483_646` (which is `i32::MAX - 1`). Or `a = i32::MAX`, `b = 0` as above. Let's use `a = 1_000_000_000`, `b = 1_147_483_647` \u2192 `2_147_483_647` (`i32::MAX`).\n\n13. **Boundary Case: Sum Equals `i32::MIN`**:\n    *   **Input**: `a = -1_000_000_000`, `b = -1_147_483_648` \u2192 `-2_147_483_648` (`i32::MIN`)\n    *   **Reasoning**: Tests exact minimum value.\n\n14. **Commutativity**:\n    *   **Test**: Verify `add(a, b) == add(b, a)` for a variety of `a` and `b` values.\n    *   **Reasoning**: Addition is commutative. This is an implicit property of \"sum\".\n\n15. **Associativity**:\n    *   **Test**: Verify `add(a, add(b, c)) == add(add(a, b), c)` for a variety of values.\n    *   **Reasoning**: Addition is associative. This is an implicit property of \"sum\".\n\n### Important Note on Overflow\nThe documentation does **not** specify behavior for overflow (e.g., `a = i32::MAX`, `b = 1`). Since the documentation is silent, we cannot strictly test for a specific outcome (panic vs. wrap) without making assumptions. However, to ensure the code is \"bug free,\" one might argue that the documentation is incomplete if overflow is a possible input. But per the instruction to make no assumptions, we **do not** include overflow tests as \"expected behavior\" tests, but we might note that the documentation should clarify this. For the purpose of extracting testable behavior from the *given* documentation, we stop at the boundaries where the sum is valid.",
+                    "refusal": null,
+                    "role": "assistant",
+                    "annotations": null,
+                    "audio": null,
+                    "function_call": null,
+                    "tool_calls": null,
+                    "provider_specific_fields": {
+                        "refusal": null,
+                        "reasoning": null
+                    }
+                },
+                {
+                    "role": "user",
+                    "content": "Now turn this into a JSON array of Rust tests we should write for test driven development. Each entry in the array should have: \"test_name\": a descriptive Rust test method name in snake_case starting with 'test_', \"test_description\": a detailed description for the developer of what this test should do and which specific behavior from the documentation it tests. In particular, I want testable statements of the 'if this then that' type.\nFocus on those tests that follow directly from the documentation, e.g. no performance based ones."
+                }
+            ],
+            {
+                "id": "chatcmpl-967e2f79466099d7",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "logprobs": null,
+                        "message": {
+                            "content": "[\n  {\n    \"test_name\": \"test_add_two_positive_integers\",\n    \"test_description\": \"Verifies that adding two positive integers returns their arithmetic sum. If add(2, 3) is called, then the return value should be 5. This tests the basic functionality described in the documentation.\"\n  },\n  {\n    \"test_name\": \"test_add_two_negative_integers\",\n    \"test_description\": \"Verifies that adding two negative integers returns their arithmetic sum. If add(-2, -3) is called, then the return value should be -5. This ensures the function handles negative operands correctly.\"\n  },\n  {\n    \"test_name\": \"test_add_positive_and_negative_integer\",\n    \"test_description\": \"Verifies that adding a positive integer and a negative integer returns their arithmetic sum. If add(5, -2) is called, then the return value should be 3. This tests mixed-sign addition.\"\n  },\n  {\n    \"test_name\": \"test_add_negative_and_positive_integer\",\n    \"test_description\": \"Verifies that adding a negative integer and a positive integer returns their arithmetic sum. If add(-5, 2) is called, then the return value should be -3. This tests mixed-sign addition with reversed operand order.\"\n  },\n  {\n    \"test_name\": \"test_add_zero_to_number\",\n    \"test_description\": \"Verifies that adding zero to a number returns the original number (identity property). If add(10, 0) is called, then the return value should be 10. This tests the edge case of zero as the second operand.\"\n  },\n  {\n    \"test_name\": \"test_add_number_to_zero\",\n    \"test_description\": \"Verifies that adding a number to zero returns the original number (identity property). If add(0, 10) is called, then the return value should be 10. This tests the edge case of zero as the first operand.\"\n  },\n  {\n    \"test_name\": \"test_add_zero_to_zero\",\n    \"test_description\": \"Verifies that adding zero to zero returns zero. If add(0, 0) is called, then the return value should be 0. This tests the trivial edge case where both operands are zero.\"\n  },\n  {\n    \"test_name\": \"test_add_commutativity\",\n    \"test_description\": \"Verifies that the addition operation is commutative, meaning the order of operands does not affect the sum. If add(a, b) is called, then the result should be equal to add(b, a) for arbitrary integers a and b (e.g., a=7, b=4). This tests an inherent property of the 'sum' described in the documentation.\"\n  },\n  {\n    \"test_name\": \"test_add_max_i32_with_zero\",\n    \"test_description\": \"Verifies that adding the maximum i32 value to zero returns the maximum i32 value. If add(i32::MAX, 0) is called, then the return value should be i32::MAX. This tests the boundary condition at the upper limit of the integer type.\"\n  },\n  {\n    \"test_name\": \"test_add_min_i32_with_zero\",\n    \"test_description\": \"Verifies that adding the minimum i32 value to zero returns the minimum i32 value. If add(i32::MIN, 0) is called, then the return value should be i32::MIN. This tests the boundary condition at the lower limit of the integer type.\"\n  },\n  {\n    \"test_name\": \"test_add_large_positive_integers\",\n    \"test_description\": \"Verifies that adding two large positive integers within the i32 range returns their correct arithmetic sum. If add(1_000_000_000, 500_000_000) is called, then the return value should be 1_500_000_000. This tests correctness for large values that do not cause overflow.\"\n  },\n  {\n    \"test_name\": \"test_add_large_negative_integers\",\n    \"test_description\": \"Verifies that adding two large negative integers within the i32 range returns their correct arithmetic sum. If add(-1_000_000_000, -500_000_000) is called, then the return value should be -1_500_000_000. This tests correctness for large negative values that do not cause overflow.\"\n  }\n]",
+                            "refusal": null,
+                            "role": "assistant",
+                            "annotations": null,
+                            "audio": null,
+                            "function_call": null,
+                            "tool_calls": null,
+                            "provider_specific_fields": {
+                                "refusal": null,
+                                "reasoning": null
+                            }
+                        },
+                        "provider_specific_fields": {
+                            "stop_reason": null,
+                            "token_ids": null
+                        }
+                    }
+                ],
+                "created": 1781603474,
+                "model": "llm3",
+                "object": "chat.completion",
+                "service_tier": null,
+                "system_fingerprint": null,
+                "usage": {
+                    "completion_tokens": 1010,
+                    "prompt_tokens": 2014,
+                    "total_tokens": 3024,
+                    "completion_tokens_details": null,
+                    "prompt_tokens_details": null
+                }
+            },
+            [
+                {
+                    "role": "system",
+                    "content": "You are an expert Rust developer. You will generate unit tests for the specific function add(a : i32, b : i32). Use Rust's built-in test framework with #[test] and cargo test. Do not use external test crates such as rstest, proptest, quickcheck, or quicktest. You can import anything from the project itself. Make sure all function signatures and calls are correct. Handle Result, Option, panic behavior, and error cases appropriately when relevant. The code should compile on its own without errors."
+                },
+                {
+                    "role": "user",
+                    "content": "The interesting function under test is:\n```rust\n# [doc = \" Returns the sum of `a` and `b`.\"]\npub fn add(a : i32, b : i32) -> i32 \n```\n\nThe other functions will be tested later. Fill in Rust unit tests for the provided test module below. This is for test driven development, so the tests should be designed to fail if the later implementation does not exactly conform to the documentation.\n\nThis is the parent module or item context the function under test resides in:\n## Parent context\n```rust\n\n# [doc = \" Returns the sum of `a` and `b`.\"]\npub fn add(a : i32, b : i32) -> i32 \n```\n\nAdd any necessary `use` statements from the project itself. Every value you use must be properly constructed. Match function signatures and calls exactly, including ownership, borrowing, lifetimes, generics, and trait bounds. Handle Result, Option, panic behavior, and error cases appropriately when relevant. Use idiomatic Rust assertions such as assert!, assert_eq!, assert_ne!, matches!, and unwrap_err() where appropriate. Respond with the filled Rust test module only:\n\n```rust\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n      fn test_add_two_positive_integers() {\n      // Verifies that adding two positive integers returns their arithmetic sum. If add(2, 3) is called, then the return value should be 5. This tests the basic functionality described in the documentation.\n      }\n\n    #[test]\n      fn test_add_two_negative_integers() {\n      // Verifies that adding two negative integers returns their arithmetic sum. If add(-2, -3) is called, then the return value should be -5. This ensures the function handles negative operands correctly.\n      }\n\n    #[test]\n      fn test_add_positive_and_negative_integer() {\n      // Verifies that adding a positive integer and a negative integer returns their arithmetic sum. If add(5, -2) is called, then the return value should be 3. This tests mixed-sign addition.\n      }\n\n    #[test]\n      fn test_add_negative_and_positive_integer() {\n      // Verifies that adding a negative integer and a positive integer returns their arithmetic sum. If add(-5, 2) is called, then the return value should be -3. This tests mixed-sign addition with reversed operand order.\n      }\n\n    #[test]\n      fn test_add_zero_to_number() {\n      // Verifies that adding zero to a number returns the original number (identity property). If add(10, 0) is called, then the return value should be 10. This tests the edge case of zero as the second operand.\n      }\n\n    #[test]\n      fn test_add_number_to_zero() {\n      // Verifies that adding a number to zero returns the original number (identity property). If add(0, 10) is called, then the return value should be 10. This tests the edge case of zero as the first operand.\n      }\n\n    #[test]\n      fn test_add_zero_to_zero() {\n      // Verifies that adding zero to zero returns zero. If add(0, 0) is called, then the return value should be 0. This tests the trivial edge case where both operands are zero.\n      }\n\n    #[test]\n      fn test_add_commutativity() {\n      // Verifies that the addition operation is commutative, meaning the order of operands does not affect the sum. If add(a, b) is called, then the result should be equal to add(b, a) for arbitrary integers a and b (e.g., a=7, b=4). This tests an inherent property of the 'sum' described in the documentation.\n      }\n\n    #[test]\n      fn test_add_max_i32_with_zero() {\n      // Verifies that adding the maximum i32 value to zero returns the maximum i32 value. If add(i32::MAX, 0) is called, then the return value should be i32::MAX. This tests the boundary condition at the upper limit of the integer type.\n      }\n\n    #[test]\n      fn test_add_min_i32_with_zero() {\n      // Verifies that adding the minimum i32 value to zero returns the minimum i32 value. If add(i32::MIN, 0) is called, then the return value should be i32::MIN. This tests the boundary condition at the lower limit of the integer type.\n      }\n\n    #[test]\n      fn test_add_large_positive_integers() {\n      // Verifies that adding two large positive integers within the i32 range returns their correct arithmetic sum. If add(1_000_000_000, 500_000_000) is called, then the return value should be 1_500_000_000. This tests correctness for large values that do not cause overflow.\n      }\n\n    #[test]\n      fn test_add_large_negative_integers() {\n      // Verifies that adding two large negative integers within the i32 range returns their correct arithmetic sum. If add(-1_000_000_000, -500_000_000) is called, then the return value should be -1_500_000_000. This tests correctness for large negative values that do not cause overflow.\n      }\n}\n\n```"
+                },
+                {
+                    "content": "```rust\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n      fn test_add_two_positive_integers() {\n      // Verifies that adding two positive integers returns their arithmetic sum. If add(2, 3) is called, then the return value should be 5. This tests the basic functionality described in the documentation.\n      assert_eq!(add(2, 3), 5);\n      }\n\n    #[test]\n      fn test_add_two_negative_integers() {\n      // Verifies that adding two negative integers returns their arithmetic sum. If add(-2, -3) is called, then the return value should be -5. This ensures the function handles negative operands correctly.\n      assert_eq!(add(-2, -3), -5);\n      }\n\n    #[test]\n      fn test_add_positive_and_negative_integer() {\n      // Verifies that adding a positive integer and a negative integer returns their arithmetic sum. If add(5, -2) is called, then the return value should be 3. This tests mixed-sign addition.\n      assert_eq!(add(5, -2), 3);\n      }\n\n    #[test]\n      fn test_add_negative_and_positive_integer() {\n      // Verifies that adding a negative integer and a positive integer returns their arithmetic sum. If add(-5, 2) is called, then the return value should be -3. This tests mixed-sign addition with reversed operand order.\n      assert_eq!(add(-5, 2), -3);\n      }\n\n    #[test]\n      fn test_add_zero_to_number() {\n      // Verifies that adding zero to a number returns the original number (identity property). If add(10, 0) is called, then the return value should be 10. This tests the edge case of zero as the second operand.\n      assert_eq!(add(10, 0), 10);\n      }\n\n    #[test]\n      fn test_add_number_to_zero() {\n      // Verifies that adding a number to zero returns the original number (identity property). If add(0, 10) is called, then the return value should be 10. This tests the edge case of zero as the first operand.\n      assert_eq!(add(0, 10), 10);\n      }\n\n    #[test]\n      fn test_add_zero_to_zero() {\n      // Verifies that adding zero to zero returns zero. If add(0, 0) is called, then the return value should be 0. This tests the trivial edge case where both operands are zero.\n      assert_eq!(add(0, 0), 0);\n      }\n\n    #[test]\n      fn test_add_commutativity() {\n      // Verifies that the addition operation is commutative, meaning the order of operands does not affect the sum. If add(a, b) is called, then the result should be equal to add(b, a) for arbitrary integers a and b (e.g., a=7, b=4). This tests an inherent property of the 'sum' described in the documentation.\n      assert_eq!(add(7, 4), add(4, 7));\n      }\n\n    #[test]\n      fn test_add_max_i32_with_zero() {\n      // Verifies that adding the maximum i32 value to zero returns the maximum i32 value. If add(i32::MAX, 0) is called, then the return value should be i32::MAX. This tests the boundary condition at the upper limit of the integer type.\n      assert_eq!(add(i32::MAX, 0), i32::MAX);\n      }\n\n    #[test]\n      fn test_add_min_i32_with_zero() {\n      // Verifies that adding the minimum i32 value to zero returns the minimum i32 value. If add(i32::MIN, 0) is called, then the return value should be i32::MIN. This tests the boundary condition at the lower limit of the integer type.\n      assert_eq!(add(i32::MIN, 0), i32::MIN);\n      }\n\n    #[test]\n      fn test_add_large_positive_integers() {\n      // Verifies that adding two large positive integers within the i32 range returns their correct arithmetic sum. If add(1_000_000_000, 500_000_000) is called, then the return value should be 1_500_000_000. This tests correctness for large values that do not cause overflow.\n      assert_eq!(add(1_000_000_000, 500_000_000), 1_500_000_000);\n      }\n\n    #[test]\n      fn test_add_large_negative_integers() {\n      // Verifies that adding two large negative integers within the i32 range returns their correct arithmetic sum. If add(-1_000_000_000, -500_000_000) is called, then the return value should be -1_500_000_000. This tests correctness for large negative values that do not cause overflow.\n      assert_eq!(add(-1_000_000_000, -500_000_000), -1_500_000_000);\n      }\n}\n```",
+                    "refusal": null,
+                    "role": "assistant",
+                    "annotations": null,
+                    "audio": null,
+                    "function_call": null,
+                    "tool_calls": null,
+                    "provider_specific_fields": {
+                        "refusal": null,
+                        "reasoning": null
+                    }
+                },
+                {
+                    "role": "user",
+                    "content": "Make sure that this Rust test module compiles or runs without errors. Check that all imports are correct, all referenced symbols exist, and errors or exceptions are handled appropriately. Reply with the corrected Rust test module only."
+                }
+            ],
+            {
+                "id": "chatcmpl-86d7fc7333b17c44",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "logprobs": null,
+                        "message": {
+                            "content": "```rust\n#[cfg(test)]\nmod injected_test_mod_cascade {\n   use super::*;\n\n    #[test]\n      fn test_add_two_positive_integers() {\n      // Verifies that adding two positive integers returns their arithmetic sum. If add(2, 3) is called, then the return value should be 5. This tests the basic functionality described in the documentation.\n      assert_eq!(add(2, 3), 5);\n      }\n\n    #[test]\n      fn test_add_two_negative_integers() {\n      // Verifies that adding two negative integers returns their arithmetic sum. If add(-2, -3) is called, then the return value should be -5. This ensures the function handles negative operands correctly.\n      assert_eq!(add(-2, -3), -5);\n      }\n\n    #[test]\n      fn test_add_positive_and_negative_integer() {\n      // Verifies that adding a positive integer and a negative integer returns their arithmetic sum. If add(5, -2) is called, then the return value should be 3. This tests mixed-sign addition.\n      assert_eq!(add(5, -2), 3);\n      }\n\n    #[test]\n      fn test_add_negative_and_positive_integer() {\n      // Verifies that adding a negative integer and a positive integer returns their arithmetic sum. If add(-5, 2) is called, then the return value should be -3. This tests mixed-sign addition with reversed operand order.\n      assert_eq!(add(-5, 2), -3);\n      }\n\n    #[test]\n      fn test_add_zero_to_number() {\n      // Verifies that adding zero to a number returns the original number (identity property). If add(10, 0) is called, then the return value should be 10. This tests the edge case of zero as the second operand.\n      assert_eq!(add(10, 0), 10);\n      }\n\n    #[test]\n      fn test_add_number_to_zero() {\n      // Verifies that adding a number to zero returns the original number (identity property). If add(0, 10) is called, then the return value should be 10. This tests the edge case of zero as the first operand.\n      assert_eq!(add(0, 10), 10);\n      }\n\n    #[test]\n      fn test_add_zero_to_zero() {\n      // Verifies that adding zero to zero returns zero. If add(0, 0) is called, then the return value should be 0. This tests the trivial edge case where both operands are zero.\n      assert_eq!(add(0, 0), 0);\n      }\n\n    #[test]\n      fn test_add_commutativity() {\n      // Verifies that the addition operation is commutative, meaning the order of operands does not affect the sum. If add(a, b) is called, then the result should be equal to add(b, a) for arbitrary integers a and b (e.g., a=7, b=4). This tests an inherent property of the 'sum' described in the documentation.\n      assert_eq!(add(7, 4), add(4, 7));\n      }\n\n    #[test]\n      fn test_add_max_i32_with_zero() {\n      // Verifies that adding the maximum i32 value to zero returns the maximum i32 value. If add(i32::MAX, 0) is called, then the return value should be i32::MAX. This tests the boundary condition at the upper limit of the integer type.\n      assert_eq!(add(i32::MAX, 0), i32::MAX);\n      }\n\n    #[test]\n      fn test_add_min_i32_with_zero() {\n      // Verifies that adding the minimum i32 value to zero returns the minimum i32 value. If add(i32::MIN, 0) is called, then the return value should be i32::MIN. This tests the boundary condition at the lower limit of the integer type.\n      assert_eq!(add(i32::MIN, 0), i32::MIN);\n      }\n\n    #[test]\n      fn test_add_large_positive_integers() {\n      // Verifies that adding two large positive integers within the i32 range returns their correct arithmetic sum. If add(1_000_000_000, 500_000_000) is called, then the return value should be 1_500_000_000. This tests correctness for large values that do not cause overflow.\n      assert_eq!(add(1_000_000_000, 500_000_000), 1_500_000_000);\n      }\n\n    #[test]\n      fn test_add_large_negative_integers() {\n      // Verifies that adding two large negative integers within the i32 range returns their correct arithmetic sum. If add(-1_000_000_000, -500_000_000) is called, then the return value should be -1_500_000_000. This tests correctness for large negative values that do not cause overflow.\n      assert_eq!(add(-1_000_000_000, -500_000_000), -1_500_000_000);\n      }\n}\n```",
+                            "refusal": null,
+                            "role": "assistant",
+                            "annotations": null,
+                            "audio": null,
+                            "function_call": null,
+                            "tool_calls": null,
+                            "provider_specific_fields": {
+                                "refusal": null,
+                                "reasoning": null
+                            }
+                        },
+                        "provider_specific_fields": {
+                            "stop_reason": null,
+                            "token_ids": null
+                        }
+                    }
+                ],
+                "created": 1781603495,
+                "model": "llm3",
+                "object": "chat.completion",
+                "service_tier": null,
+                "system_fingerprint": null,
+                "usage": {
+                    "completion_tokens": 1240,
+                    "prompt_tokens": 2642,
+                    "total_tokens": 3882,
+                    "completion_tokens_details": null,
+                    "prompt_tokens_details": null
+                }
+            }
+        ],
+        "repair_history": [],
+        "verdict": "NoInco; pass; step 1 (C +T'); (12, 0, 0); ; "
     }
 ]

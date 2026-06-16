@@ -1,3 +1,4 @@
+import copy
 import os
 import re
 import json
@@ -10,6 +11,9 @@ from cascade.generation.executor.OpenAICaller import OpenAICaller
 
 class MultiStepTestGenerator(Generator):
     code_block_names = []
+    language_name = None
+    signature_block_name = None
+    test_artifact_name = "test module"
 
     def __init__(self,
                  model="gpt-4o-mini-2024-07-18",
@@ -35,15 +39,104 @@ class MultiStepTestGenerator(Generator):
         self.model = model
         self.max_prompt_tokens = max_prompt_tokens
     
+    def generate(self, context, input_path, output_path, response_step2=None):
+        chat_history = []
 
-    def generate(self, context, input_path, output_path,  response_step2=None):
-        raise NotImplementedError
+        print("     Test generation Phase 1")
+        test_list = self.generate_test_plan(context, output_path, chat_history)
 
-    def build_prompt(self, context):
-        raise NotImplementedError
+        if not test_list:
+            return "", chat_history
+        
+        print("     Test generation Phase 2")
+        new_tests = self.generate_test_code(context, output_path, chat_history)
 
-    def check_generated_tests_syntax(self, code, output_path):
-        raise NotImplementedError
+        return new_tests, chat_history
+
+    def build_behaviour_prompt(self, context):
+        return [
+            {
+                "role": "system",
+                "content": f"You are an expert {self.language_name} developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behaviour specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
+            },
+            {
+                "role": "user",
+                "content": (
+                    f"Give a complete description of the behavior that we should test when we want to assure that the code matches its documentation from the following method\n```{self.signature_block_name}\n"
+                    f"{self.build_signature(context, doc=True)}\n"
+                    "```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
+                )
+            }
+        ]
+
+    def generate_test_plan(self, context, output_path, chat_history):
+        errors_path = os.path.join(output_path, "errors.txt")
+
+        prompt_step1 = self.build_behaviour_prompt(context)
+
+        chat_history.append(copy.deepcopy(prompt_step1))
+        response_step1a = self.prompt_executor.execute(prompt_step1).model_dump()
+        chat_history.append(response_step1a)
+
+        if not response_step1a["choices"]:
+            print("     error during generation")
+            with open(errors_path, "a") as f:
+                f.write(f"error during test generation of {context["signature"]["name"]}")
+
+            return []
+        
+        prompt_step1.append(response_step1a["choices"][0]["message"])
+        prompt_step1.append(self.json_test_list_instruction())
+
+        response_step1b = self.prompt_executor.execute(prompt_step1).model_dump()
+        response_text = response_step1b["choices"][0]["message"]["content"]
+
+        test_list = self.extract_json_list(output_path, response_text)
+
+        chat_history.append(copy.deepcopy(prompt_step1))
+        chat_history.append(response_step1b)
+
+        if not test_list:
+            with open(errors_path, "a") as f:
+                f.write("error during test extraction from json")
+                return []
+            
+        context["test_list"] = test_list
+        return test_list
+
+        
+
+    def generate_test_code(self, context, output_path, chat_history):
+        errors_path = os.path.join(output_path, "errors.txt")
+        results_path = os.path.join(output_path, "results.txt")
+
+        prompt_step2 = self.build_prompt(context)
+
+        response_step2a = self.prompt_executor.execute(prompt_step2).model_dump()
+
+        prompt_step2.append(response_step2a["choices"][0]["message"])
+
+        prompt_step2.append(self.syntax_check_instruction())
+
+        response_step2b = self.prompt_executor.execute(prompt_step2).model_dump()
+        chat_history.append(copy.deepcopy(prompt_step2))
+        chat_history.append(response_step2b)
+
+        new_tests = self.extract_tests(response_step2b["choices"][0]["message"]["content"], context, response_step2b, output_path)
+
+        # Fallback if the second reply did not include a code block
+        if new_tests == "":
+            new_tests = self.extract_tests(response_step2a["choices"][0]["message"]["content"], context, response_step2b, output_path)
+
+        if new_tests == "":
+            with open(results_path, "w") as f:
+                f.write(f"Negative, No syntactically correct {self.test_artifact_name} generated")
+            with open(errors_path, "w") as f:
+                f.write(f"No syntactically correct {self.test_artifact_name} generated \nResponse text:\n{response_step2b}")
+
+        print("     Test generation finished")
+        return new_tests
+
 
     def extract_tests(self, new_tests, context, response, output_path):
         pattern = r"```(?:" + "|".join(self.code_block_names) + r")(.*?)\n\s*```"
@@ -64,9 +157,6 @@ class MultiStepTestGenerator(Generator):
 
 
         return extracted_tests
-
-    def repair(self, context, input_path, output_path, errors, key):
-        raise NotImplementedError
 
     def extract_json_list(self, output_path, response_text):
         # extract json list from response
@@ -155,6 +245,19 @@ class MultiStepTestGenerator(Generator):
         return "\n".join(lines)
 
 
+    # Hooks for subclasses
+    def build_prompt(self, context):
+        raise NotImplementedError
+
+
+    def check_generated_tests_syntax(self, code, output_path):
+        raise NotImplementedError
+
+
+    def repair(self, context, input_path, output_path, errors, key):
+        raise NotImplementedError
+
+
     def build_signature(self, context, doc=True):
         raise NotImplementedError
 
@@ -172,4 +275,25 @@ class MultiStepTestGenerator(Generator):
 
 
     def syntax_check_instruction(self):
-        raise NotImplementedError
+        return {
+        "role": "user",
+        "content": (
+            f"Make sure that this {self.test_artifact_name} compiles or runs without errors. "
+            "Check that all imports are correct, all referenced symbols exist, and errors or exceptions are handled appropriately. "
+            f"Reply with the corrected {self.test_artifact_name} only."
+        )
+    }
+
+    def json_test_list_instruction(self):
+        return {
+            "role": "user",
+            "content": (
+                f"Now turn this into a JSON array of {self.test_kind_name} we should write for test driven development. "
+                "Each entry in the array should have: "
+                f"\"test_name\": {self.test_name_rule}, "
+                "\"test_description\": a detailed description for the developer of what this test should do and "
+                "which specific behavior from the documentation it tests. "
+                "In particular, I want testable statements of the 'if this then that' type.\n"
+                "Focus on those tests that follow directly from the documentation, e.g. no performance based ones."
+            )
+        }

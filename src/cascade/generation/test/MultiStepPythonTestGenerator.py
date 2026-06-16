@@ -1,6 +1,5 @@
 import copy
 import json
-import os
 import re
 #import tiktoken
 
@@ -11,6 +10,11 @@ from cascade.utils.PythonUtils import build_context, check_syntax, repair_helper
 
 class MultiStepPythonTestGenerator(MultiStepTestGenerator):
     code_block_names = ["python", "py"]
+    language_name = "Python"
+    signature_block_name = "python"
+    test_artifact_name = "test module"
+    test_kind_name = "pytest tests"
+    test_name_rule = "a descriptive snake_case pytest function name starting with 'test_'"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -64,100 +68,6 @@ class MultiStepPythonTestGenerator(MultiStepTestGenerator):
         promptlist.append({"role": "user", "content": prompt})
 
         return promptlist
-
-
-    def generate(self, context, input_path, output_path, response_step2=None):
-        results_path = os.path.join(output_path, "results.txt")
-        errors_path = os.path.join(output_path, "errors.txt")
-
-        chat_history = []
-        print("      Test generation Phase 1")
-        # first given the method documentation and signature, we want to extract possible testcases or properties.
-        prompt_step1 = [
-            {"role": "system",
-             "content": "You are an expert Python developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behavior specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."},
-            {"role": "user",
-             "content": f"Give a complete description of the behavior that we should test when we want to asure that the code matches its documentation from the following Python method:\n```Python\n{build_signature(context, doc=True)}\n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."}
-        ]
-
-        chat_history.append(copy.deepcopy(prompt_step1))
-        response_step1a = self.prompt_executor.execute(prompt_step1).model_dump()
-        chat_history.append(response_step1a)
-
-        if not response_step1a["choices"]:
-            print("      error during generation")
-            with open(errors_path, "a") as f:
-                f.write(f"error during test generation of {context["signature"]["name"]}")
-
-            return "", chat_history
-
-        prompt_step1.append(response_step1a["choices"][0]["message"])
-
-        # now the goal is to convert this text into a usable format and extract the testable properties
-        prompt_json_list = {
-            "role": "user",
-            "content": (
-                "Now turn this into a JSON array of pytest tests we should write for test driven development. "
-                "Each entry should have \"test_name\": a descriptive snake_case pytest function name starting with 'test_', "
-                "and \"test_description\": a detailed description..."
-            )
-        }
-
-        prompt_step1.append(prompt_json_list)
-
-        response_step1b = self.prompt_executor.execute(prompt_step1).model_dump()
-        response_text = response_step1b["choices"][0]["message"]["content"]
-
-
-        test_list = self.extract_json_list(output_path, response_text)
-
-        chat_history.append(copy.deepcopy(prompt_step1))
-        chat_history.append(response_step1b)
-
-        if not test_list:
-            with open(errors_path, "a") as f:
-                f.write("error during test extraction from json")
-            return "", chat_history
-
-
-        context["test_list"] = test_list
-
-        print("      Test generation Phase 2")
-        # now we have a list of testable properties, we want to generate a testclass filled with these.
-        prompt_step2 = self.build_prompt(context)
-
-        response_step2a = self.prompt_executor.execute(prompt_step2).model_dump()
-
-        prompt_step2.append(response_step2a["choices"][0]["message"])
-
-        prompt_step2.append({
-            "role": "user",
-            "content": (
-                "Make sure that this module is syntactically correct and pytest-runnable without errors. "
-                "Keep the exact project import from the provided test module skeleton unless it is syntactically invalid. "
-                "Check if everything that is used is imported correctly and all exceptions are properly caught. "
-                "Reply with the complete corrected pytest test module only."
-            )
-        })
-
-        response_step2b = self.prompt_executor.execute(prompt_step2).model_dump()
-        chat_history.append(copy.deepcopy(prompt_step2))
-        chat_history.append(response_step2b)
-
-        new_tests = self.extract_tests(response_step2b["choices"][0]["message"]["content"], context, response_step2b, output_path)
-
-        # this is a fallback if the second reply did not include a code block
-        if new_tests == "":
-            new_tests = self.extract_tests(response_step2a["choices"][0]["message"]["content"], context, response_step2b, output_path)
-        # prompt_step2.append({"role": "assistant", "content": f"```python\n{new_tests}\n```"})
-
-        if new_tests == "":
-            with open(results_path, "w") as f:
-                f.write("Negative, No syntactically correct test module generated")
-            with open(errors_path, "w") as f:
-                f.write(f"No syntactically correct test module generated \nResponse text:\n{response_text}")
-        print("      Test generation finished")
-        return new_tests, chat_history
 
 
     def build_tests(self, context):
@@ -218,6 +128,14 @@ class MultiStepPythonTestGenerator(MultiStepTestGenerator):
 
     def duplicate_test_name(self, name, count):
         return f"{name}_{count}"
+
+
+    def build_signature(self, context, doc=True):
+        return build_signature(context, doc=doc)
+
+
+    def build_context(self, context, *args, **kwargs):
+        return build_context(context, *args, **kwargs)
     
     def check_syntax(self, code, output_path):
         raise NotImplementedError
