@@ -1,6 +1,8 @@
 .idea/
 
-
+/examples/java/output/*
+/examples/rust/output/*
+/examples/python/output/*
 
 /tests/resources/apikeys/*
 !tests/resources/apikeys/README.md
