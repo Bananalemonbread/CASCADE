@@ -1,120 +1,116 @@
+import json
 import re
 
-from cascade.generation.Generator import Generator
-from cascade.generation.executor.OpenAICaller import OpenAICaller
-from cascade.utils.CSharpUtils import build_context, build_signature
-
-import os
-import copy
-import tiktoken
-import json
-
-class CSharpCodeGenerator(Generator):
-    def __init__(self, max_attempts=1, max_tokens=10000, temperature=0, delay=3, max_prompt_tokens=6000, model="gpt-4o-mini-2024-07-18", freq_penalty=0.0, dummy=False):
-        super().__init__()
-        self.model = model
-        self.max_prompt_tokens = max_prompt_tokens
-        self.prompt_executor = OpenAICaller(max_attempts=max_attempts, model=model, max_tokens=max_tokens, temperature=temperature,
-                                            delay=delay, freq_penalty=freq_penalty, dummy=dummy)
-
-    def build_prompt(self, context):
-        enc = tiktoken.encoding_for_model(self.model)
-
-        system_prompt = f"Write the body of one C# method for {context['signature']['name']}. Respond only with the completion of the function body."
-
-        parent = context["parent"]
-        usings = '\n'.join(parent["imports"]) + '\n' if parent["imports"] else ""
-        namespace = '\n' + "namespace " + parent["namespace"] + ";\n\n"
-
-        code = build_context(context, doc=True)
-
-        primer =  "{\n// write only the function body here\n"
-
-        prompt = usings + namespace + code + primer
-
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            code = build_context(context, doc=True, no_fields=True)
-            prompt = usings + namespace + code + primer
-
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            code = build_context(context, doc=True, no_fields=True, no_constructors=True)
-            prompt = usings + namespace + code + primer
-
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            code = build_context(context, doc=True, no_fields=True, no_constructors=True, no_other_method_docs=True)
-            prompt = usings + namespace + code + primer
-
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            code = build_context(context, doc=True, no_fields=True, no_constructors=True,  no_other_method_docs=True, no_other_methods=True)
-            prompt = usings + namespace + code + primer
-
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            return []
+from cascade.generation.code.BaseCodeGenerator import BaseCodeGenerator
+from cascade.utils.CSharpUtils import build_context, build_signature, parent_context
 
 
-        promptlist = []
-        promptlist.append({"role": "system", "content": system_prompt})
-        promptlist.append({"role": "user", "content": prompt})
+class CSharpCodeGenerator(BaseCodeGenerator):
+    language = "C#"
+    code_block_language = "csharp"
+    context_name = "C# class"
+    target_name = "method"
+    response_kind = "method"
+    error_word = "exceptions"
+    valid_code_instruction = "The code should compile without errors."
+    build_context_function = staticmethod(build_context)
 
-        return promptlist
+    def prompt_code_prefix(self, context):
+        parent = parent_context(context)
 
+        imports = parent.get("imports", [])
+        using_lines = ""
+        if imports:
+            using_lines = "\n".join(import_.rstrip() for import_ in imports) + "\n\n"
 
-    def generate(self, context, output_path, safety_copy_prefix):
-        prompt = self.build_prompt(context)
-        code_safety_copy_path = os.path.join(output_path, safety_copy_prefix + "code_generator_current.json")
+        namespace = parent.get("namespace")
+        namespace_line = f"namespace {namespace};\n\n" if namespace else ""
+        return using_lines + namespace_line
 
-        if prompt == "":
-            return "", None
+    def build_prompt_finisher(self, context):
+        return (
+            " {\n"
+            "    // write the function body for this method. Take the Documentation as literal as possible.\n"
+            "    }\n"
+            "}\n"
+            "```\n"
+            "Now respond with the working implemented method."
+        )
 
-        response = None
-        if os.path.exists(code_safety_copy_path):
-            with open(code_safety_copy_path, "r") as file:
-                context2 = json.load(file)
-
-            response = context2["response"]
-            del context2["response"]
-
-            if context != context2:
-                response = None
-
-        if not response:
-            response = self.prompt_executor.execute(prompt).model_dump()
-
-            safety_copy = copy.deepcopy(context)
-            safety_copy["response"] = response
-
-            with open(code_safety_copy_path, "w") as file:
-                json.dump(safety_copy, file)
-
-        new_code = response["choices"][0]["message"]["content"]
-
-        new_code = self.extract_code(new_code, context, response)
-
-        return new_code , response
-
-    def extract_code(self, new_code, context, response):
-        code_blocks = re.findall(r"```csharp(.*?)\n```", new_code, flags=re.DOTALL)
+    def extract_code(self, new_code, context, response, output_path):
+        code_blocks = re.findall(r"```(?:csharp|cs)(.*?)\n```", new_code, flags=re.DOTALL)
 
         if code_blocks:
             new_code = code_blocks[0]
+        else:
+            new_code = re.sub(r"^```(?:csharp|cs)?\s*", "", new_code.strip())
+            new_code = re.sub(r"\s*```$", "", new_code).strip()
 
         return self.try_to_fix(new_code, context, response)
 
     def try_to_fix(self, new_code, context, response):
-        temp = new_code.split(build_signature(context , False) + "{")
-        if len(temp) > 1:
-            new_code = "".join(temp[1:])
+        new_code = new_code.strip()
+        signature = build_signature(context, doc=False)
+        signature_pattern = re.escape(re.sub(r"(\W)", r" \1 ", signature + " {")).replace(r"\ ", r"\s*")
+        parts = re.split(signature_pattern, new_code)
 
+        if len(parts) > 1:
+            new_code = "".join(parts[1:])
+            return self.extract_balanced_body(new_code, starts_after_open_brace=True)
+
+        method_name = re.escape(context["signature"]["name"])
+        method_match = re.search(rf"\b{method_name}\b[^\{{]*\{{", new_code, flags=re.DOTALL)
+        if method_match:
+            new_code = new_code[method_match.end():]
+            return self.extract_balanced_body(new_code, starts_after_open_brace=True)
+
+        if new_code.startswith("{"):
+            return self.extract_balanced_body(new_code[1:], starts_after_open_brace=True)
+
+        return self.extract_balanced_body(new_code, starts_after_open_brace=True)
+
+    def extract_balanced_body(self, code, starts_after_open_brace):
         fixed_code = ""
-        # First brace is already there
-        braces = 1
-        for letter in new_code:
+        braces = 1 if starts_after_open_brace else 0
+
+        for letter in code:
             if letter == "{":
                 braces += 1
             elif letter == "}":
                 braces -= 1
+
             if braces == 0:
                 break
+
             fixed_code += letter
 
-        return "{" + fixed_code + "}"
+        return "{" + fixed_code.rstrip() + "\n}"
+
+    def repair(self, context, input_path, output_path, errors, key):
+        system_prompt = (
+            "You are an expert C# developer. You will fix provided compilation errors in provided code "
+            "without changing its functionality. Follow the documentation as close as possible. "
+            "Handle exceptions properly, and ensure all calls are correct. Do not use any new imports. "
+            "The code should compile without errors. Respond only with the method."
+        )
+        prompt = (
+            f"The following errors occurred during compilation of the C# class: "
+            f"{parent_context(context).get('name', 'unknown class')}.\n"
+            f"Errors:\n```\n{errors}\n```\n\n"
+            "Fix the errors in the following method while still following the documentation as close as possible:\n"
+            f"```csharp\n{build_signature(context, doc=True) + context[key]}\n```"
+        )
+
+        promptlist = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": prompt},
+        ]
+
+        res = self.prompt_executor.execute(promptlist).model_dump()
+        promptlist.append(res["choices"][0]["message"])
+
+        repair_response = {"prompt": promptlist, "response": res}
+        new_code = res["choices"][0]["message"]["content"]
+        new_code = self.extract_code(new_code, context, res, output_path)
+
+        return new_code, repair_response

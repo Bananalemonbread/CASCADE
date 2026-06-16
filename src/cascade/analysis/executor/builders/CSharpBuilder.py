@@ -1,74 +1,112 @@
-from cascade.analysis.executor.builders.Builder import Builder
-from cascade.utils.DockerizedWrapper import DockerizedWrapper
+import re
 import xml.etree.ElementTree as ET
 
-def parse_xml_result(xml):
-    # Define the namespace used in the XML
-    namespace = {'vs': 'http://microsoft.com/schemas/VisualStudio/TeamTest/2010'}
+from cascade.analysis.executor.ExecutionResults import ExecutionResults
+from cascade.analysis.executor.builders.Builder import Builder
+from cascade.utils.DockerizedWrapper import DockerizedWrapper
 
-    root = ET.fromstring(xml)
 
-    passed_tests = []
-    failed_tests = []
-    errored_tests = []
+class CSharpTestResultParser:
+    def parse(self, output):
+        results = ExecutionResults()
+        results.parsed_file = output
 
-    for test_result in root.findall('.//vs:UnitTestResult', namespace):
-        test_name = test_result.get('testName')
-        test_name = test_name.split('.')[-1]  # only use the method name
-        test_name = test_name.split('(')[0]
-        outcome = test_result.get('outcome')
+        if self.has_compilation_error(output):
+            results.comp_errors = output
+            results.comp_error_matches = [output]
 
-        # Categorize based on the outcome
-        if outcome == 'Passed':
-            passed_tests.append(test_name)
-        elif outcome == 'Failed':
-            failed_tests.append(test_name)
-        elif outcome == 'Error':
-            errored_tests.append(test_name)
+        trx_xml = self.extract_trx_xml(output)
+        if not trx_xml:
+            return results
 
-    return [passed_tests, failed_tests, errored_tests]
+        try:
+            passed, failed, errored = self.parse_trx(trx_xml)
+        except ET.ParseError:
+            results.comp_errors = output
+            results.results = ([], [], ["trx_parse_error"])
+            results.results_numbers = (0, 0, 1)
+            return results
+
+        results.xml_blocks = [trx_xml]
+        results.results = (passed, failed, errored)
+        results.results_numbers = (len(passed), len(failed), len(errored))
+        return results
+
+    def extract_trx_xml(self, output):
+        matches = re.findall(r"(<\?xml.*?</TestRun>)", output, flags=re.DOTALL)
+        if matches:
+            return matches[-1]
+
+        stripped = output.strip()
+        if stripped.startswith("<TestRun") or stripped.startswith("<?xml"):
+            return stripped
+
+        return ""
+
+    def parse_trx(self, trx_xml):
+        namespace = {"vs": "http://microsoft.com/schemas/VisualStudio/TeamTest/2010"}
+        root = ET.fromstring(trx_xml)
+
+        passed_tests = []
+        failed_tests = []
+        errored_tests = []
+
+        test_results = root.findall(".//vs:UnitTestResult", namespace)
+        if not test_results:
+            test_results = root.findall(".//UnitTestResult")
+
+        for test_result in test_results:
+            test_name = test_result.get("testName") or ""
+            test_name = test_name.split(".")[-1].split("(")[0]
+            outcome = test_result.get("outcome")
+
+            if outcome == "Passed":
+                passed_tests.append(test_name)
+            elif outcome == "Failed":
+                failed_tests.append(test_name)
+            else:
+                errored_tests.append(test_name)
+
+        return passed_tests, failed_tests, errored_tests
+
+    def has_compilation_error(self, output):
+        return "Build FAILED" in output or "error CS" in output
+
 
 class CSharpBuilder(Builder):
-    def __init__(self,
-                 image,
-                 new_image_name,
-                 dotnet_args,
-                 set_up_command,
-                 set_up_args,
-                 timeout=120):
-        pattern = f"echo \"[INFO] Tests run starting!\" > out; timeout {timeout} dotnet test {dotnet_args} 2>&1 > output; cat output > out; cat output"
-        super().__init__(pattern, self.eval_function, image)
-        self.image = image
-        self.new_image_name = new_image_name
+    def __init__(self, image, new_image_name, dotnet_args, set_up_command, set_up_args, timeout=300):
+        self.parser = CSharpTestResultParser()
+        self.old_image_name = image
         self.set_up_command = set_up_command
         self.set_up_args = set_up_args
 
-    def eval_function(self, x):
-        """
-        The function that has to be given to the builder to evaluate the output of the tests
-        :param x: a string containing the output produced in the docker,
-                    which should contain the output of the tests which are then parsed here.
-        :return: result a tuple of three lists of strings,
-            the first list contains the names of the tests that passed,
-            the second list contains the names of the tests that failed,
-            the third list contains the names of the tests that errored
-        """
+        super().__init__(
+            test_pattern=(
+                "echo \"[INFO] Tests run starting!\" > out; "
+                f"timeout {timeout} dotnet test %p --filter \"FullyQualifiedName~%t\" {dotnet_args} > output 2>&1; "
+                "status=$?; cat output > out; "
+                "cat $HOME/test_result.trx >> out 2>/dev/null || true; "
+                "echo \"[INFO] Exit code: $status\" >> out; "
+                "cat output"
+            ),
+            eval_function=self.eval_function,
+            image=new_image_name,
+        )
 
-        return parse_xml_result(x)
+    def eval_function(self, output):
+        return self.parser.parse(output)
 
-    def set_up(self, temp_dir, _, output_path):
-        wrapper = DockerizedWrapper(debug=True)
+    def set_up(self, temp_dir, context, output_path):
+        wrapper = DockerizedWrapper()
         dock_context = {
-            "image": self.image,
-            "new_image": self.new_image_name,  # name of the new image that results
+            "image": self.old_image_name,
+            "new_image": self.image,
             "directory": temp_dir,
             "command": f"{self.set_up_command} {self.set_up_args}; RET=$?; rm -rf ../root/*; exit $RET;",
         }
         return wrapper.setup_image(dock_context, output_path)
 
     def tear_down(self, _):
-        wrapper = DockerizedWrapper(debug=True)
-        dock_context = {
-            "new_image": self.image,
-        }
+        wrapper = DockerizedWrapper()
+        dock_context = {"new_image": self.image}
         wrapper.remove_image(dock_context)

@@ -1,185 +1,94 @@
-import copy
-import json
-import os
-import re
-import tiktoken
-
-from cascade.generation.Generator import Generator
-from cascade.generation.executor.OpenAICaller import OpenAICaller
-from cascade.utils.CSharpUtils import build_context, build_tests, check_syntax, build_test_first_method
+from cascade.generation.test.MultiStepTestGenerator import MultiStepTestGenerator
+from cascade.utils.CSharpUtils import build_context, build_signature, build_tests, check_syntax, csharp_test_name
 
 
-class MultiStepCSharpTestGenerator(Generator):
-    def __init__(self, max_attempts=1, max_tokens=10000, temperature=0, delay=3, max_prompt_tokens=6000, model="gpt-4o-mini-2024-07-18", freq_penalty=0.0, dummy=False):
-        super().__init__()
-        self.model = model
-        self.max_prompt_tokens = max_prompt_tokens
-        self.prompt_executor = OpenAICaller(max_attempts=max_attempts, model=model, max_tokens=max_tokens, temperature=temperature,
-                                                            delay=delay, freq_penalty=freq_penalty, dummy=dummy)
+class MultiStepCSharpTestGenerator(MultiStepTestGenerator):
+    code_block_names = ["csharp", "cs"]
+    language_name = "C#"
+    signature_block_name = "csharp"
+    test_artifact_name = "C# test class"
+    test_kind_name = "C# unit tests"
+    test_name_rule = "a descriptive C# test method name"
 
-    def build_prompt(self, context):
-        enc = tiktoken.encoding_for_model(self.model)
+    def __init__(self, tool_path=None, **kwargs):
+        super().__init__(**kwargs)
+        self.tool_path = tool_path
 
-        system_prompt = f"Write C# unit tests for the method {context['signature']['name']}. Respond only with the completion of the tests."
+    def normalize_test_name(self, name):
+        return csharp_test_name(name)
 
-        code = "// CODE:\n\n" + build_context(context, doc=True)
+    def duplicate_test_name(self, name, count):
+        return f"{name}{count}"
 
-        test_header = ";\n}\n\n// TESTS:\n\n" + build_tests(context, primer=f"\n    // start writing tests for {context['signature']['name']} here")
+    def test_generation_system_prompt(self, context):
+        framework = self.test_framework_name(context)
+        params = ", ".join(context["signature"].get("params", []))
+        return (
+            f"You are an expert C# developer. You will generate {framework} tests for the specific method "
+            f"{context['signature']['name']}({params}). "
+            "You can import anything from the project itself. "
+            "Make sure all method signatures and calls are correct. "
+            "Handle exceptions, nullable values, async behavior, and error cases appropriately when relevant. "
+            "The code should compile on its own without errors."
+        )
 
-        prompt = code + test_header
+    def test_generation_context_prompt(self, context):
+        return (
+            f"The interesting method under test is:\n"
+            f"```csharp\n{self.build_signature(context, doc=True)}\n```\n\n"
+            "The other methods will be tested later. "
+            "Fill in C# unit tests for the provided test class below. "
+            "This is for test driven development, so the tests should be designed to fail if the later implementation "
+            "does not exactly conform to the documentation.\n\n"
+            f"This is the parent class the method under test resides in:\n"
+            f"## Parent class\n"
+            f"```csharp\n"
+            f"{self.build_context(context, doc=True, no_fields=False, no_constructors=False, no_other_method_docs=True, no_other_methods=True)}"
+            "\n    {\n        // this is the method to be tested\n    }\n}\n"
+            "```\n\n"
+        )
 
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            code = "// CODE:\n\n" + build_context(context, doc=True, no_fields=True)
-            prompt = code + test_header
+    def test_generation_test_header(self, context):
+        return (
+            "Add or adjust using directives as needed. Use only the configured C# test framework, "
+            "the .NET standard libraries, and imports from the project itself. Instantiate every object you use. "
+            "Match method signatures and calls exactly, including generics, overloads, async/await, nullable values, "
+            "and exceptions. Respond with the complete filled C# test class only:\n"
+        )
 
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            code = "// CODE:\n\n" + build_context(context, doc=True, no_fields=True, no_constructors=True)
-            prompt = code + test_header
+    def build_tests(self, context):
+        return build_tests(context)
 
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            code = "// CODE:\n\n" + build_context(context, doc=True, no_fields=True, no_constructors=True, no_other_method_docs=True)
-            prompt = code + test_header
+    def build_signature(self, context, doc=True):
+        return build_signature(context, doc=doc)
 
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            code = "// CODE:\n\n" + build_context(context, doc=True, no_fields=True, no_constructors=True, no_other_method_docs=True,
-                                 no_other_methods=True)
-            prompt = code + test_header
+    def build_context(self, context, *args, **kwargs):
+        return build_context(context, *args, **kwargs)
 
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            return []
+    def check_generated_tests_syntax(self, code, output_path):
+        return check_syntax(code, output_path, tool_path=self.tool_path)
 
-        promptlist = []
-        promptlist.append({"role": "system", "content": system_prompt})
-        promptlist.append({"role": "user", "content": prompt})
+    def repair_source_pattern(self):
+        return "*.cs"
 
-        return promptlist
+    def repair_system_prompt(self):
+        return (
+            "You are an expert C# developer. You will fix compilation errors in a provided C# test class "
+            "and return the entire repaired class."
+        )
 
+    def repair_user_prompt(self, context, errors, key, tree):
+        return (
+            f"During compilation of my C# test class some errors occurred.\n"
+            f"Errors:\n```\n{errors}\n```\n\n"
+            f"C# test class:\n```csharp\n{context[key]}\n```\n"
+            "Do not change the intended behavior of the tests, but make sure the class compiles. "
+            "Check using directives, namespaces, object construction, method calls, async/await, generics, nullable values, "
+            "and expected exceptions. "
+            f"If you need to add imports, use the following C# source tree:\n```\n{tree}\n```\n\n"
+            "Now fix the C# test class and respond with the entire fixed C# code only."
+        )
 
-    def generate(self, context, output_path, safety_copy_prefix):
-        prompt = self.build_prompt(context)
-        test_safety_copy_path = os.path.join(output_path, safety_copy_prefix + "test_generator_current.json")
-
-        response = None
-        if os.path.exists(test_safety_copy_path):
-            with open(test_safety_copy_path, "r") as file:
-                context2 = json.load(file)
-
-            response = context2["response"]
-            del context2["response"]
-
-            if context != context2:
-                response = None
-
-        if not response:
-            response = self.prompt_executor.execute(prompt).model_dump()
-
-            safety_copy = copy.deepcopy(context)
-
-            imports = dict()
-            if True: #TODO: use param from master
-                prompt.append({"role" : "assistant", "content" : response["choices"][0]["message"]["content"]})
-                prompt.append({"role" : "user", "content" : "What imports are necessary for this code?"})
-                imports = self.prompt_executor.execute(prompt).model_dump()
-                imports_message = imports["choices"][0]["message"]["content"]
-                for line in imports_message.splitlines():
-                    if "using" in line and ";" in line:
-                        context["tests"][0]["test_imports"].append(line) #TODO: handle multiple tests
-
-            context["tests"][0]["test_imports"] = list(set(context["tests"][0]["test_imports"])) #TODO: use it somewhere..
-
-            response = {"response" : response, "imports" : imports}
-
-            safety_copy["response"] = response
-            with open(test_safety_copy_path , "w") as file:
-                json.dump(safety_copy, file)
-
-        new_tests = response["response"]["choices"][0]["message"]["content"]
-
-        new_tests = self.extract_tests(new_tests, context, response, output_path)
-
-        return new_tests, response
-
-    def extract_tests(self, new_tests, context, response, output_path):
-        code_blocks = re.findall(r"```csharp(.*?)\n```", new_tests, flags=re.DOTALL)
-
-        if not code_blocks == []:
-            new_tests = code_blocks[0]
-
-        new_tests = self.try_to_fix(new_tests, response, context, output_path)
-
-        return new_tests
-
-    def try_to_fix(self, new_tests, response, context, output_path):
-
-        new_tests = self.remove_first_method_signature(context, new_tests)
-
-        # check if the class is complete
-        chunk = ""
-        braces = 3 # one opening brace for namespace, class and method
-        for letter in new_tests:
-            chunk += letter
-            if letter == "{":
-                braces += 1
-            elif letter == "}":
-                braces -= 1
-            if braces == 0:
-                break
-
-        # we have to complete the class
-        if braces == 0:
-            return build_tests(context) + chunk
-
-        if braces == 1:
-            # two possible cases: 1. full class with a brace too much, 2. or a completion with a brace to few
-            # full class
-            to_check = [chunk[:chunk.rfind("}")], build_tests(context) + chunk + "}",
-                        build_tests(context) + chunk[chunk.find("{") + 1:]]
-            for check in to_check:
-                if check_syntax(check, output_path):
-                    return check
-
-        # the class is complete
-        if braces == 2:
-            check = chunk
-            if check_syntax(check, output_path):
-                return check
-
-            check = build_tests(context) + chunk + "}}"
-            if check_syntax(check, output_path):
-                return check
-
-            check = build_tests(context, no_method=True) + chunk + "}"
-            if check_syntax(check, output_path):
-                return check
-
-        if braces == 3: # Response could be a full class
-            check = chunk
-            if check_syntax(check, output_path):
-                return check
-
-        if braces >= 3:
-            if response['response']['choices'][0]["finish_reason"] == "length":
-                last_test = 0
-                lines = new_tests.splitlines()
-
-                for num, line in enumerate(lines):
-                    if "[Test]" in line or "[Fact]" in line or "[TestMethod]" in line:
-                        last_test = num
-
-                return "\n".join(lines[:last_test]) + "\n}"
-
-        return new_tests + "}" * (braces - 2)
-
-    def remove_first_method_signature(self, context, new_tests):
-        # I know this is brutal, but this gives us the first test method signature that we passed
-        # to the Chatbot prompting it to complete the test file from there on
-        first_test_method_signature = build_test_first_method(context["signature"]["name"])
-
-        split_result = new_tests.split(first_test_method_signature)
-
-        # in case chatbot return the first passed signature again underneath the original signature,
-        # we remove it
-        if len(split_result) == 3:
-            new_tests = split_result[0] + first_test_method_signature + split_result[2]
-
-        return new_tests
+    def test_framework_name(self, context):
+        test = (context.get("tests") or [{}])[0]
+        return test.get("test_runner") or context.get("test_runner") or "xUnit"

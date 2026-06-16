@@ -3,55 +3,35 @@ import re
 from cascade.generation.code.BaseCodeGenerator import BaseCodeGenerator
 from cascade.utils.RustUtils import build_context, build_signature
 
-import tiktoken
-
 class RustCodeGenerator(BaseCodeGenerator):
-    def build_prompt(self, context):
-        #enc = tiktoken.encoding_for_model(self.model)
-        enc = tiktoken.get_encoding("o200k_base")
+    language = "Rust"
+    code_block_language = "rust"
+    context_name = "Rust module"
+    target_name = "function"
+    response_kind = "function"
+    error_word = "errors"
+    valid_code_instruction = "The code should compile without errors."
 
-        par = context['signature']['params']
-        params = ", ".join(par) if len(par) > 1 else (par[0] if par else "")
+    def build_prompt_context(self, context, **kwargs):
+        rust_context = build_context(context, doc=True, **kwargs)
+        module_closers = "\n}" * max(len(context["parent"]) - 1, 0)
 
-        system_prompt = ("You are an Expert Rust developer. "
-                         "You will be given a Rust module and have to implement one specific function, following its documentation as close as possible. "
-                         "The documentation is the ground truth and should be seen as correct, even if the function name contradicts it. "
-                         "Handle errors properly, and ensure all calls are correct. Do not use any new imports. "
-                         "The code should compile without errors. Respond only with the function."
-                         )
+        if module_closers and rust_context.endswith(module_closers):
+            rust_context = rust_context[:-len(module_closers)]
 
-        prompt_start = f"The function you need to implement is `{context['signature']['name']}({params})`\nHere is the module it is situated in\n```rust\n"
         function_body_prompt = " {\n     // write the function body for this function. Take the Documentation as literal as possible.\n    }"
-        prompt_finisher = "\n```\nNow respond with the working implemented function."
+        return rust_context + function_body_prompt + module_closers
 
-        def build_prompt_body(**kwargs):
-            rust_context = build_context(context, doc=True, **kwargs)
-            module_closers = "\n}" * max(len(context["parent"]) - 1, 0)
+    def build_prompt_finisher(self, context):
+        return "\n```\nNow respond with the working implemented function."
 
-            if module_closers and rust_context.endswith(module_closers):
-                rust_context = rust_context[:-len(module_closers)]
-
-            return rust_context + function_body_prompt + module_closers + prompt_finisher
-
-        prompt = prompt_start + build_prompt_body()
-
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            prompt = prompt_start + build_prompt_body(no_fields=True)
-
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            prompt = prompt_start + build_prompt_body(no_fields=True, no_other_method_docs=True)
-
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            prompt = prompt_start + build_prompt_body(no_fields=True, no_other_method_docs=True, no_other_methods=True)
-
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            return []
-
-        promptlist = []
-        promptlist.append({"role": "system", "content": system_prompt})
-        promptlist.append({"role": "user", "content": prompt})
-
-        return promptlist
+    def context_variants(self):
+        return [
+            {},
+            {"no_fields": True},
+            {"no_fields": True, "no_other_method_docs": True},
+            {"no_fields": True, "no_other_method_docs": True, "no_other_methods": True},
+        ]
 
     def extract_code(self, new_code, context, response, output_path):
         code_blocks = re.findall(r"```rust(.*?)\n```", new_code, flags=re.DOTALL)

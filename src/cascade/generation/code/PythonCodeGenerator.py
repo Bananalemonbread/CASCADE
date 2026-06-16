@@ -3,59 +3,25 @@ import re
 from cascade.generation.code.BaseCodeGenerator import BaseCodeGenerator
 from cascade.utils.PythonUtils import repair_helper_functions, get_repair_helper_functions, build_context, build_signature
 
-import tiktoken
 import json
 
 class PythonCodeGenerator(BaseCodeGenerator):
-    def build_prompt(self, context):
-        #enc = tiktoken.encoding_for_model(self.model)
-        enc = tiktoken.get_encoding("o200k_base")
+    language = "Python"
+    code_block_language = "python"
+    context_name = "Python module or class"
+    target_name = "function or method"
+    response_kind = "function body"
+    error_word = "errors"
+    valid_code_instruction = "The code should be syntactically valid Python."
+    build_context_function = staticmethod(build_context)
+    build_context_kwargs = {"imports": True}
 
-        par = context['signature']['params']
-        params = ", ".join(par) if len(par) > 1 else (par[0] if par else "")
+    def build_prompt_finisher(self, context):
+        return ("\n    # implement only the function body here. "
+                "Take the documentation as literal as possible.\n"
+                "```\n"
+                "Now respond with the working implemented function body.")
 
-        system_prompt = ("You are an Expert Python developer. "
-                         "You will be given a Python module or class and have to implement one specific function or method, following its documentation as close as possible. "
-                         "The documentation is the ground truth and should be seen as correct, even if the function name contradicts it. "
-                         "Handle errors properly, and ensure all calls are correct. Do not use any new imports. "
-                         "The code should be syntactically valid Python. Respond only with the function body."
-                         )
-
-        prompt_start = (
-            f"The function you need to implement is `{context['signature']['name']}({params})`.\n"
-            "Here is the Python module or class context it is situated in:\n"
-            "```python\n"
-        )
-
-        prompt_finisher = (
-            "\n    # implement only the function body here. "
-            "Take the documentation as literal as possible.\n"
-            "```\n"
-            "Now respond with the working implemented function body."
-        )
-
-        prompt = prompt_start +  build_context(context, doc=True, imports=True)  + prompt_finisher
-
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            prompt = prompt_start + build_context(context, doc=True, imports=True, no_fields=True) + prompt_finisher
-
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            prompt = prompt_start + build_context(context, doc=True, imports=True, no_fields=True, no_constructors=True) + prompt_finisher
-
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            prompt = prompt_start + build_context(context, doc=True, imports=True, no_fields=True, no_constructors=True, no_other_method_docs=True) + prompt_finisher
-
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            prompt = prompt_start + build_context(context, doc=True, imports=True, no_fields=True, no_constructors=True,  no_other_method_docs=True, no_other_methods=True) + prompt_finisher
-
-        if len(enc.encode(prompt)) > self.max_prompt_tokens:
-            return []
-
-        promptlist = []
-        promptlist.append({"role": "system", "content": system_prompt})
-        promptlist.append({"role": "user", "content": prompt})
-
-        return promptlist
 
     def extract_code(self, new_code, context, response, output_path):
         code_blocks = re.findall(r"```(?:python|py)(.*?)\n```", new_code, flags=re.DOTALL)
