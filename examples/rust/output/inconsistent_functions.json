@@ -6,7 +6,7 @@
         "class_name": "root module",
         "function_name": "return_a",
         "full_function_signature": "pub fn return_a(a : i32) -> i32 ",
-        "verdict": "INCO; pass; step 2 (C'+T'); (0, 7, 0); (7, 0, 0); p2p: 0, f2f: 0, p2f: 0, f2p: 7",
+        "verdict": "INCO; pass; step 2 (C'+T'); (0, 5, 0); (5, 0, 0); p2p: 0, f2f: 0, p2f: 0, f2p: 5",
         "failed_testcases": [],
         "errored_testcases": [],
         "failing_testcases": []

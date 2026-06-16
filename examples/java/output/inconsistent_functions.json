@@ -6,7 +6,7 @@
         "class_name": "Calculator",
         "function_name": "subtract",
         "full_function_signature": "public  int subtract(int a, int b)",
-        "verdict": "INCO; pass; step 2 (C'+T'); (2, 19, 0); (21, 0, 0); p2p: 2, f2f: 0, p2f: 0, f2p: 19",
+        "verdict": "INCO; pass; step 2 (C'+T'); (2, 14, 0); (16, 0, 0); p2p: 2, f2f: 0, p2f: 0, f2p: 14",
         "failed_testcases": [],
         "errored_testcases": [],
         "failing_testcases": []

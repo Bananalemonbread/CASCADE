@@ -14,6 +14,8 @@ class MultiStepTestGenerator(Generator):
     language_name = None
     signature_block_name = None
     test_artifact_name = "test module"
+    test_kind_name = "unit tests"
+    test_name_rule = "a descriptive test name starting with 'test'"
 
     def __init__(self,
                  model="gpt-4o-mini-2024-07-18",
@@ -245,34 +247,22 @@ class MultiStepTestGenerator(Generator):
         return "\n".join(lines)
 
 
-    # Hooks for subclasses
     def build_prompt(self, context):
-        raise NotImplementedError
+        system_prompt = self.test_generation_system_prompt(context)
+        context_prompt = self.test_generation_context_prompt(context)
+        test_header = self.test_generation_test_header(context)
 
+        test_level_prompt = (
+            test_header
+            + f"\n```{self.signature_block_name}\n"
+            + self.build_tests(context)
+            + "\n```"
+        )
 
-    def check_generated_tests_syntax(self, code, output_path):
-        raise NotImplementedError
-
-
-    def repair(self, context, input_path, output_path, errors, key):
-        raise NotImplementedError
-
-
-    def build_signature(self, context, doc=True):
-        raise NotImplementedError
-
-
-    def build_context(self, context):
-        raise NotImplementedError
-
-
-    def build_tests(self, context):
-        raise NotImplementedError
-
-
-    def check_syntax(self, code, output_path):
-        raise NotImplementedError
-
+        return [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": context_prompt + test_level_prompt}
+        ]
 
     def syntax_check_instruction(self):
         return {
@@ -297,3 +287,119 @@ class MultiStepTestGenerator(Generator):
                 "Focus on those tests that follow directly from the documentation, e.g. no performance based ones."
             )
         }
+
+    def repair(self, context, input_path, output_path, errors, key):
+        response_history = []
+        prompt_list = self.build_repair_prompt(context, input_path, output_path, errors, key)
+        tools = self.get_repair_tools()
+
+        for i in range(3):
+            res = self.execute_repair_prompt(prompt_list, tools, allow_tools=i < 2)
+            response_history.append(copy.deepcopy(prompt_list))
+            response_history.append(res)
+
+            if not res["choices"]:
+                break
+
+            message = res["choices"][0]["message"]
+            prompt_list.append(message)
+
+            if tools and res["choices"][0]["finish_reason"] == "tool_calls":
+                self.append_tool_results(message, prompt_list, input_path, output_path, context)
+                continue
+
+            new_tests = self.extract_tests(message["content"], context, res, output_path)
+            if new_tests:
+                return new_tests, response_history
+            
+            prompt_list.append(self.repair_retry_instruction())
+
+        return "", response_history
+
+    def build_repair_prompt(self, context, input_path, output_path, errors, key):
+        tree = self.source_tree(input_path, self.repair_source_pattern())
+        return [
+            {"role": "system", "content": self.repair_system_prompt()},
+            {"role": "user", "content": self.repair_user_prompt(context, errors, key, tree)}
+        ]
+
+    def execute_repair_prompt(self, prompt_list, tools=None, allow_tools=True):
+        if tools and allow_tools:
+            return self.prompt_executor.execute(prompt_list, tools=tools).model_dump()
+        return self.prompt_executor.execute(prompt_list).model_dump()
+
+    def append_tool_results(self, message, prompt_list, input_path, output_path, context):
+        for tool_call in message.get("tool_calls", []):
+            function_call = tool_call["function"]
+            results = self.run_repair_helper(
+                function_call["name"],
+                function_call["arguments"],
+                input_path,
+                output_path,
+                context
+            )
+
+            prompt_list.append({
+                "role": "tool",
+                "content": json.dumps(results),
+                "tool_call_id": tool_call["id"]
+            })
+
+    def repair_retry_instruction(self):
+        return {
+            "role": "user",
+            "content": (
+                f"The previous answer did not contain syntactically valid {self.test_artifact_name}. "
+                f"Please return one complete {self.test_artifact_name} only, inside a "
+                f"```{self.signature_block_name} code block. Do not include explanations."
+            )
+        }
+
+
+    # Hooks for subclasses
+    def test_generation_system_prompt(self, context):
+        raise NotImplementedError
+
+
+    def test_generation_context_prompt(self, context):
+        raise NotImplementedError
+
+
+    def test_generation_test_header(self, context):
+        raise NotImplementedError
+
+
+    def check_generated_tests_syntax(self, code, output_path):
+        raise NotImplementedError
+
+
+    def build_signature(self, context, doc=True):
+        raise NotImplementedError
+
+
+    def build_context(self, context):
+        raise NotImplementedError
+
+
+    def build_tests(self, context):
+        raise NotImplementedError
+
+
+    def check_syntax(self, code, output_path):
+        raise NotImplementedError
+
+
+    def repair_source_pattern(self):
+        raise NotImplementedError
+
+    def repair_system_prompt(self):
+        raise NotImplementedError
+
+    def repair_user_prompt(self, context, errors, key, tree):
+        raise NotImplementedError
+
+    def get_repair_tools(self):
+        return None
+
+    def run_repair_helper(self, func, arguments, input_path, output_path, context):
+        raise NotImplementedError

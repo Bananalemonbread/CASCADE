@@ -1,5 +1,3 @@
-import copy
-import json
 import re
 #import tiktoken
 
@@ -20,9 +18,7 @@ class MultiStepPythonTestGenerator(MultiStepTestGenerator):
         super().__init__(**kwargs)
 
 
-    def build_prompt(self, context):
-        # enc = tiktoken.encoding_for_model(self.model)   # this could be used to ensure the prompt is not too long.
-
+    def test_generation_system_prompt(self, context):
         test_framework_instruction = (
             "Use pytest. Do not use external testing libraries beyond pytest and the Python standard library."
         )
@@ -30,26 +26,31 @@ class MultiStepPythonTestGenerator(MultiStepTestGenerator):
         par = context['signature']['params']
         params = ", ".join(par) if len(par) > 1 else (par[0] if par else "")
 
-        system_prompt = (
+        return (
             f"You are an expert Python developer. You will generate pytest tests for the specific function "
             f"{context['signature']['name']}({params}). "
-            "Use pytest. Do not use external testing libraries beyond pytest and the Python standard library. "
+            f"{test_framework_instruction} "
             "You can import anything from the project itself. "
             "Make sure all function signatures and calls are correct. "
             "Handle exceptions, None, async behavior, and error cases appropriately when relevant. "
             "The code should run without syntax errors."
         )
-        #
-        class_level_prompt = (
+
+
+    def test_generation_context_prompt(self, context):
+        return (
             f"The interesting function under test is:\n"
-            f"```python\n{build_signature(context, doc=True)}\n```\n\n"
+            f"```python\n{self.build_signature(context, doc=True)}\n```\n\n"
             "Fill in pytest tests for the provided test module below. "
             "The tests should fail if the implementation does not exactly follow the documentation.\n\n"
             f"Python context:\n```python\n"
-            f"{build_context(context, doc=True, imports=True, no_fields=False, no_other_method_docs=True, no_other_methods=True)}"
+            f"{self.build_context(context, doc=True, imports=True, no_fields=False, no_other_method_docs=True, no_other_methods=True)}"
             f"\n```\n\n"
         )
-        test_header = (
+
+
+    def test_generation_test_header(self, context):
+        return (
             "Add or adjust imports as needed. Use only pytest, the Python standard library, "
             "and imports from the project itself. Instantiate every object you use and call "
             "functions or methods with the correct Python signatures. "
@@ -58,17 +59,6 @@ class MultiStepPythonTestGenerator(MultiStepTestGenerator):
             "write appropriate async pytest tests. "
             "Respond with the complete filled pytest test module only:\n"
         )
-
-        test_level_prompt = test_header + "\n```python\n" + self.build_tests(context) + "\n```"
-
-        prompt = class_level_prompt + test_level_prompt
-
-        promptlist = []
-        promptlist.append({"role": "system", "content": system_prompt})
-        promptlist.append({"role": "user", "content": prompt})
-
-        return promptlist
-
 
     def build_tests(self, context):
         imports = "".join(context.get("test_imports",[]))
@@ -137,23 +127,23 @@ class MultiStepPythonTestGenerator(MultiStepTestGenerator):
     def build_context(self, context, *args, **kwargs):
         return build_context(context, *args, **kwargs)
     
-    def check_syntax(self, code, output_path):
-        raise NotImplementedError
-
     def check_generated_tests_syntax(self, code, output_path):
         return check_syntax(code, "module", output_path)
 
 
-    def repair(self, context, input_path, output_path, errors, key):
-        response_history = []
-        tools = get_repair_helper_functions()
-        #tools = None
+    def repair_source_pattern(self):
+        return "*.py"
 
-        tree = self.source_tree(input_path, "*.py")
 
-        system_prompt = "You are an expert Python developer. You will fix syntax, runtime and import errors in a provided test module and return the entire repaired module. Use tools to find out more about modules instead of making assumptions."
+    def repair_system_prompt(self):
+        return (
+            "You are an expert Python developer. You will fix syntax, runtime and import errors in a provided "
+            "test module and return the entire repaired module. Use tools to find out more about modules instead of making assumptions."
+        )
 
-        prompt = (
+
+    def repair_user_prompt(self, context, errors, key, tree):
+        return (
             f"Some errors occurred while validating or running my pytest test module.\nErrors:\n```\n{errors}\n```\n\n"
             f"Test module:\n```python\n{context[key]}\n```\n"
             "Do not change the intended behavior of the tests, but make sure the module is syntactically valid "
@@ -162,41 +152,10 @@ class MultiStepPythonTestGenerator(MultiStepTestGenerator):
             "Now fix the module and respond with the entire corrected pytest test module only."
         )
 
-        promptlist = []
-        promptlist.append({"role": "system", "content": system_prompt})
-        promptlist.append({"role": "user", "content": prompt})
 
-        res = self.prompt_executor.execute(promptlist, tools=tools).model_dump()
-        response_history.append(copy.deepcopy(promptlist))
-        response_history.append(res)
-        # we allow three tool usages before we force a generation
-        steps = 3
-        for i in range(steps):
-            if res["choices"][0]["finish_reason"] == "tool_calls":
-                promptlist.append(res['choices'][0]['message'])
+    def get_repair_tools(self):
+        return get_repair_helper_functions()
 
-                tool_calls = res["choices"][0]["message"]["tool_calls"]
 
-                for tool_call in tool_calls:
-                    func = tool_call["function"]["name"]
-                    arguments = tool_call["function"]["arguments"]
-
-                    results = repair_helper_functions(func, arguments, input_path, output_path, context)
-
-                    promptlist.append({"role": "tool", "content": json.dumps(results), "tool_call_id": tool_call["id"]})
-
-                if i < steps - 1:
-                    res = self.prompt_executor.execute(promptlist, tools=tools).model_dump()
-                else:
-                    res = self.prompt_executor.execute(promptlist).model_dump()
-                response_history.append(copy.deepcopy(promptlist))
-                response_history.append(res)
-
-        promptlist.append(res['choices'][0]['message'])
-        new_tests = res["choices"][0]["message"]["content"]
-
-        new_tests = self.extract_tests(new_tests, context, res, output_path)
-
-        response_history.append(copy.deepcopy(promptlist))
-        response_history.append(res)
-        return new_tests, response_history
+    def run_repair_helper(self, func, arguments, input_path, output_path, context):
+        return repair_helper_functions(func, arguments, input_path, output_path, context)

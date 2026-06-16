@@ -1,4 +1,3 @@
-import copy
 import re
 
 from cascade.generation.test.MultiStepTestGenerator import MultiStepTestGenerator
@@ -39,7 +38,7 @@ class MultiStepRustTestGenerator(MultiStepTestGenerator):
     def duplicate_test_name(self, name, count):
         return f"{name}_{count}"
 
-    def build_prompt(self, context):
+    def test_generation_system_prompt(self, context):
         test_framework_instruction = (
             "Use Rust's built-in test framework with #[test] and cargo test. "
             "Do not use external test crates such as rstest, proptest, quickcheck, or quicktest."
@@ -48,7 +47,7 @@ class MultiStepRustTestGenerator(MultiStepTestGenerator):
         par = context['signature']['params']
         params = ", ".join(par) if len(par) > 1 else (par[0] if par else "")
 
-        system_prompt = (
+        return (
             f"You are an expert Rust developer. You will generate unit tests for the specific function "
             f"{context['signature']['name']}({params}). {test_framework_instruction} "
             "You can import anything from the project itself. "
@@ -57,20 +56,24 @@ class MultiStepRustTestGenerator(MultiStepTestGenerator):
             "The code should compile on its own without errors."
         )
 
-        class_level_prompt = (
+
+    def test_generation_context_prompt(self, context):
+        return (
             f"The interesting function under test is:\n"
-            f"```rust\n{build_signature(context, doc=True)}\n```\n\n"
+            f"```rust\n{self.build_signature(context, doc=True)}\n```\n\n"
             "The other functions will be tested later. "
             "Fill in Rust unit tests for the provided test module below. "
             "This is for test driven development, so the tests should be designed to fail if the later implementation does not exactly conform to the documentation.\n\n"
             f"This is the parent module or item context the function under test resides in:\n"
             f"## Parent context\n"
             f"```rust\n"
-            f"{build_context(context, doc=True, no_fields=False, no_other_method_docs=True, no_other_methods=True)}"
+            f"{self.build_context(context, doc=True, no_fields=False, no_other_method_docs=True, no_other_methods=True)}"
             f"\n```\n\n"
         )
-            
-        test_header = (
+
+
+    def test_generation_test_header(self, context):
+        return (
             "Add any necessary `use` statements from the project itself. "
             "Every value you use must be properly constructed. "
             "Match function signatures and calls exactly, including ownership, borrowing, lifetimes, generics, and trait bounds. "
@@ -78,17 +81,7 @@ class MultiStepRustTestGenerator(MultiStepTestGenerator):
             "Use idiomatic Rust assertions such as assert!, assert_eq!, assert_ne!, matches!, and unwrap_err() where appropriate. "
             "Respond with the filled Rust test module only:\n"
         )
-        
-        test_level_prompt = test_header + "\n```rust\n" + self.build_tests(context) + "\n```"
 
-        prompt = class_level_prompt + test_level_prompt
-
-        promptlist = []
-        promptlist.append({"role": "system", "content": system_prompt})
-        promptlist.append({"role": "user", "content": prompt})
-
-        return promptlist
-    
     def check_generated_tests_syntax(self, code, output_path):
         return check_syntax(code, output_path)
 
@@ -99,6 +92,29 @@ class MultiStepRustTestGenerator(MultiStepTestGenerator):
 
     def build_context(self, context, *args, **kwargs):
         return build_context(context, *args, **kwargs)
+
+
+    def repair_source_pattern(self):
+        return "*.rs"
+
+
+    def repair_system_prompt(self):
+        return (
+            "You are an expert Rust developer. "
+            "You will fix compilation errors in a provided Rust test module and return the entire repaired module."
+        )
+
+
+    def repair_user_prompt(self, context, errors, key, tree):
+        return (
+            f"During compilation of my Rust tests some errors occurred.\n"
+            f"Errors:\n```\n{errors}\n```\n\n"
+            f"Rust test module:\n```rust\n{context[key]}\n```\n"
+            "Do not change the intended behavior of the tests, but make sure the test module compiles. "
+            "Check imports, module paths, ownership, borrowing, lifetimes, generics, trait bounds, Result, Option, and panic behavior. "
+            f"If you need to add imports, use the following Rust source tree:\n```\n{tree}\n```\n\n"
+            "Now fix the Rust test module and respond with the entire fixed Rust code only."
+        )
 
 
     def build_tests(self, context):
@@ -119,62 +135,3 @@ class MultiStepRustTestGenerator(MultiStepTestGenerator):
             f"{functions}"
             "}\n"
         )
-    
-    def repair(self, context, input_path, output_path, errors, key):
-        response_history = []
-
-        tree = self.source_tree(input_path, "*.rs")
-
-        system_prompt = (
-            "You are an expert Rust developer. "
-            "You will fix compilation errors in a provided Rust test module and return the entire repaired module."
-        )
-
-        prompt = (
-            f"During compilation of my Rust tests some errors occurred.\n"
-            f"Errors:\n```\n{errors}\n```\n\n"
-            f"Rust test module:\n```rust\n{context[key]}\n```\n"
-            "Do not change the intended behavior of the tests, but make sure the test module compiles. "
-            "Check imports, module paths, ownership, borrowing, lifetimes, generics, trait bounds, Result, Option, and panic behavior. "
-            f"If you need to add imports, use the following Rust source tree:\n```\n{tree}\n```\n\n"
-            "Now fix the Rust test module and respond with the entire fixed Rust code only."
-        )
-
-        promptlist = []
-        promptlist.append({"role": "system", "content": system_prompt})
-        promptlist.append({"role": "user", "content": prompt})
-
-        steps = 3
-        last_new_tests = ""
-
-        for i in range(steps):
-            res = self.prompt_executor.execute(promptlist).model_dump()
-
-            response_history.append(copy.deepcopy(promptlist))
-            response_history.append(res)
-
-            if not res["choices"]:
-                break
-
-            assistant_message = res["choices"][0]["message"]
-            promptlist.append(assistant_message)
-
-            new_tests = assistant_message["content"]
-            extracted_tests = self.extract_tests(new_tests, context, res, output_path)
-
-            if extracted_tests:
-                return extracted_tests, response_history
-
-            last_new_tests = new_tests
-
-            if i < steps - 1:
-                promptlist.append({
-                    "role": "user",
-                    "content": (
-                        "The previous answer did not contain syntactically valid Rust test code. "
-                        "Please return one complete Rust test module only, inside a ```rust code block. "
-                        "Do not include explanations."
-                    )
-                })
-
-        return last_new_tests, response_history
