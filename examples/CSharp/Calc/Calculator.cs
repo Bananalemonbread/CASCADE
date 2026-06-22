@@ -1,11 +1,14 @@
 namespace Calc;
 
+/// <summary>
+/// Provides basic calculator operations.
+/// </summary>
 public class Calculator
 {
     /// <summary>
     /// Adds two integers.
     /// </summary>
-    public int Add(int a, int b)
+    static public int Add(int a, int b)
     {
         return a + b;
     }
@@ -13,7 +16,7 @@ public class Calculator
     /// <summary>
     /// Subtracts the second integer from the first integer.
     /// </summary>
-    public int Sub(int a, int b)
+    static public int Sub(int a, int b)
     {
         return a - b;
     }
@@ -21,7 +24,7 @@ public class Calculator
     /// <summary>
     /// Multiplies two integers.
     /// </summary>
-    public int Mul(int a, int b)
+    static public int Mul(int a, int b)
     {
         return a / b;
     }
