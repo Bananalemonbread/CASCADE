@@ -1,17 +1,17 @@
 ## 1 Overview
 
-This repository contains **CASCADE** (our code-comment inconsistency detection and test-generation tool) 
-together with the full benchmark we used to evaluate it in our FSE 2026 Paper. (folder: `PaperEvaluation`)
+This repository contains **CASCADE** (our code-comment inconsistency detection and test-generation tool)
+together with the full benchmark we used to evaluate it in our FSE 2026 paper. The benchmark lives in `PaperEvaluation/`.
 
-The tool itself is build around expandability, so that you can easily add new validation approaches to the benchmark
-Or adapt it for new languages and for different analyses.
+The tool itself is built around extensibility, so you can add new validation approaches to the benchmark
+or adapt it for new languages and analyses.
 
 
-If you want to run the benchmark from scratch, you can follow the instructions in `PaperEvaluation/README.md`
+If you want to run the benchmark from scratch, follow the instructions in `PaperEvaluation/README.md`.
 
-If you want to try out CASCADE on your own projects, you can follow the instructions in section 4.
+If you want to try out CASCADE on your own projects, follow the instructions in Section 4.
 
-An example Java project you can try it on is described in Section 6.
+Example projects are described in Section 5.
 
 
 
@@ -22,20 +22,23 @@ An example Java project you can try it on is described in Section 6.
 ```
 .
 ├─ PaperEvaluation/
-│  ├─ dataset.zip           # Evaluation dataset (see Section 3 for details)
-│  ├─ drivers/              # One sub‑folder per validation approach (see Section 4 for details)
+│  ├─ dataset.zip           # Evaluation dataset (see PaperEvaluation/README.md)
+│  ├─ coreDataset.zip       # Smaller pairwise core dataset
+│  ├─ drivers/              # One sub-folder per validation approach
 │  │   ├─ DocChecker/
 │  │   ├─ Baseline/
+│  │   ├─ C4RLLaMA/
 │  │   └─ CASCADE/
 │  ├─ run.sh                # dataset execution file (runs all drivers on the dataset)
 │  ├─ eval.py               # Computes & prints all benchmark metrics
-│  └─ results.zip       # Pre‑computed experiment results
+│  └─ README.md             # Benchmark reproduction instructions
 ├─ datasetExtraction/       # scripts we used to extract the original dataset
 ├─ configs/                 # Configuration files for different CASCADE pipelines
+├─ examples/                # Small example projects for Java, Rust, Python, and C#
 └─ src/                     # Source code of the CASCADE tool
 
 
-````
+```
 
 ## 3  `src/` directory structure
 
@@ -54,24 +57,24 @@ The main implementation lives in `src/cascade/`, which contains the code that wi
 ## 4  Running CASCADE
 
 CASCADE can be built and run as a standalone tool.
+The commands below assume you are inside this repository root, on one level with `src/` and `setup.py`.
 
 ### 4.1 Install
 
 Create a virtual environment:
 
 ```bash
-python3 -m venv cascade.venv
+python3 -m venv ../cascade.venv
 ```
 
-If you are inside the main CASCADE folder (on one level with src and setup.py) install it directly into the venv with:
+Install CASCADE into the virtual environment:
 
 ```bash
-./cascade.venv/bin/pip install .
+../cascade.venv/bin/pip install .
 ```
 
-CASCADE requires an OpenAI key in the environment.
-Even if you do not plan to use an LLM-based analysis, the key is still needed for some generator-based workflows.
-If you only want to do a local smoke test, you can set a dummy value.
+If your config uses the OpenAI API directly, CASCADE requires an OpenAI key in the environment.
+If your config uses an OpenAI-compatible server via `base_url`, provide `VLLM_API_KEY` or set `api_key` in the config.
 
 ```bash
 export OPENAI_API_KEY=<your key>
@@ -82,7 +85,7 @@ export OPENAI_API_KEY=<your key>
 General command:
 
 ```bash
-./cascade.venv/bin/CASCADE run -i "<input-project-root>" -o "<output-folder>" -c "<config.json>"
+../cascade.venv/bin/CASCADE run -i "<input-project-root>" -o "<output-folder>" -c "<config.json>"
 ```
 
 You can use CLI overrides to replace values in the config file at runtime.
@@ -90,13 +93,13 @@ You can use CLI overrides to replace values in the config file at runtime.
 For example, to change the LLM temperature for the code generator, use:
 
 ```bash
-./cascade.venv/bin/CASCADE run -i "<input-project-root>" -o "<output-folder>" -c "<config.json>" --code-generator temperature:0.7
+../cascade.venv/bin/CASCADE run -i "<input-project-root>" -o "<output-folder>" -c "<config.json>" --code-generator temperature:0.7
 ```
 
 To run CASCADE on a project, you provide:
-- The root of the Java project that should be analyzed.
-- an output directory and
-- a config file that references the components you want to use (`configs/` contains examples),
+- the root of the project that should be analyzed,
+- an output directory, and
+- a config file that references the components you want to use (`configs/` contains examples).
 
 
 CASCADE then:
@@ -105,25 +108,30 @@ CASCADE then:
 3. runs the analysis step, which may include generation and execution of tests or code snippets.
 
 
-See Section 5 for a runnable example project and config file you can try out.
+See Section 5 for runnable example projects and config files you can try out.
 
 
 ## 5  Example project
 
-A tiny runnable example is included in `exampleTargetproject/`.
+A few tiny runnable examples are included in `examples/`.
 
-It contains one Java class with 4 functions:
+The Java example contains one Java class with 4 functions:
 
 - `add(int a, int b)`: doc and implementation are consistent.
 - `subtract(int a, int b)`: doc says subtraction, implementation multiplies (intentional inconsistency).
-- `dummy1()`: has no documentation
-- `dummy2()`: has no code
+- `dummy1()`: has minimal documentation.
+- `dummy2()`: has an empty body.
 
 Files:
 
-- `exampleTargetproject/repository/src/main/java/example/Calculator.java`
-- `exampleTargetproject/repository/src/test/java/example/CalculatorTest.java`
-- `exampleTargetproject/repository/pom.xml`
+- `examples/java/repository/src/main/java/example/Calculator.java`
+- `examples/java/repository/pom.xml`
+
+Additional examples are available here:
+
+- `examples/rust/`
+- `examples/python/`
+- `examples/CSharp/`
 
 ### 5.1 Run the example workflow
 
@@ -132,7 +140,7 @@ Run from the repository root. For the Java example:
 ```bash
 ../cascade.venv/bin/CASCADE run \
   -i "./examples/java/repository" \
-  -o "./examples/java/output" \
+  -o "./examples/java/run-output" \
   -c "./configs/exampleConfig.json"
 ```
 
@@ -141,22 +149,43 @@ For the Rust example:
 ```bash
 ../cascade.venv/bin/CASCADE run \
   -i "./examples/rust" \
-  -o "./examples/rust/output" \
+  -o "./examples/rust/run-output" \
   -c "./configs/Rust.json"
 ```
 
+For the Python example:
+
+```bash
+../cascade.venv/bin/CASCADE run \
+  -i "./examples/python" \
+  -o "./examples/python/run-output" \
+  -c "./configs/Python.json"
+```
+
+For the C# example:
+
+```bash
+../cascade.venv/bin/CASCADE run \
+  -i "./examples/CSharp/Calc" \
+  -o "./examples/CSharp/run-output" \
+  -c "./configs/CSharp.json"
+```
+
+Use a new or empty output directory when you want to rerun an example from scratch. If `analyzed.json`
+already exists in the output directory, CASCADE reuses it and skips extraction/filtering.
+
 ### 5.2 What happens in this example
 
-1. **Extraction**: CASCADE reads the Java project and extracts method-level context for `Calculator`.
+1. **Extraction**: CASCADE reads the input project and extracts method-level context.
 2. **Filtering**: functions that do not match the configured filters are removed (the two dummy methods).
-3. **mvn Setup**: a mvn image is setup that will be used in all dockers that are dynamically setup to execute tests.
-4. **Analysis**: the configured analysis step runs on the remaining methods. this one generates tests and code as described in our Paper.
-5. **Execution**: if you use the LLM-backed config, CASCADE generates tests/code and executes them through the Maven/Docker executor.
-6. **Output**: the results are saved in the output folder, including the extracted methods, the analysed file with all generated artifacts and the final inconsistency predictions. (also a large log file)
-7. 
+3. **Build setup**: for executor-backed analyses, CASCADE prepares the relevant build environment.
+4. **Analysis**: the configured analysis step runs on the remaining methods. The two-step analyses generate tests and code as described in our paper.
+5. **Execution**: if you use an LLM-backed config, CASCADE generates tests/code and executes them through the configured executor.
+6. **Output**: the results are saved in the output folder, including the extracted methods, the analysed file with all generated artifacts, final inconsistency predictions, and a log file.
+
 ### 5.3 Output files
 
-Depending on the selected config, the example folder will contain files such as:
+Depending on the selected config, the selected output folder will contain files such as:
 
 - `extracted.json`: extracted method-level context.
 - `analyzed.json`: analysis output and generated artifacts.
@@ -188,14 +217,14 @@ The easiest way to extend it is:
 1. inherit from the matching abstract base class,
 2. put the new class in the right subdirectory (follow one existing implementation as a template),
 3. reference your class by name in the config file (`name` + `kwargs`).
-4. let the pipline factory handle the rest via the run command
+4. let the pipeline factory handle the rest via the run command.
 
 Common extension points and examples:
 
 - **Analysis**: inherit from `src/cascade/analysis/Analysis.py` (example: `JavaTwoStepAnalysis.py`)
 - **FilterFunction**: inherit from `src/cascade/filters/FilterFunction.py` (example: `ContainsFilterFunction.py`, `CheckLengthFilterFunction.py`)
 - **Generators**: inherit from `src/cascade/generation/Generator.py` in `code/`, `test/`, or `doc/`
-  (example: `code/JavaCodeGenerator.py`, `test/GPT4JavaTestGenerator.py`)
+  (example: `code/JavaCodeGenerator.py`, `test/MultiStepJavaTestGenerator.py`)
 - **Executor**: inherit from `src/cascade/analysis/executor/AnalysisExecutor.py`
   (example: `analysis/executor/MavenJavaExecutor.py`, `analysis/executor/JavaExecutor.py`)
 
