@@ -3,6 +3,7 @@
 /examples/java/output/*
 /examples/rust/output/*
 /examples/python/output/*
+/examples/CSharp/run-output/*
 
 /tests/resources/apikeys/*
 !tests/resources/apikeys/README.md
