@@ -1,0 +1,14 @@
+/home/betul/Humboldt/HiWi/CASCADE/examples/CSharp/Calc/bin/Debug/net9.0/Calc.deps.json
+/home/betul/Humboldt/HiWi/CASCADE/examples/CSharp/Calc/bin/Debug/net9.0/Calc.dll
+/home/betul/Humboldt/HiWi/CASCADE/examples/CSharp/Calc/bin/Debug/net9.0/Calc.pdb
+/home/betul/Humboldt/HiWi/CASCADE/examples/CSharp/Calc/bin/Debug/net9.0/Calc.xml
+/home/betul/Humboldt/HiWi/CASCADE/examples/CSharp/Calc/obj/Debug/net9.0/Calc.GeneratedMSBuildEditorConfig.editorconfig
+/home/betul/Humboldt/HiWi/CASCADE/examples/CSharp/Calc/obj/Debug/net9.0/Calc.AssemblyInfoInputs.cache
+/home/betul/Humboldt/HiWi/CASCADE/examples/CSharp/Calc/obj/Debug/net9.0/Calc.AssemblyInfo.cs
+/home/betul/Humboldt/HiWi/CASCADE/examples/CSharp/Calc/obj/Debug/net9.0/Calc.csproj.CoreCompileInputs.cache
+/home/betul/Humboldt/HiWi/CASCADE/examples/CSharp/Calc/obj/Debug/net9.0/Calc.sourcelink.json
+/home/betul/Humboldt/HiWi/CASCADE/examples/CSharp/Calc/obj/Debug/net9.0/Calc.dll
+/home/betul/Humboldt/HiWi/CASCADE/examples/CSharp/Calc/obj/Debug/net9.0/refint/Calc.dll
+/home/betul/Humboldt/HiWi/CASCADE/examples/CSharp/Calc/obj/Debug/net9.0/Calc.xml
+/home/betul/Humboldt/HiWi/CASCADE/examples/CSharp/Calc/obj/Debug/net9.0/Calc.pdb
+/home/betul/Humboldt/HiWi/CASCADE/examples/CSharp/Calc/obj/Debug/net9.0/ref/Calc.dll

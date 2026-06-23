@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Calc</name>
+    </assembly>
+    <members>
+        <member name="T:Calc.Calculator">
+            <summary>
+            Provides basic calculator operations.
+            </summary>
+        </member>
+        <member name="M:Calc.Calculator.Add(System.Int32,System.Int32)">
+            <summary>
+            Adds two integers.
+            </summary>
+        </member>
+        <member name="M:Calc.Calculator.Sub(System.Int32,System.Int32)">
+            <summary>
+            Subtracts the second integer from the first integer.
+            </summary>
+        </member>
+        <member name="M:Calc.Calculator.Mul(System.Int32,System.Int32)">
+            <summary>
+            Multiplies two integers.
+            </summary>
+        </member>
+    </members>
+</doc>

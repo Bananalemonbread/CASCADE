@@ -1,7 +1,16 @@
 {
   "Extraction": { "name": "CSharpExtraction", "kwargs": { "framework": "net9.0" } },
-  "CodeGenerator": { "name": "CSharpCodeGenerator", "kwargs": { "model": "gpt-4o-mini-2024-07-18" } },
-  "TestGenerator": { "name": "MultiStepCSharpTestGenerator", "kwargs": { "model": "gpt-4o-mini-2024-07-18" } },
+  "CodeGenerator": { "name": "CSharpCodeGenerator", "kwargs": {
+      "model": "llm3",
+      "base_url": "https://llm3-compute.cms.hu-berlin.de/v1",
+      "api_key": "ollama"
+  } },
+  "TestGenerator": { "name": "MultiStepCSharpTestGenerator", "kwargs": { 
+      "model": "llm3",
+      "base_url": "https://llm3-compute.cms.hu-berlin.de/v1",
+      "api_key": "ollama"
+
+   } },
   "Analysis": { "name": "CSharpTwoStepAnalysis", "kwargs": { "debug": 1, "regenerate": false } },
   "Executor": {
     "name": "CSharpExecutor",

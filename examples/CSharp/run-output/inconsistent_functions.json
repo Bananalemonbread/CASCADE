@@ -1,0 +1,14 @@
+[
+    {
+        "id": 2,
+        "file_name": "Calculator.cs",
+        "file_path": "Calc/Calculator.cs",
+        "class_name": "Calculator",
+        "function_name": "Mul",
+        "full_function_signature": "public static int Mul(int a, int b)",
+        "verdict": "INCO; pass; step 2 (C'+T'); (5, 13, 0); (18, 0, 0); p2p: 5, f2f: 0, p2f: 0, f2p: 13",
+        "failed_testcases": [],
+        "errored_testcases": [],
+        "failing_testcases": []
+    }
+]

@@ -166,7 +166,7 @@ For the C# example:
 
 ```bash
 ../cascade.venv/bin/CASCADE run \
-  -i "./examples/CSharp/Calc" \
+  -i "./examples/CSharp/cascade_input.json" \
   -o "./examples/CSharp/run-output" \
   -c "./configs/CSharp.json"
 ```

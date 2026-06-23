@@ -62,6 +62,7 @@ class CSharpExecutor(AnalysisExecutor):
                 return self.build_execution_results(([], [], ["copy_project"]), comp_errors=str(e))
 
             entry = os.path.join(temp_dir, "entry.json")
+            self.normalize_signatures(context)
             with open(entry, "w", encoding="utf-8") as json_entry:
                 json.dump(context, json_entry)
 
@@ -167,3 +168,15 @@ class CSharpExecutor(AnalysisExecutor):
 
     def shell_quote(self, value):
         return "'" + str(value).replace("'", "'\"'\"'") + "'"
+
+    def normalize_signatures(self, node):
+        if isinstance(node, dict):
+            signature = node.get("signature")
+            if isinstance(signature, dict):
+                signature.setdefault("annotations", signature.get("attributes", []))
+
+            for value in node.values():
+                self.normalize_signatures(value)
+        elif isinstance(node, list):
+            for value in node:
+                self.normalize_signatures(value)

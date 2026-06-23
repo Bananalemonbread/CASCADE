@@ -1,0 +1,314 @@
+[
+  {
+    "id": 0,
+    "language": "C#",
+    "doc": "/// <summary>\n/// Adds two integers.\n/// </summary>",
+    "signature": {
+      "name": "Add",
+      "returns": "int",
+      "params": [
+        "int a",
+        "int b"
+      ],
+      "modifier": [
+        "public",
+        "static"
+      ],
+      "annotations": [],
+      "attributes": [],
+      "generics": [],
+      "constraints": []
+    },
+    "parent": {
+      "name": "Calculator",
+      "namespace": "Calc",
+      "doc": "/// <summary>\n/// Provides basic calculator operations.\n/// </summary>",
+      "imports": [],
+      "constructors": [],
+      "implements": [],
+      "extends": "",
+      "modifiers": [
+        "public"
+      ],
+      "kind": "class",
+      "other_methods": [
+        {
+          "doc": "/// <summary>\n/// Subtracts the second integer from the first integer.\n/// </summary>",
+          "signature": {
+            "name": "Sub",
+            "returns": "int",
+            "params": [
+              "int a",
+              "int b"
+            ],
+            "modifier": [
+              "public",
+              "static"
+            ],
+            "annotations": [],
+      "attributes": [],
+            "generics": [],
+            "constraints": []
+          },
+          "code": "{\n        return a - b;\n    }"
+        },
+        {
+          "doc": "/// <summary>\n/// Multiplies two integers.\n/// </summary>",
+          "signature": {
+            "name": "Mul",
+            "returns": "int",
+            "params": [
+              "int a",
+              "int b"
+            ],
+            "modifier": [
+              "public",
+              "static"
+            ],
+            "annotations": [],
+      "attributes": [],
+            "generics": [],
+            "constraints": []
+          },
+          "code": "{\n        return a / b;\n    }"
+        }
+      ],
+      "variables": [],
+      "generics": []
+    },
+    "code": "{\n        return a + b;\n    }",
+    "code_file_path": "Calc/Calculator.cs",
+    "code_file_content": "namespace Calc;\n\n/// <summary>\n/// Provides basic calculator operations.\n/// </summary>\npublic class Calculator\n{\n    /// <summary>\n    /// Adds two integers.\n    /// </summary>\n    public static int Add(int a, int b)\n    {\n        return a + b;\n    }\n\n    /// <summary>\n    /// Subtracts the second integer from the first integer.\n    /// </summary>\n    public static int Sub(int a, int b)\n    {\n        return a - b;\n    }\n\n    /// <summary>\n    /// Multiplies two integers.\n    /// </summary>\n    public static int Mul(int a, int b)\n    {\n        return a / b;\n    }\n}\n",
+    "called_functions": [],
+    "tests": [
+      {
+        "test_file_path": "Calc.Tests/CalculatorTest.cs",
+        "test_class_name": "CalculatorTest",
+        "test_namespace": "Calc.Tests",
+        "test_runner": "xUnit",
+        "test_imports": [
+          "using Xunit;",
+          "using Calc;"
+        ],
+        "project_path": "Calc.Tests/Calc.Tests.csproj"
+      }
+    ],
+    "test_imports": [
+      "using Xunit;",
+      "using Calc;"
+    ],
+    "test_file_path": "Calc.Tests/CalculatorTest.cs",
+    "test_class_name": "CalculatorTest",
+    "test_namespace": "Calc.Tests",
+    "test_runner": "xUnit",
+    "project_path": "Calc.Tests/Calc.Tests.csproj"
+  },
+  {
+    "id": 1,
+    "language": "C#",
+    "doc": "/// <summary>\n/// Subtracts the second integer from the first integer.\n/// </summary>",
+    "signature": {
+      "name": "Sub",
+      "returns": "int",
+      "params": [
+        "int a",
+        "int b"
+      ],
+      "modifier": [
+        "public",
+        "static"
+      ],
+      "annotations": [],
+      "attributes": [],
+      "generics": [],
+      "constraints": []
+    },
+    "parent": {
+      "name": "Calculator",
+      "namespace": "Calc",
+      "doc": "/// <summary>\n/// Provides basic calculator operations.\n/// </summary>",
+      "imports": [],
+      "constructors": [],
+      "implements": [],
+      "extends": "",
+      "modifiers": [
+        "public"
+      ],
+      "kind": "class",
+      "other_methods": [
+        {
+          "doc": "/// <summary>\n/// Adds two integers.\n/// </summary>",
+          "signature": {
+            "name": "Add",
+            "returns": "int",
+            "params": [
+              "int a",
+              "int b"
+            ],
+            "modifier": [
+              "public",
+              "static"
+            ],
+            "annotations": [],
+      "attributes": [],
+            "generics": [],
+            "constraints": []
+          },
+          "code": "{\n        return a + b;\n    }"
+        },
+        {
+          "doc": "/// <summary>\n/// Multiplies two integers.\n/// </summary>",
+          "signature": {
+            "name": "Mul",
+            "returns": "int",
+            "params": [
+              "int a",
+              "int b"
+            ],
+            "modifier": [
+              "public",
+              "static"
+            ],
+            "annotations": [],
+      "attributes": [],
+            "generics": [],
+            "constraints": []
+          },
+          "code": "{\n        return a / b;\n    }"
+        }
+      ],
+      "variables": [],
+      "generics": []
+    },
+    "code": "{\n        return a - b;\n    }",
+    "code_file_path": "Calc/Calculator.cs",
+    "code_file_content": "namespace Calc;\n\n/// <summary>\n/// Provides basic calculator operations.\n/// </summary>\npublic class Calculator\n{\n    /// <summary>\n    /// Adds two integers.\n    /// </summary>\n    public static int Add(int a, int b)\n    {\n        return a + b;\n    }\n\n    /// <summary>\n    /// Subtracts the second integer from the first integer.\n    /// </summary>\n    public static int Sub(int a, int b)\n    {\n        return a - b;\n    }\n\n    /// <summary>\n    /// Multiplies two integers.\n    /// </summary>\n    public static int Mul(int a, int b)\n    {\n        return a / b;\n    }\n}\n",
+    "called_functions": [],
+    "tests": [
+      {
+        "test_file_path": "Calc.Tests/CalculatorTest.cs",
+        "test_class_name": "CalculatorTest",
+        "test_namespace": "Calc.Tests",
+        "test_runner": "xUnit",
+        "test_imports": [
+          "using Xunit;",
+          "using Calc;"
+        ],
+        "project_path": "Calc.Tests/Calc.Tests.csproj"
+      }
+    ],
+    "test_imports": [
+      "using Xunit;",
+      "using Calc;"
+    ],
+    "test_file_path": "Calc.Tests/CalculatorTest.cs",
+    "test_class_name": "CalculatorTest",
+    "test_namespace": "Calc.Tests",
+    "test_runner": "xUnit",
+    "project_path": "Calc.Tests/Calc.Tests.csproj"
+  },
+  {
+    "id": 2,
+    "language": "C#",
+    "doc": "/// <summary>\n/// Multiplies two integers.\n/// </summary>",
+    "signature": {
+      "name": "Mul",
+      "returns": "int",
+      "params": [
+        "int a",
+        "int b"
+      ],
+      "modifier": [
+        "public",
+        "static"
+      ],
+      "annotations": [],
+      "attributes": [],
+      "generics": [],
+      "constraints": []
+    },
+    "parent": {
+      "name": "Calculator",
+      "namespace": "Calc",
+      "doc": "/// <summary>\n/// Provides basic calculator operations.\n/// </summary>",
+      "imports": [],
+      "constructors": [],
+      "implements": [],
+      "extends": "",
+      "modifiers": [
+        "public"
+      ],
+      "kind": "class",
+      "other_methods": [
+        {
+          "doc": "/// <summary>\n/// Adds two integers.\n/// </summary>",
+          "signature": {
+            "name": "Add",
+            "returns": "int",
+            "params": [
+              "int a",
+              "int b"
+            ],
+            "modifier": [
+              "public",
+              "static"
+            ],
+            "annotations": [],
+      "attributes": [],
+            "generics": [],
+            "constraints": []
+          },
+          "code": "{\n        return a + b;\n    }"
+        },
+        {
+          "doc": "/// <summary>\n/// Subtracts the second integer from the first integer.\n/// </summary>",
+          "signature": {
+            "name": "Sub",
+            "returns": "int",
+            "params": [
+              "int a",
+              "int b"
+            ],
+            "modifier": [
+              "public",
+              "static"
+            ],
+            "annotations": [],
+      "attributes": [],
+            "generics": [],
+            "constraints": []
+          },
+          "code": "{\n        return a - b;\n    }"
+        }
+      ],
+      "variables": [],
+      "generics": []
+    },
+    "code": "{\n        return a / b;\n    }",
+    "code_file_path": "Calc/Calculator.cs",
+    "code_file_content": "namespace Calc;\n\n/// <summary>\n/// Provides basic calculator operations.\n/// </summary>\npublic class Calculator\n{\n    /// <summary>\n    /// Adds two integers.\n    /// </summary>\n    public static int Add(int a, int b)\n    {\n        return a + b;\n    }\n\n    /// <summary>\n    /// Subtracts the second integer from the first integer.\n    /// </summary>\n    public static int Sub(int a, int b)\n    {\n        return a - b;\n    }\n\n    /// <summary>\n    /// Multiplies two integers.\n    /// </summary>\n    public static int Mul(int a, int b)\n    {\n        return a / b;\n    }\n}\n",
+    "called_functions": [],
+    "tests": [
+      {
+        "test_file_path": "Calc.Tests/CalculatorTest.cs",
+        "test_class_name": "CalculatorTest",
+        "test_namespace": "Calc.Tests",
+        "test_runner": "xUnit",
+        "test_imports": [
+          "using Xunit;",
+          "using Calc;"
+        ],
+        "project_path": "Calc.Tests/Calc.Tests.csproj"
+      }
+    ],
+    "test_imports": [
+      "using Xunit;",
+      "using Calc;"
+    ],
+    "test_file_path": "Calc.Tests/CalculatorTest.cs",
+    "test_class_name": "CalculatorTest",
+    "test_namespace": "Calc.Tests",
+    "test_runner": "xUnit",
+    "project_path": "Calc.Tests/Calc.Tests.csproj"
+  }
+]

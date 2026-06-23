@@ -8,7 +8,7 @@ public class Calculator
     /// <summary>
     /// Adds two integers.
     /// </summary>
-    static public int Add(int a, int b)
+    public static int Add(int a, int b)
     {
         return a + b;
     }
@@ -16,7 +16,7 @@ public class Calculator
     /// <summary>
     /// Subtracts the second integer from the first integer.
     /// </summary>
-    static public int Sub(int a, int b)
+    public static int Sub(int a, int b)
     {
         return a - b;
     }
@@ -24,7 +24,7 @@ public class Calculator
     /// <summary>
     /// Multiplies two integers.
     /// </summary>
-    static public int Mul(int a, int b)
+    public static int Mul(int a, int b)
     {
         return a / b;
     }

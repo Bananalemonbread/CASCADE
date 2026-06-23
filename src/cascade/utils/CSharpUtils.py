@@ -34,6 +34,12 @@ def resolve_tool_path(tool_path=None, require_exists=True):
     return candidate
 
 
+def dotnet_tool_env():
+    env = os.environ.copy()
+    env.setdefault("DOTNET_ROLL_FORWARD", "Major")
+    return env
+
+
 def as_list(value):
     if value is None:
         return []
@@ -253,6 +259,7 @@ def check_syntax(code, output_path, tool_path=None):
             ["dotnet", tool_path, "verify", temp_file],
             capture_output=True,
             text=True,
+            env=dotnet_tool_env(),
         )
 
         with open(os.path.join(output_path, "log.txt"), "a", encoding="utf-8") as file:
@@ -275,6 +282,7 @@ def run_extraction(input_path, output_path, target_framework, tool_path=None):
         ["dotnet", tool_path, "extract", input_path, output_path, target_framework],
         capture_output=True,
         text=True,
+        env=dotnet_tool_env(),
     )
 
     with open(os.path.join(output_path, "log.txt"), "a", encoding="utf-8") as file:
@@ -296,4 +304,5 @@ def run_modification(project_dir, entry, code, tests, tool_path=None):
         ["dotnet", tool_path, "modify", project_dir, entry, code, tests],
         text=True,
         capture_output=True,
+        env=dotnet_tool_env(),
     )
