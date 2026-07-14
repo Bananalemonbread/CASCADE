@@ -715,10 +715,3 @@ if __name__ == '__main__':
             print(f"   {version}: {metrics_to_print}")
 
         print()
-
-
-
-
-
-
-
