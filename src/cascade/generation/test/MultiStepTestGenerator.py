@@ -8,6 +8,7 @@ import subprocess
 
 from cascade.generation.Generator import Generator
 from cascade.generation.executor.OpenAICaller import OpenAICaller
+from abc import abstractmethod
 
 class MultiStepTestGenerator(Generator):
     code_block_names = []
@@ -357,49 +358,56 @@ class MultiStepTestGenerator(Generator):
 
 
     # Hooks for subclasses
+
+    @abstractmethod
     def test_generation_system_prompt(self, context):
-        raise NotImplementedError
+        pass
 
-
+    @abstractmethod
     def test_generation_context_prompt(self, context):
-        raise NotImplementedError
+        pass
 
-
+    @abstractmethod
     def test_generation_test_header(self, context):
-        raise NotImplementedError
+        pass
 
-
+    @abstractmethod
     def check_generated_tests_syntax(self, code, output_path):
-        raise NotImplementedError
+        pass
 
-
+    @abstractmethod
     def build_signature(self, context, doc=True):
-        raise NotImplementedError
+        pass
 
-
+    @abstractmethod
     def build_context(self, context):
-        raise NotImplementedError
+        pass
 
-
+    @abstractmethod
     def build_tests(self, context):
-        raise NotImplementedError
+        pass
 
-
-    def check_syntax(self, code, output_path):
-        raise NotImplementedError
-
-
+    @abstractmethod
     def repair_source_pattern(self):
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def repair_system_prompt(self):
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def repair_user_prompt(self, context, errors, key, tree):
-        raise NotImplementedError
+        pass
 
     def get_repair_tools(self):
         return None
 
-    def run_repair_helper(self, func, arguments, input_path, output_path, context):
+    def run_repair_helper(
+        self,
+        func,
+        arguments,
+        input_path,
+        output_path,
+        context,
+    ):
         raise NotImplementedError

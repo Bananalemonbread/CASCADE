@@ -1,0 +1,14 @@
+[
+    {
+        "id": 2,
+        "file_name": "lib.rs",
+        "file_path": "src/lib.rs",
+        "class_name": "root module",
+        "function_name": "sub",
+        "full_function_signature": "pub fn sub(a : i32, b : i32) -> i32 ",
+        "verdict": "INCO; pass; step 2 (C'+T'); (3, 7, 0); (10, 0, 0); p2p: 3, f2f: 0, p2f: 0, f2p: 7",
+        "failed_testcases": [],
+        "errored_testcases": [],
+        "failing_testcases": []
+    }
+]

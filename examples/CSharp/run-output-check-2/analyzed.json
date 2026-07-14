@@ -1,0 +1,1036 @@
+[
+    {
+        "id": 0,
+        "language": "C#",
+        "doc": "/// <summary>\n/// Adds two integers.\n/// </summary>",
+        "signature": {
+            "name": "Add",
+            "returns": "int",
+            "params": [
+                "int a",
+                "int b"
+            ],
+            "modifier": [
+                "public",
+                "static"
+            ],
+            "annotations": [],
+            "attributes": [],
+            "generics": [],
+            "constraints": []
+        },
+        "parent": {
+            "name": "Calculator",
+            "namespace": "Calc",
+            "doc": "/// <summary>\n/// Provides basic calculator operations.\n/// </summary>",
+            "imports": [],
+            "constructors": [],
+            "implements": [],
+            "extends": "",
+            "modifiers": [
+                "public"
+            ],
+            "kind": "class",
+            "other_methods": [
+                {
+                    "doc": "/// <summary>\n/// Subtracts the second integer from the first integer.\n/// </summary>",
+                    "signature": {
+                        "name": "Sub",
+                        "returns": "int",
+                        "params": [
+                            "int a",
+                            "int b"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "attributes": [],
+                        "generics": [],
+                        "constraints": []
+                    },
+                    "code": "{\n        return a - b;\n    }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Multiplies two integers.\n/// </summary>",
+                    "signature": {
+                        "name": "Mul",
+                        "returns": "int",
+                        "params": [
+                            "int a",
+                            "int b"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "attributes": [],
+                        "generics": [],
+                        "constraints": []
+                    },
+                    "code": "{\n        return a / b;\n    }"
+                }
+            ],
+            "variables": [],
+            "generics": []
+        },
+        "code": "{\n        return a + b;\n    }",
+        "code_file_path": "Calc/Calculator.cs",
+        "code_file_content": "namespace Calc;\n\n/// <summary>\n/// Provides basic calculator operations.\n/// </summary>\npublic class Calculator\n{\n    /// <summary>\n    /// Adds two integers.\n    /// </summary>\n    public static int Add(int a, int b)\n    {\n        return a + b;\n    }\n\n    /// <summary>\n    /// Subtracts the second integer from the first integer.\n    /// </summary>\n    public static int Sub(int a, int b)\n    {\n        return a - b;\n    }\n\n    /// <summary>\n    /// Multiplies two integers.\n    /// </summary>\n    public static int Mul(int a, int b)\n    {\n        return a / b;\n    }\n}\n",
+        "called_functions": [],
+        "tests": [
+            {
+                "test_file_path": "Calc.Tests/CalculatorTest.cs",
+                "test_class_name": "CalculatorTest",
+                "test_namespace": "Calc.Tests",
+                "test_runner": "xUnit",
+                "test_imports": [
+                    "using Xunit;",
+                    "using Calc;"
+                ],
+                "project_path": "Calc.Tests/Calc.Tests.csproj"
+            }
+        ],
+        "test_imports": [
+            "using Xunit;",
+            "using Calc;"
+        ],
+        "test_file_path": "Calc.Tests/CalculatorTest.cs",
+        "test_class_name": "CalculatorTest",
+        "test_namespace": "Calc.Tests",
+        "test_runner": "xUnit",
+        "project_path": "Calc.Tests/Calc.Tests.csproj",
+        "results": {
+            "(code, new_tests)": [
+                [
+                    "TestAddZeroToNegativeIntegerReturnsOriginal",
+                    "TestAddOppositeNumbersReturnsZero",
+                    "TestAddPositiveAndNegativeIntegersReturnsSum",
+                    "TestAddMaxIntAndZeroReturnsMaxInt",
+                    "TestAddTwoNegativeIntegersReturnsSum",
+                    "TestAddCommutativePropertyHolds",
+                    "TestAddZeroToZeroReturnsZero",
+                    "TestAddZeroToPositiveIntegerReturnsOriginal",
+                    "TestAddTwoPositiveIntegersReturnsSum",
+                    "TestAddTwoMaxIntegersHandlesOverflow",
+                    "TestAddMaxIntAndMinIntReturnsMinusOne",
+                    "TestAddMinIntAndZeroReturnsMinInt",
+                    "TestAddTwoMinIntegersHandlesOverflow"
+                ],
+                [],
+                []
+            ]
+        },
+        "new_tests": "\nusing Xunit;\nusing Calc;\n\nnamespace Calc.Tests\n{\n    public class CalculatorTest\n    {\n        [Fact]\n        public void TestAddTwoPositiveIntegersReturnsSum()\n        {\n            // If Add is called with two positive integers (e.g., 5 and 10), then the method should return their arithmetic sum (15). This verifies the basic functionality described in the documentation for standard positive inputs.\n            var result = Calculator.Add(5, 10);\n            Assert.Equal(15, result);\n        }\n\n        [Fact]\n        public void TestAddTwoNegativeIntegersReturnsSum()\n        {\n            // If Add is called with two negative integers (e.g., -5 and -10), then the method should return their arithmetic sum (-15). This verifies that the addition logic correctly handles negative numbers as implied by 'Adds two integers'.\n            var result = Calculator.Add(-5, -10);\n            Assert.Equal(-15, result);\n        }\n\n        [Fact]\n        public void TestAddPositiveAndNegativeIntegersReturnsSum()\n        {\n            // If Add is called with a positive integer and a negative integer (e.g., 10 and -5), then the method should return the correct net result (5). This tests the handling of mixed signs.\n            var result = Calculator.Add(10, -5);\n            Assert.Equal(5, result);\n        }\n\n        [Fact]\n        public void TestAddOppositeNumbersReturnsZero()\n        {\n            // If Add is called with two integers that are additive inverses (e.g., 5 and -5), then the method should return 0. This verifies the identity property of addition for non-zero inputs.\n            var result = Calculator.Add(5, -5);\n            Assert.Equal(0, result);\n        }\n\n        [Fact]\n        public void TestAddZeroToPositiveIntegerReturnsOriginal()\n        {\n            // If Add is called with a positive integer and zero (e.g., 10 and 0), then the method should return the original positive integer (10). This verifies that zero acts as the additive identity.\n            var result = Calculator.Add(10, 0);\n            Assert.Equal(10, result);\n        }\n\n        [Fact]\n        public void TestAddZeroToNegativeIntegerReturnsOriginal()\n        {\n            // If Add is called with a negative integer and zero (e.g., -10 and 0), then the method should return the original negative integer (-10). This verifies that zero acts as the additive identity for negative numbers.\n            var result = Calculator.Add(-10, 0);\n            Assert.Equal(-10, result);\n        }\n\n        [Fact]\n        public void TestAddZeroToZeroReturnsZero()\n        {\n            // If Add is called with zero and zero (0 and 0), then the method should return 0. This is the most basic case of the additive identity.\n            var result = Calculator.Add(0, 0);\n            Assert.Equal(0, result);\n        }\n\n        [Fact]\n        public void TestAddMaxIntAndMinIntReturnsMinusOne()\n        {\n            // If Add is called with int.MaxValue and int.MinValue, then the method should return -1. This tests the boundary behavior where the sum does not overflow the 32-bit integer range but hits the lower boundary limit.\n            var result = Calculator.Add(int.MaxValue, int.MinValue);\n            Assert.Equal(-1, result);\n        }\n\n        [Fact]\n        public void TestAddTwoMaxIntegersHandlesOverflow()\n        {\n            // If Add is called with int.MaxValue and int.MaxValue, then the method must handle the overflow condition consistent with C# default integer arithmetic (unchecked wrap-around to int.MinValue + 2, i.e., -2) or throw OverflowException if checked. Since documentation does not specify exception handling, we verify the actual implementation behavior against the default CLR behavior for 'int' addition, which is wrap-around. Thus, it should return -2.\n            var result = Calculator.Add(int.MaxValue, int.MaxValue);\n            Assert.Equal(-2, result);\n        }\n\n        [Fact]\n        public void TestAddTwoMinIntegersHandlesOverflow()\n        {\n            // If Add is called with int.MinValue and int.MinValue, then the method must handle the overflow condition consistent with C# default integer arithmetic. Thus, it should return 0 (since -2147483648 + -2147483648 wraps around).\n            var result = Calculator.Add(int.MinValue, int.MinValue);\n            Assert.Equal(0, result);\n        }\n\n        [Fact]\n        public void TestAddMaxIntAndZeroReturnsMaxInt()\n        {\n            // If Add is called with int.MaxValue and 0, then the method should return int.MaxValue. This verifies that adding zero to a boundary value does not alter it.\n            var result = Calculator.Add(int.MaxValue, 0);\n            Assert.Equal(int.MaxValue, result);\n        }\n\n        [Fact]\n        public void TestAddMinIntAndZeroReturnsMinInt()\n        {\n            // If Add is called with int.MinValue and 0, then the method should return int.MinValue. This verifies that adding zero to a boundary value does not alter it.\n            var result = Calculator.Add(int.MinValue, 0);\n            Assert.Equal(int.MinValue, result);\n        }\n\n        [Fact]\n        public void TestAddCommutativePropertyHolds()\n        {\n            // If Add(a, b) is called and Add(b, a) is called with arbitrary integers (e.g., 5 and 10), then both calls should return the same result. This verifies the commutative property of addition, which is fundamental to the concept of 'adding'.\n            var result1 = Calculator.Add(5, 10);\n            var result2 = Calculator.Add(10, 5);\n            Assert.Equal(result1, result2);\n        }\n    }\n}",
+        "new_tests_history": [
+            [
+                {
+                    "role": "system",
+                    "content": "You are an expert C# developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behaviour specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
+                },
+                {
+                    "role": "user",
+                    "content": "Give a complete description of the behavior that we should test when we want to assure that the code matches its documentation from the following method\n```csharp\n/// <summary>\n/// Adds two integers.\n/// </summary>\npublic static int Add(int a, int b)\n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
+                }
+            ],
+            {
+                "id": "chatcmpl-b030476b99e4a4b4",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "logprobs": null,
+                        "message": {
+                            "content": "Based on the provided method signature and documentation, here is the complete description of the behavior that should be tested.\n\n### Analysis of Requirements\n\n1.  **Functionality**: The documentation states the method \"Adds two integers.\" This implies standard arithmetic addition (`a + b`).\n2.  **Input Domain**: The parameters are `int` (32-bit signed integers in C#). The range is `int.MinValue` (-2,147,483,648) to `int.MaxValue` (2,147,483,647).\n3.  **Output Domain**: The return type is `int`.\n4.  **Constraints**: The documentation does **not** specify any behavior for overflow, negative numbers, zero, or exceptions. However, in C#, arithmetic operations on `int` wrap around on overflow by default unless in a `checked` context. Since the documentation does not mention exceptions for overflow, we must test the *actual behavior* of the implementation. If the implementation is unchecked (default), it will wrap. If it is checked, it will throw `OverflowException`.\n    *   *Note*: A strict \"faithful to documentation\" interpretation often implies testing the happy path and the boundaries of the input domain. Since the documentation is minimal, we test the mathematical expectation within the limits of the type, and we must verify how edge cases (like overflow) are handled because they are inherent to the `int` type.\n\n### Behavior Specifications for Unit Tests\n\n#### 1. Basic Addition (Happy Path)\n*   **Scenario**: Adding two positive integers.\n*   **Input**: `a = 5`, `b = 10`\n*   **Expected Output**: `15`\n\n*   **Scenario**: Adding two negative integers.\n*   **Input**: `a = -5`, `b = -10`\n*   **Expected Output**: `-15`\n\n*   **Scenario**: Adding a positive and a negative integer.\n*   **Input**: `a = 10`, `b = -5`\n*   **Expected Output**: `5`\n\n*   **Scenario**: Adding a positive and a negative integer resulting in zero.\n*   **Input**: `a = 5`, `b = -5`\n*   **Expected Output**: `0`\n\n#### 2. Identity Elements (Zero)\n*   **Scenario**: Adding zero to a positive integer.\n*   **Input**: `a = 10`, `b = 0`\n*   **Expected Output**: `10`\n\n*   **Scenario**: Adding zero to a negative integer.\n*   **Input**: `a = -10`, `b = 0`\n*   **Expected Output**: `-10`\n\n*   **Scenario**: Adding zero to zero.\n*   **Input**: `a = 0`, `b = 0`\n*   **Expected Output**: `0`\n\n#### 3. Boundary Values (Min/Max)\n*   **Scenario**: Adding two maximum values (Potential Overflow).\n*   **Input**: `a = int.MaxValue`, `b = int.MaxValue`\n*   **Expected Behavior**: \n    *   If the implementation uses **unchecked** arithmetic (default C# behavior): The result should wrap around to `-2` (`int.MinValue + 2`).\n    *   If the implementation uses **checked** arithmetic: The method should throw an `OverflowException`.\n    *   *Test Note*: Since the documentation doesn't specify, you must test which behavior actually occurs. However, for a simple \"Add\" utility, unchecked wrapping is the standard CLR behavior for `int` addition unless explicitly checked.\n\n*   **Scenario**: Adding two minimum values (Potential Overflow).\n*   **Input**: `a = int.MinValue`, `b = int.MinValue`\n*   **Expected Behavior**: \n    *   Unchecked: Wraps around to `0`.\n    *   Checked: Throws `OverflowException`.\n\n*   **Scenario**: Adding maximum and minimum values.\n*   **Input**: `a = int.MaxValue`, `b = int.MinValue`\n*   **Expected Output**: `-1`\n\n*   **Scenario**: Adding maximum value and zero.\n*   **Input**: `a = int.MaxValue`, `b = 0`\n*   **Expected Output**: `int.MaxValue`\n\n*   **Scenario**: Adding minimum value and zero.\n*   **Input**: `a = int.MinValue`, `b = 0`\n*   **Expected Output**: `int.MinValue`\n\n#### 4. Commutativity (Optional but good for \"Add\" semantics)\n*   **Scenario**: Swapping operands.\n*   **Input**: `a = 5`, `b = 10` vs `a = 10`, `b = 5`\n*   **Expected Output**: Both should return `15`.\n\n### Summary of Test Cases\n\n| Category | Input (a, b) | Expected Result | Notes |\n| :--- | :--- | :--- | :--- |\n| Positive + Positive | (1, 2) | 3 | Basic case |\n| Negative + Negative | (-1, -2) | -3 | Basic case |\n| Positive + Negative | (5, -3) | 2 | Mixed sign |\n| Positive + Negative | (3, -5) | -2 | Mixed sign |\n| Zero Identity | (5, 0) | 5 | |\n| Zero Identity | (-5, 0) | -5 | |\n| Zero Identity | (0, 0) | 0 | |\n| Max + 0 | (int.MaxValue, 0) | int.MaxValue | Boundary |\n| Min + 0 | (int.MinValue, 0) | int.MinValue | Boundary |\n| Max + Min | (int.MaxValue, int.MinValue) | -1 | Boundary |\n| Max + Max | (int.MaxValue, int.MaxValue) | -2 (unchecked) or OverflowException | **Critical Edge Case** |\n| Min + Min | (int.MinValue, int.MinValue) | 0 (unchecked) or OverflowException | **Critical Edge Case** |\n\n### Important Note on Overflow\nSince the documentation does not specify how overflow should be handled, you must determine the implementation's behavior. In standard C# without a `checked` keyword, `int.MaxValue + 1` becomes `int.MinValue`. Therefore, tests for `int.MaxValue + int.MaxValue` are crucial to ensure the method behaves consistently with the language's default arithmetic rules or explicitly throws if intended. Given the simplicity of the signature, **unchecked wrapping** is the most likely intended behavior, but it must be verified.",
+                            "refusal": null,
+                            "role": "assistant",
+                            "annotations": null,
+                            "audio": null,
+                            "function_call": null,
+                            "tool_calls": null,
+                            "provider_specific_fields": {
+                                "refusal": null,
+                                "reasoning": null
+                            }
+                        },
+                        "provider_specific_fields": {
+                            "stop_reason": null,
+                            "token_ids": null
+                        }
+                    }
+                ],
+                "created": 1784023647,
+                "model": "llm3",
+                "object": "chat.completion",
+                "service_tier": null,
+                "system_fingerprint": null,
+                "usage": {
+                    "completion_tokens": 1430,
+                    "prompt_tokens": 160,
+                    "total_tokens": 1590,
+                    "completion_tokens_details": null,
+                    "prompt_tokens_details": null
+                }
+            },
+            [
+                {
+                    "role": "system",
+                    "content": "You are an expert C# developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behaviour specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
+                },
+                {
+                    "role": "user",
+                    "content": "Give a complete description of the behavior that we should test when we want to assure that the code matches its documentation from the following method\n```csharp\n/// <summary>\n/// Adds two integers.\n/// </summary>\npublic static int Add(int a, int b)\n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
+                },
+                {
+                    "content": "Based on the provided method signature and documentation, here is the complete description of the behavior that should be tested.\n\n### Analysis of Requirements\n\n1.  **Functionality**: The documentation states the method \"Adds two integers.\" This implies standard arithmetic addition (`a + b`).\n2.  **Input Domain**: The parameters are `int` (32-bit signed integers in C#). The range is `int.MinValue` (-2,147,483,648) to `int.MaxValue` (2,147,483,647).\n3.  **Output Domain**: The return type is `int`.\n4.  **Constraints**: The documentation does **not** specify any behavior for overflow, negative numbers, zero, or exceptions. However, in C#, arithmetic operations on `int` wrap around on overflow by default unless in a `checked` context. Since the documentation does not mention exceptions for overflow, we must test the *actual behavior* of the implementation. If the implementation is unchecked (default), it will wrap. If it is checked, it will throw `OverflowException`.\n    *   *Note*: A strict \"faithful to documentation\" interpretation often implies testing the happy path and the boundaries of the input domain. Since the documentation is minimal, we test the mathematical expectation within the limits of the type, and we must verify how edge cases (like overflow) are handled because they are inherent to the `int` type.\n\n### Behavior Specifications for Unit Tests\n\n#### 1. Basic Addition (Happy Path)\n*   **Scenario**: Adding two positive integers.\n*   **Input**: `a = 5`, `b = 10`\n*   **Expected Output**: `15`\n\n*   **Scenario**: Adding two negative integers.\n*   **Input**: `a = -5`, `b = -10`\n*   **Expected Output**: `-15`\n\n*   **Scenario**: Adding a positive and a negative integer.\n*   **Input**: `a = 10`, `b = -5`\n*   **Expected Output**: `5`\n\n*   **Scenario**: Adding a positive and a negative integer resulting in zero.\n*   **Input**: `a = 5`, `b = -5`\n*   **Expected Output**: `0`\n\n#### 2. Identity Elements (Zero)\n*   **Scenario**: Adding zero to a positive integer.\n*   **Input**: `a = 10`, `b = 0`\n*   **Expected Output**: `10`\n\n*   **Scenario**: Adding zero to a negative integer.\n*   **Input**: `a = -10`, `b = 0`\n*   **Expected Output**: `-10`\n\n*   **Scenario**: Adding zero to zero.\n*   **Input**: `a = 0`, `b = 0`\n*   **Expected Output**: `0`\n\n#### 3. Boundary Values (Min/Max)\n*   **Scenario**: Adding two maximum values (Potential Overflow).\n*   **Input**: `a = int.MaxValue`, `b = int.MaxValue`\n*   **Expected Behavior**: \n    *   If the implementation uses **unchecked** arithmetic (default C# behavior): The result should wrap around to `-2` (`int.MinValue + 2`).\n    *   If the implementation uses **checked** arithmetic: The method should throw an `OverflowException`.\n    *   *Test Note*: Since the documentation doesn't specify, you must test which behavior actually occurs. However, for a simple \"Add\" utility, unchecked wrapping is the standard CLR behavior for `int` addition unless explicitly checked.\n\n*   **Scenario**: Adding two minimum values (Potential Overflow).\n*   **Input**: `a = int.MinValue`, `b = int.MinValue`\n*   **Expected Behavior**: \n    *   Unchecked: Wraps around to `0`.\n    *   Checked: Throws `OverflowException`.\n\n*   **Scenario**: Adding maximum and minimum values.\n*   **Input**: `a = int.MaxValue`, `b = int.MinValue`\n*   **Expected Output**: `-1`\n\n*   **Scenario**: Adding maximum value and zero.\n*   **Input**: `a = int.MaxValue`, `b = 0`\n*   **Expected Output**: `int.MaxValue`\n\n*   **Scenario**: Adding minimum value and zero.\n*   **Input**: `a = int.MinValue`, `b = 0`\n*   **Expected Output**: `int.MinValue`\n\n#### 4. Commutativity (Optional but good for \"Add\" semantics)\n*   **Scenario**: Swapping operands.\n*   **Input**: `a = 5`, `b = 10` vs `a = 10`, `b = 5`\n*   **Expected Output**: Both should return `15`.\n\n### Summary of Test Cases\n\n| Category | Input (a, b) | Expected Result | Notes |\n| :--- | :--- | :--- | :--- |\n| Positive + Positive | (1, 2) | 3 | Basic case |\n| Negative + Negative | (-1, -2) | -3 | Basic case |\n| Positive + Negative | (5, -3) | 2 | Mixed sign |\n| Positive + Negative | (3, -5) | -2 | Mixed sign |\n| Zero Identity | (5, 0) | 5 | |\n| Zero Identity | (-5, 0) | -5 | |\n| Zero Identity | (0, 0) | 0 | |\n| Max + 0 | (int.MaxValue, 0) | int.MaxValue | Boundary |\n| Min + 0 | (int.MinValue, 0) | int.MinValue | Boundary |\n| Max + Min | (int.MaxValue, int.MinValue) | -1 | Boundary |\n| Max + Max | (int.MaxValue, int.MaxValue) | -2 (unchecked) or OverflowException | **Critical Edge Case** |\n| Min + Min | (int.MinValue, int.MinValue) | 0 (unchecked) or OverflowException | **Critical Edge Case** |\n\n### Important Note on Overflow\nSince the documentation does not specify how overflow should be handled, you must determine the implementation's behavior. In standard C# without a `checked` keyword, `int.MaxValue + 1` becomes `int.MinValue`. Therefore, tests for `int.MaxValue + int.MaxValue` are crucial to ensure the method behaves consistently with the language's default arithmetic rules or explicitly throws if intended. Given the simplicity of the signature, **unchecked wrapping** is the most likely intended behavior, but it must be verified.",
+                    "refusal": null,
+                    "role": "assistant",
+                    "annotations": null,
+                    "audio": null,
+                    "function_call": null,
+                    "tool_calls": null,
+                    "provider_specific_fields": {
+                        "refusal": null,
+                        "reasoning": null
+                    }
+                },
+                {
+                    "role": "user",
+                    "content": "Now turn this into a JSON array of C# unit tests we should write for test driven development. Each entry in the array should have: \"test_name\": a descriptive C# test method name, \"test_description\": a detailed description for the developer of what this test should do and which specific behavior from the documentation it tests. In particular, I want testable statements of the 'if this then that' type.\nFocus on those tests that follow directly from the documentation, e.g. no performance based ones."
+                }
+            ],
+            {
+                "id": "chatcmpl-87fd86bd6e70702a",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "logprobs": null,
+                        "message": {
+                            "content": "```json\n[\n  {\n    \"test_name\": \"Add_TwoPositiveIntegers_ReturnsSum\",\n    \"test_description\": \"If Add is called with two positive integers (e.g., 5 and 10), then the method should return their arithmetic sum (15). This verifies the basic functionality described in the documentation for standard positive inputs.\"\n  },\n  {\n    \"test_name\": \"Add_TwoNegativeIntegers_ReturnsSum\",\n    \"test_description\": \"If Add is called with two negative integers (e.g., -5 and -10), then the method should return their arithmetic sum (-15). This verifies that the addition logic correctly handles negative numbers as implied by 'Adds two integers'.\"\n  },\n  {\n    \"test_name\": \"Add_PositiveAndNegativeIntegers_ReturnsSum\",\n    \"test_description\": \"If Add is called with a positive integer and a negative integer (e.g., 10 and -5), then the method should return the correct net result (5). This tests the handling of mixed signs.\"\n  },\n  {\n    \"test_name\": \"Add_OppositeNumbers_ReturnsZero\",\n    \"test_description\": \"If Add is called with two integers that are additive inverses (e.g., 5 and -5), then the method should return 0. This verifies the identity property of addition for non-zero inputs.\"\n  },\n  {\n    \"test_name\": \"Add_ZeroToPositiveInteger_ReturnsOriginal\",\n    \"test_description\": \"If Add is called with a positive integer and zero (e.g., 10 and 0), then the method should return the original positive integer (10). This verifies that zero acts as the additive identity.\"\n  },\n  {\n    \"test_name\": \"Add_ZeroToNegativeInteger_ReturnsOriginal\",\n    \"test_description\": \"If Add is called with a negative integer and zero (e.g., -10 and 0), then the method should return the original negative integer (-10). This verifies that zero acts as the additive identity for negative numbers.\"\n  },\n  {\n    \"test_name\": \"Add_ZeroToZero_ReturnsZero\",\n    \"test_description\": \"If Add is called with zero and zero (0 and 0), then the method should return 0. This is the most basic case of the additive identity.\"\n  },\n  {\n    \"test_name\": \"Add_MaxIntAndMinInt_ReturnsMinusOne\",\n    \"test_description\": \"If Add is called with int.MaxValue and int.MinValue, then the method should return -1. This tests the boundary behavior where the sum does not overflow the 32-bit integer range but hits the lower boundary limit.\"\n  },\n  {\n    \"test_name\": \"Add_TwoMaxIntegers_HandlesOverflow\",\n    \"test_description\": \"If Add is called with int.MaxValue and int.MaxValue, then the method must handle the overflow condition consistent with C# default integer arithmetic (unchecked wrap-around to int.MinValue + 2, i.e., -2) or throw OverflowException if checked. Since documentation does not specify exception handling, we verify the actual implementation behavior against the default CLR behavior for 'int' addition, which is wrap-around. Thus, it should return -2.\"\n  },\n  {\n    \"test_name\": \"Add_TwoMinIntegers_HandlesOverflow\",\n    \"test_description\": \"If Add is called with int.MinValue and int.MinValue, then the method must handle the overflow condition consistent with C# default integer arithmetic. Thus, it should return 0 (since -2147483648 + -2147483648 wraps around).\"\n  },\n  {\n    \"test_name\": \"Add_MaxIntAndZero_ReturnsMaxInt\",\n    \"test_description\": \"If Add is called with int.MaxValue and 0, then the method should return int.MaxValue. This verifies that adding zero to a boundary value does not alter it.\"\n  },\n  {\n    \"test_name\": \"Add_MinIntAndZero_ReturnsMinInt\",\n    \"test_description\": \"If Add is called with int.MinValue and 0, then the method should return int.MinValue. This verifies that adding zero to a boundary value does not alter it.\"\n  },\n  {\n    \"test_name\": \"Add_CommutativeProperty_Holds\",\n    \"test_description\": \"If Add(a, b) is called and Add(b, a) is called with arbitrary integers (e.g., 5 and 10), then both calls should return the same result. This verifies the commutative property of addition, which is fundamental to the concept of 'adding'.\"\n  }\n]\n```",
+                            "refusal": null,
+                            "role": "assistant",
+                            "annotations": null,
+                            "audio": null,
+                            "function_call": null,
+                            "tool_calls": null,
+                            "provider_specific_fields": {
+                                "refusal": null,
+                                "reasoning": null
+                            }
+                        },
+                        "provider_specific_fields": {
+                            "stop_reason": null,
+                            "token_ids": null
+                        }
+                    }
+                ],
+                "created": 1784023660,
+                "model": "llm3",
+                "object": "chat.completion",
+                "service_tier": null,
+                "system_fingerprint": null,
+                "usage": {
+                    "completion_tokens": 1014,
+                    "prompt_tokens": 1703,
+                    "total_tokens": 2717,
+                    "completion_tokens_details": null,
+                    "prompt_tokens_details": null
+                }
+            },
+            [
+                {
+                    "role": "system",
+                    "content": "You are an expert C# developer. You will generate xUnit tests for the specific method Add(int a, int b). You can import anything from the project itself. Make sure all method signatures and calls are correct. Handle exceptions, nullable values, async behavior, and error cases appropriately when relevant. The code should compile on its own without errors."
+                },
+                {
+                    "role": "user",
+                    "content": "The interesting method under test is:\n```csharp\n/// <summary>\n/// Adds two integers.\n/// </summary>\npublic static int Add(int a, int b)\n```\n\nThe other methods will be tested later. Fill in C# unit tests for the provided test class below. This is for test driven development, so the tests should be designed to fail if the later implementation does not exactly conform to the documentation.\n\nThis is the parent class the method under test resides in:\n## Parent class\n```csharp\npublic class Calculator\n{\n    /// <summary>\n    /// Adds two integers.\n    /// </summary>\n    public static int Add(int a, int b)\n    {\n        // this is the method to be tested\n    }\n}\n```\n\nAdd or adjust using directives as needed. Use only the configured C# test framework, the .NET standard libraries, and imports from the project itself. Instantiate every object you use. Match method signatures and calls exactly, including generics, overloads, async/await, nullable values, and exceptions. Respond with the complete filled C# test class only:\n\n```csharp\nusing Xunit;\nusing Calc;\n\nnamespace Calc.Tests\n{\n\npublic class CalculatorTest\n{\n    [Fact]\n    public void TestAddTwoPositiveIntegersReturnsSum()\n    {\n        // If Add is called with two positive integers (e.g., 5 and 10), then the method should return their arithmetic sum (15). This verifies the basic functionality described in the documentation for standard positive inputs.\n    }\n\n    [Fact]\n    public void TestAddTwoNegativeIntegersReturnsSum()\n    {\n        // If Add is called with two negative integers (e.g., -5 and -10), then the method should return their arithmetic sum (-15). This verifies that the addition logic correctly handles negative numbers as implied by 'Adds two integers'.\n    }\n\n    [Fact]\n    public void TestAddPositiveAndNegativeIntegersReturnsSum()\n    {\n        // If Add is called with a positive integer and a negative integer (e.g., 10 and -5), then the method should return the correct net result (5). This tests the handling of mixed signs.\n    }\n\n    [Fact]\n    public void TestAddOppositeNumbersReturnsZero()\n    {\n        // If Add is called with two integers that are additive inverses (e.g., 5 and -5), then the method should return 0. This verifies the identity property of addition for non-zero inputs.\n    }\n\n    [Fact]\n    public void TestAddZeroToPositiveIntegerReturnsOriginal()\n    {\n        // If Add is called with a positive integer and zero (e.g., 10 and 0), then the method should return the original positive integer (10). This verifies that zero acts as the additive identity.\n    }\n\n    [Fact]\n    public void TestAddZeroToNegativeIntegerReturnsOriginal()\n    {\n        // If Add is called with a negative integer and zero (e.g., -10 and 0), then the method should return the original negative integer (-10). This verifies that zero acts as the additive identity for negative numbers.\n    }\n\n    [Fact]\n    public void TestAddZeroToZeroReturnsZero()\n    {\n        // If Add is called with zero and zero (0 and 0), then the method should return 0. This is the most basic case of the additive identity.\n    }\n\n    [Fact]\n    public void TestAddMaxIntAndMinIntReturnsMinusOne()\n    {\n        // If Add is called with int.MaxValue and int.MinValue, then the method should return -1. This tests the boundary behavior where the sum does not overflow the 32-bit integer range but hits the lower boundary limit.\n    }\n\n    [Fact]\n    public void TestAddTwoMaxIntegersHandlesOverflow()\n    {\n        // If Add is called with int.MaxValue and int.MaxValue, then the method must handle the overflow condition consistent with C# default integer arithmetic (unchecked wrap-around to int.MinValue + 2, i.e., -2) or throw OverflowException if checked. Since documentation does not specify exception handling, we verify the actual implementation behavior against the default CLR behavior for 'int' addition, which is wrap-around. Thus, it should return -2.\n    }\n\n    [Fact]\n    public void TestAddTwoMinIntegersHandlesOverflow()\n    {\n        // If Add is called with int.MinValue and int.MinValue, then the method must handle the overflow condition consistent with C# default integer arithmetic. Thus, it should return 0 (since -2147483648 + -2147483648 wraps around).\n    }\n\n    [Fact]\n    public void TestAddMaxIntAndZeroReturnsMaxInt()\n    {\n        // If Add is called with int.MaxValue and 0, then the method should return int.MaxValue. This verifies that adding zero to a boundary value does not alter it.\n    }\n\n    [Fact]\n    public void TestAddMinIntAndZeroReturnsMinInt()\n    {\n        // If Add is called with int.MinValue and 0, then the method should return int.MinValue. This verifies that adding zero to a boundary value does not alter it.\n    }\n\n    [Fact]\n    public void TestAddCommutativePropertyHolds()\n    {\n        // If Add(a, b) is called and Add(b, a) is called with arbitrary integers (e.g., 5 and 10), then both calls should return the same result. This verifies the commutative property of addition, which is fundamental to the concept of 'adding'.\n    }\n}\n}\n```"
+                },
+                {
+                    "content": "```csharp\nusing Xunit;\nusing Calc;\n\nnamespace Calc.Tests\n{\n\npublic class CalculatorTest\n{\n    [Fact]\n    public void TestAddTwoPositiveIntegersReturnsSum()\n    {\n        // If Add is called with two positive integers (e.g., 5 and 10), then the method should return their arithmetic sum (15). This verifies the basic functionality described in the documentation for standard positive inputs.\n        var result = Calculator.Add(5, 10);\n        Assert.Equal(15, result);\n    }\n\n    [Fact]\n    public void TestAddTwoNegativeIntegersReturnsSum()\n    {\n        // If Add is called with two negative integers (e.g., -5 and -10), then the method should return their arithmetic sum (-15). This verifies that the addition logic correctly handles negative numbers as implied by 'Adds two integers'.\n        var result = Calculator.Add(-5, -10);\n        Assert.Equal(-15, result);\n    }\n\n    [Fact]\n    public void TestAddPositiveAndNegativeIntegersReturnsSum()\n    {\n        // If Add is called with a positive integer and a negative integer (e.g., 10 and -5), then the method should return the correct net result (5). This tests the handling of mixed signs.\n        var result = Calculator.Add(10, -5);\n        Assert.Equal(5, result);\n    }\n\n    [Fact]\n    public void TestAddOppositeNumbersReturnsZero()\n    {\n        // If Add is called with two integers that are additive inverses (e.g., 5 and -5), then the method should return 0. This verifies the identity property of addition for non-zero inputs.\n        var result = Calculator.Add(5, -5);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestAddZeroToPositiveIntegerReturnsOriginal()\n    {\n        // If Add is called with a positive integer and zero (e.g., 10 and 0), then the method should return the original positive integer (10). This verifies that zero acts as the additive identity.\n        var result = Calculator.Add(10, 0);\n        Assert.Equal(10, result);\n    }\n\n    [Fact]\n    public void TestAddZeroToNegativeIntegerReturnsOriginal()\n    {\n        // If Add is called with a negative integer and zero (e.g., -10 and 0), then the method should return the original negative integer (-10). This verifies that zero acts as the additive identity for negative numbers.\n        var result = Calculator.Add(-10, 0);\n        Assert.Equal(-10, result);\n    }\n\n    [Fact]\n    public void TestAddZeroToZeroReturnsZero()\n    {\n        // If Add is called with zero and zero (0 and 0), then the method should return 0. This is the most basic case of the additive identity.\n        var result = Calculator.Add(0, 0);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestAddMaxIntAndMinIntReturnsMinusOne()\n    {\n        // If Add is called with int.MaxValue and int.MinValue, then the method should return -1. This tests the boundary behavior where the sum does not overflow the 32-bit integer range but hits the lower boundary limit.\n        var result = Calculator.Add(int.MaxValue, int.MinValue);\n        Assert.Equal(-1, result);\n    }\n\n    [Fact]\n    public void TestAddTwoMaxIntegersHandlesOverflow()\n    {\n        // If Add is called with int.MaxValue and int.MaxValue, then the method must handle the overflow condition consistent with C# default integer arithmetic (unchecked wrap-around to int.MinValue + 2, i.e., -2) or throw OverflowException if checked. Since documentation does not specify exception handling, we verify the actual implementation behavior against the default CLR behavior for 'int' addition, which is wrap-around. Thus, it should return -2.\n        var result = Calculator.Add(int.MaxValue, int.MaxValue);\n        Assert.Equal(-2, result);\n    }\n\n    [Fact]\n    public void TestAddTwoMinIntegersHandlesOverflow()\n    {\n        // If Add is called with int.MinValue and int.MinValue, then the method must handle the overflow condition consistent with C# default integer arithmetic. Thus, it should return 0 (since -2147483648 + -2147483648 wraps around).\n        var result = Calculator.Add(int.MinValue, int.MinValue);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestAddMaxIntAndZeroReturnsMaxInt()\n    {\n        // If Add is called with int.MaxValue and 0, then the method should return int.MaxValue. This verifies that adding zero to a boundary value does not alter it.\n        var result = Calculator.Add(int.MaxValue, 0);\n        Assert.Equal(int.MaxValue, result);\n    }\n\n    [Fact]\n    public void TestAddMinIntAndZeroReturnsMinInt()\n    {\n        // If Add is called with int.MinValue and 0, then the method should return int.MinValue. This verifies that adding zero to a boundary value does not alter it.\n        var result = Calculator.Add(int.MinValue, 0);\n        Assert.Equal(int.MinValue, result);\n    }\n\n    [Fact]\n    public void TestAddCommutativePropertyHolds()\n    {\n        // If Add(a, b) is called and Add(b, a) is called with arbitrary integers (e.g., 5 and 10), then both calls should return the same result. This verifies the commutative property of addition, which is fundamental to the concept of 'adding'.\n        var result1 = Calculator.Add(5, 10);\n        var result2 = Calculator.Add(10, 5);\n        Assert.Equal(result1, result2);\n    }\n}\n}\n```",
+                    "refusal": null,
+                    "role": "assistant",
+                    "annotations": null,
+                    "audio": null,
+                    "function_call": null,
+                    "tool_calls": null,
+                    "provider_specific_fields": {
+                        "refusal": null,
+                        "reasoning": null
+                    }
+                },
+                {
+                    "role": "user",
+                    "content": "Make sure that this C# test class compiles or runs without errors. Check that all imports are correct, all referenced symbols exist, and errors or exceptions are handled appropriately. Reply with the corrected C# test class only."
+                }
+            ],
+            {
+                "id": "chatcmpl-bb8917678b2d7ff2",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "logprobs": null,
+                        "message": {
+                            "content": "```csharp\nusing Xunit;\nusing Calc;\n\nnamespace Calc.Tests\n{\n    public class CalculatorTest\n    {\n        [Fact]\n        public void TestAddTwoPositiveIntegersReturnsSum()\n        {\n            // If Add is called with two positive integers (e.g., 5 and 10), then the method should return their arithmetic sum (15). This verifies the basic functionality described in the documentation for standard positive inputs.\n            var result = Calculator.Add(5, 10);\n            Assert.Equal(15, result);\n        }\n\n        [Fact]\n        public void TestAddTwoNegativeIntegersReturnsSum()\n        {\n            // If Add is called with two negative integers (e.g., -5 and -10), then the method should return their arithmetic sum (-15). This verifies that the addition logic correctly handles negative numbers as implied by 'Adds two integers'.\n            var result = Calculator.Add(-5, -10);\n            Assert.Equal(-15, result);\n        }\n\n        [Fact]\n        public void TestAddPositiveAndNegativeIntegersReturnsSum()\n        {\n            // If Add is called with a positive integer and a negative integer (e.g., 10 and -5), then the method should return the correct net result (5). This tests the handling of mixed signs.\n            var result = Calculator.Add(10, -5);\n            Assert.Equal(5, result);\n        }\n\n        [Fact]\n        public void TestAddOppositeNumbersReturnsZero()\n        {\n            // If Add is called with two integers that are additive inverses (e.g., 5 and -5), then the method should return 0. This verifies the identity property of addition for non-zero inputs.\n            var result = Calculator.Add(5, -5);\n            Assert.Equal(0, result);\n        }\n\n        [Fact]\n        public void TestAddZeroToPositiveIntegerReturnsOriginal()\n        {\n            // If Add is called with a positive integer and zero (e.g., 10 and 0), then the method should return the original positive integer (10). This verifies that zero acts as the additive identity.\n            var result = Calculator.Add(10, 0);\n            Assert.Equal(10, result);\n        }\n\n        [Fact]\n        public void TestAddZeroToNegativeIntegerReturnsOriginal()\n        {\n            // If Add is called with a negative integer and zero (e.g., -10 and 0), then the method should return the original negative integer (-10). This verifies that zero acts as the additive identity for negative numbers.\n            var result = Calculator.Add(-10, 0);\n            Assert.Equal(-10, result);\n        }\n\n        [Fact]\n        public void TestAddZeroToZeroReturnsZero()\n        {\n            // If Add is called with zero and zero (0 and 0), then the method should return 0. This is the most basic case of the additive identity.\n            var result = Calculator.Add(0, 0);\n            Assert.Equal(0, result);\n        }\n\n        [Fact]\n        public void TestAddMaxIntAndMinIntReturnsMinusOne()\n        {\n            // If Add is called with int.MaxValue and int.MinValue, then the method should return -1. This tests the boundary behavior where the sum does not overflow the 32-bit integer range but hits the lower boundary limit.\n            var result = Calculator.Add(int.MaxValue, int.MinValue);\n            Assert.Equal(-1, result);\n        }\n\n        [Fact]\n        public void TestAddTwoMaxIntegersHandlesOverflow()\n        {\n            // If Add is called with int.MaxValue and int.MaxValue, then the method must handle the overflow condition consistent with C# default integer arithmetic (unchecked wrap-around to int.MinValue + 2, i.e., -2) or throw OverflowException if checked. Since documentation does not specify exception handling, we verify the actual implementation behavior against the default CLR behavior for 'int' addition, which is wrap-around. Thus, it should return -2.\n            var result = Calculator.Add(int.MaxValue, int.MaxValue);\n            Assert.Equal(-2, result);\n        }\n\n        [Fact]\n        public void TestAddTwoMinIntegersHandlesOverflow()\n        {\n            // If Add is called with int.MinValue and int.MinValue, then the method must handle the overflow condition consistent with C# default integer arithmetic. Thus, it should return 0 (since -2147483648 + -2147483648 wraps around).\n            var result = Calculator.Add(int.MinValue, int.MinValue);\n            Assert.Equal(0, result);\n        }\n\n        [Fact]\n        public void TestAddMaxIntAndZeroReturnsMaxInt()\n        {\n            // If Add is called with int.MaxValue and 0, then the method should return int.MaxValue. This verifies that adding zero to a boundary value does not alter it.\n            var result = Calculator.Add(int.MaxValue, 0);\n            Assert.Equal(int.MaxValue, result);\n        }\n\n        [Fact]\n        public void TestAddMinIntAndZeroReturnsMinInt()\n        {\n            // If Add is called with int.MinValue and 0, then the method should return int.MinValue. This verifies that adding zero to a boundary value does not alter it.\n            var result = Calculator.Add(int.MinValue, 0);\n            Assert.Equal(int.MinValue, result);\n        }\n\n        [Fact]\n        public void TestAddCommutativePropertyHolds()\n        {\n            // If Add(a, b) is called and Add(b, a) is called with arbitrary integers (e.g., 5 and 10), then both calls should return the same result. This verifies the commutative property of addition, which is fundamental to the concept of 'adding'.\n            var result1 = Calculator.Add(5, 10);\n            var result2 = Calculator.Add(10, 5);\n            Assert.Equal(result1, result2);\n        }\n    }\n}\n```",
+                            "refusal": null,
+                            "role": "assistant",
+                            "annotations": null,
+                            "audio": null,
+                            "function_call": null,
+                            "tool_calls": null,
+                            "provider_specific_fields": {
+                                "refusal": null,
+                                "reasoning": null
+                            }
+                        },
+                        "provider_specific_fields": {
+                            "stop_reason": null,
+                            "token_ids": null
+                        }
+                    }
+                ],
+                "created": 1784023682,
+                "model": "llm3",
+                "object": "chat.completion",
+                "service_tier": null,
+                "system_fingerprint": null,
+                "usage": {
+                    "completion_tokens": 1323,
+                    "prompt_tokens": 2706,
+                    "total_tokens": 4029,
+                    "completion_tokens_details": null,
+                    "prompt_tokens_details": null
+                }
+            }
+        ],
+        "repair_history": [],
+        "verdict": "NoInco; pass; step 1 (C +T'); (13, 0, 0); ; "
+    },
+    {
+        "id": 1,
+        "language": "C#",
+        "doc": "/// <summary>\n/// Subtracts the second integer from the first integer.\n/// </summary>",
+        "signature": {
+            "name": "Sub",
+            "returns": "int",
+            "params": [
+                "int a",
+                "int b"
+            ],
+            "modifier": [
+                "public",
+                "static"
+            ],
+            "annotations": [],
+            "attributes": [],
+            "generics": [],
+            "constraints": []
+        },
+        "parent": {
+            "name": "Calculator",
+            "namespace": "Calc",
+            "doc": "/// <summary>\n/// Provides basic calculator operations.\n/// </summary>",
+            "imports": [],
+            "constructors": [],
+            "implements": [],
+            "extends": "",
+            "modifiers": [
+                "public"
+            ],
+            "kind": "class",
+            "other_methods": [
+                {
+                    "doc": "/// <summary>\n/// Adds two integers.\n/// </summary>",
+                    "signature": {
+                        "name": "Add",
+                        "returns": "int",
+                        "params": [
+                            "int a",
+                            "int b"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "attributes": [],
+                        "generics": [],
+                        "constraints": []
+                    },
+                    "code": "{\n        return a + b;\n    }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Multiplies two integers.\n/// </summary>",
+                    "signature": {
+                        "name": "Mul",
+                        "returns": "int",
+                        "params": [
+                            "int a",
+                            "int b"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "attributes": [],
+                        "generics": [],
+                        "constraints": []
+                    },
+                    "code": "{\n        return a / b;\n    }"
+                }
+            ],
+            "variables": [],
+            "generics": []
+        },
+        "code": "{\n        return a - b;\n    }",
+        "code_file_path": "Calc/Calculator.cs",
+        "code_file_content": "namespace Calc;\n\n/// <summary>\n/// Provides basic calculator operations.\n/// </summary>\npublic class Calculator\n{\n    /// <summary>\n    /// Adds two integers.\n    /// </summary>\n    public static int Add(int a, int b)\n    {\n        return a + b;\n    }\n\n    /// <summary>\n    /// Subtracts the second integer from the first integer.\n    /// </summary>\n    public static int Sub(int a, int b)\n    {\n        return a - b;\n    }\n\n    /// <summary>\n    /// Multiplies two integers.\n    /// </summary>\n    public static int Mul(int a, int b)\n    {\n        return a / b;\n    }\n}\n",
+        "called_functions": [],
+        "tests": [
+            {
+                "test_file_path": "Calc.Tests/CalculatorTest.cs",
+                "test_class_name": "CalculatorTest",
+                "test_namespace": "Calc.Tests",
+                "test_runner": "xUnit",
+                "test_imports": [
+                    "using Xunit;",
+                    "using Calc;"
+                ],
+                "project_path": "Calc.Tests/Calc.Tests.csproj"
+            }
+        ],
+        "test_imports": [
+            "using Xunit;",
+            "using Calc;"
+        ],
+        "test_file_path": "Calc.Tests/CalculatorTest.cs",
+        "test_class_name": "CalculatorTest",
+        "test_namespace": "Calc.Tests",
+        "test_runner": "xUnit",
+        "project_path": "Calc.Tests/Calc.Tests.csproj",
+        "results": {
+            "(code, new_tests)": [
+                [
+                    "TestSubEqualPositiveIntegersResultZero",
+                    "TestSubPositiveIntegersResultNegative",
+                    "TestSubMinValueMinusOneOverflowBehavior",
+                    "TestSubZeroFromNegative",
+                    "TestSubPositiveIntegerFromNegative",
+                    "TestSubMaxValueMinusMinValueOverflowBehavior",
+                    "TestSubMaxValueMinusOne",
+                    "TestSubPositiveIntegersResultPositive",
+                    "TestSubPositiveFromZero",
+                    "TestSubTrivialCaseZeroFromZero",
+                    "TestSubNonCommutativeCheck",
+                    "TestSubMinValueMinusMaxValueOverflowBehavior",
+                    "TestSubNegativeIntegerFromPositive",
+                    "TestSubZeroFromPositive",
+                    "TestSubNegativeFromZero",
+                    "TestSubNegativeIntegerFromNegative",
+                    "TestSubMaxValueMinusMaxValue",
+                    "TestSubMinValueMinusMinValue"
+                ],
+                [],
+                []
+            ]
+        },
+        "new_tests": "\nusing Xunit;\nusing Calc;\n\nnamespace Calc.Tests\n{\n\npublic class CalculatorTest\n{\n    [Fact]\n    public void TestSubTrivialCaseZeroFromZero()\n    {\n        // Verify that subtracting zero from zero results in zero. This tests the base case of the operation where both operands are the additive identity.\n        int result = Calculator.Sub(0, 0);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestSubPositiveIntegersResultPositive()\n    {\n        // Verify that subtracting a smaller positive integer from a larger positive integer yields the correct positive difference (e.g., 10 - 3 = 7). This confirms standard subtraction logic for positive operands.\n        int result = Calculator.Sub(10, 3);\n        Assert.Equal(7, result);\n    }\n\n    [Fact]\n    public void TestSubPositiveIntegersResultNegative()\n    {\n        // Verify that subtracting a larger positive integer from a smaller positive integer yields the correct negative difference (e.g., 3 - 10 = -7). This confirms the method correctly handles sign inversion when the subtrahend is greater than the minuend.\n        int result = Calculator.Sub(3, 10);\n        Assert.Equal(-7, result);\n    }\n\n    [Fact]\n    public void TestSubEqualPositiveIntegersResultZero()\n    {\n        // Verify that subtracting a positive integer from an equal positive integer results in zero (e.g., 5 - 5 = 0). This tests the cancellation property of subtraction.\n        int result = Calculator.Sub(5, 5);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestSubNegativeIntegerFromPositive()\n    {\n        // Verify that subtracting a negative integer from a positive integer is equivalent to addition (e.g., 5 - (-3) = 8). This ensures the method correctly handles the double negative logic inherent in integer arithmetic.\n        int result = Calculator.Sub(5, -3);\n        Assert.Equal(8, result);\n    }\n\n    [Fact]\n    public void TestSubPositiveIntegerFromNegative()\n    {\n        // Verify that subtracting a positive integer from a negative integer results in a more negative number (e.g., -5 - 3 = -8). This tests correct magnitude increase in the negative direction.\n        int result = Calculator.Sub(-5, 3);\n        Assert.Equal(-8, result);\n    }\n\n    [Fact]\n    public void TestSubNegativeIntegerFromNegative()\n    {\n        // Verify that subtracting a negative integer from a negative integer results in a value closer to zero or positive (e.g., -5 - (-3) = -2). This confirms correct handling of signs when both operands are negative.\n        int result = Calculator.Sub(-5, -3);\n        Assert.Equal(-2, result);\n    }\n\n    [Fact]\n    public void TestSubZeroFromPositive()\n    {\n        // Verify that subtracting zero from a positive integer returns the original positive integer (e.g., 10 - 0 = 10). This tests the identity property where the subtrahend is zero.\n        int result = Calculator.Sub(10, 0);\n        Assert.Equal(10, result);\n    }\n\n    [Fact]\n    public void TestSubZeroFromNegative()\n    {\n        // Verify that subtracting zero from a negative integer returns the original negative integer (e.g., -10 - 0 = -10). This confirms the identity property holds for negative operands.\n        int result = Calculator.Sub(-10, 0);\n        Assert.Equal(-10, result);\n    }\n\n    [Fact]\n    public void TestSubPositiveFromZero()\n    {\n        // Verify that subtracting a positive integer from zero yields the negative of that integer (e.g., 0 - 5 = -5). This tests the sign inversion property when the minuend is zero.\n        int result = Calculator.Sub(0, 5);\n        Assert.Equal(-5, result);\n    }\n\n    [Fact]\n    public void TestSubNegativeFromZero()\n    {\n        // Verify that subtracting a negative integer from zero yields the positive absolute value of that integer (e.g., 0 - (-5) = 5). This tests the conversion of negative subtrahends to positive results when starting from zero.\n        int result = Calculator.Sub(0, -5);\n        Assert.Equal(5, result);\n    }\n\n    [Fact]\n    public void TestSubMaxValueMinusOne()\n    {\n        // Verify that subtracting 1 from int.MaxValue results in int.MaxValue - 1 (2147483646). This tests the upper boundary of the integer range without overflow.\n        int result = Calculator.Sub(int.MaxValue, 1);\n        Assert.Equal(int.MaxValue - 1, result);\n    }\n\n    [Fact]\n    public void TestSubMinValueMinusOneOverflowBehavior()\n    {\n        // Verify the behavior when subtracting 1 from int.MinValue. Since int.MinValue - 1 exceeds the minimum representable integer, this test checks if the implementation throws an OverflowException (if checked) or wraps around (if unchecked). Documentation does not specify, so we verify consistent arithmetic behavior.\n        // Standard C# unchecked arithmetic wraps around.\n        int result = Calculator.Sub(int.MinValue, 1);\n        Assert.Equal(int.MaxValue, result);\n    }\n\n    [Fact]\n    public void TestSubMaxValueMinusMaxValue()\n    {\n        // Verify that subtracting int.MaxValue from int.MaxValue results in 0. This tests the cancellation property at the upper boundary.\n        int result = Calculator.Sub(int.MaxValue, int.MaxValue);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestSubMinValueMinusMinValue()\n    {\n        // Verify that subtracting int.MinValue from int.MinValue results in 0. This tests the cancellation property at the lower boundary.\n        int result = Calculator.Sub(int.MinValue, int.MinValue);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestSubMaxValueMinusMinValueOverflowBehavior()\n    {\n        // Verify the behavior when subtracting int.MinValue from int.MaxValue. The mathematical result is 4,294,967,295, which exceeds int.MaxValue. This test checks for OverflowException or wrap-around behavior.\n        // Standard C# unchecked arithmetic wraps around.\n        int result = Calculator.Sub(int.MaxValue, int.MinValue);\n        Assert.Equal(-1, result);\n    }\n\n    [Fact]\n    public void TestSubMinValueMinusMaxValueOverflowBehavior()\n    {\n        // Verify the behavior when subtracting int.MaxValue from int.MinValue. The mathematical result is -4,294,967,295, which is less than int.MinValue. This test checks for OverflowException or wrap-around behavior.\n        // Standard C# unchecked arithmetic wraps around.\n        int result = Calculator.Sub(int.MinValue, int.MaxValue);\n        Assert.Equal(1, result);\n    }\n\n    [Fact]\n    public void TestSubNonCommutativeCheck()\n    {\n        // Verify that Sub(a, b) is not equal to Sub(b, a) for distinct a and b (e.g., Sub(10, 3) != Sub(3, 10)). This confirms the method follows standard subtraction logic which is non-commutative.\n        int result1 = Calculator.Sub(10, 3);\n        int result2 = Calculator.Sub(3, 10);\n        Assert.NotEqual(result1, result2);\n    }\n}\n}",
+        "new_tests_history": [
+            [
+                {
+                    "role": "system",
+                    "content": "You are an expert C# developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behaviour specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
+                },
+                {
+                    "role": "user",
+                    "content": "Give a complete description of the behavior that we should test when we want to assure that the code matches its documentation from the following method\n```csharp\n/// <summary>\n/// Subtracts the second integer from the first integer.\n/// </summary>\npublic static int Sub(int a, int b)\n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
+                }
+            ],
+            {
+                "id": "chatcmpl-b3abd985d8aac0e6",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "logprobs": null,
+                        "message": {
+                            "content": "Based on the provided method signature and documentation, here is the complete behavior specification for unit testing.\n\n### Method Analysis\n*   **Signature:** `public static int Sub(int a, int b)`\n*   **Documentation:** \"Subtracts the second integer from the first integer.\"\n*   **Mathematical Definition:** The method should return `a - b`.\n*   **Constraints:** The documentation makes no mention of input validation (e.g., null checks, range checks) or exception throwing. In C#, `int` is a value type and cannot be null. Therefore, no validation tests are required based strictly on the documentation.\n\n### Behavior Specifications for Unit Tests\n\nThe following test cases cover the entire functionality as described, including standard operations and edge cases inherent to integer arithmetic in C#. Since the documentation does not specify overflow behavior, we test the standard arithmetic result. If the implementation uses `checked` context, overflows would throw; if not, they wrap. However, without explicit documentation on overflow handling, the primary specification is the mathematical result within the bounds of a 32-bit signed integer.\n\n#### 1. Standard Positive Integers\n*   **Test Case:** Subtracting two positive integers where the result is positive.\n    *   Input: `a = 10`, `b = 3`\n    *   Expected Output: `7`\n*   **Test Case:** Subtracting two positive integers where the result is zero.\n    *   Input: `a = 5`, `b = 5`\n    *   Expected Output: `0`\n*   **Test Case:** Subtracting two positive integers where the result is negative.\n    *   Input: `a = 3`, `b = 10`\n    *   Expected Output: `-7`\n\n#### 2. Standard Negative Integers\n*   **Test Case:** Subtracting a negative integer from a positive integer (equivalent to addition).\n    *   Input: `a = 5`, `b = -3`\n    *   Expected Output: `8`\n*   **Test Case:** Subtracting a positive integer from a negative integer.\n    *   Input: `a = -5`, `b = 3`\n    *   Expected Output: `-8`\n*   **Test Case:** Subtracting a negative integer from a negative integer.\n    *   Input: `a = -5`, `b = -3`\n    *   Expected Output: `-2`\n\n#### 3. Zero Handling\n*   **Test Case:** Subtracting zero from a positive integer.\n    *   Input: `a = 10`, `b = 0`\n    *   Expected Output: `10`\n*   **Test Case:** Subtracting zero from a negative integer.\n    *   Input: `a = -10`, `b = 0`\n    *   Expected Output: `-10`\n*   **Test Case:** Subtracting a positive integer from zero.\n    *   Input: `a = 0`, `b = 5`\n    *   Expected Output: `-5`\n*   **Test Case:** Subtracting a negative integer from zero.\n    *   Input: `a = 0`, `b = -5`\n    *   Expected Output: `5`\n*   **Test Case:** Subtracting zero from zero.\n    *   Input: `a = 0`, `b = 0`\n    *   Expected Output: `0`\n\n#### 4. Boundary Values (int.MaxValue and int.MinValue)\n*   **Test Case:** Subtracting 1 from `int.MaxValue`.\n    *   Input: `a = int.MaxValue`, `b = 1`\n    *   Expected Output: `int.MaxValue - 1` (which is `2147483646`)\n*   **Test Case:** Subtracting `int.MaxValue` from `int.MaxValue`.\n    *   Input: `a = int.MaxValue`, `b = int.MaxValue`\n    *   Expected Output: `0`\n*   **Test Case:** Subtracting 1 from `int.MinValue`.\n    *   Input: `a = int.MinValue`, `b = 1`\n    *   Expected Output: `int.MinValue - 1` (which is `-2147483649`)\n    *   *Note:* This will cause an overflow in C# unchecked context (wrapping to `int.MaxValue`) or throw `OverflowException` in checked context. Since the documentation does not specify overflow behavior, this test verifies the implementation's chosen strategy. However, the most faithful interpretation of \"subtracts\" is the mathematical result, which cannot be represented in `int`. A common robust test is to ensure the operation completes without crashing if unchecked, or throws if checked. For strict documentation adherence, we note the result is mathematically `-2147483649`.\n*   **Test Case:** Subtracting `int.MinValue` from `int.MinValue`.\n    *   Input: `a = int.MinValue`, `b = int.MinValue`\n    *   Expected Output: `0`\n*   **Test Case:** Subtracting `int.MinValue` from `int.MaxValue`.\n    *   Input: `a = int.MaxValue`, `b = int.MinValue`\n    *   Expected Output: `int.MaxValue - int.MinValue` (which is `4294967295`)\n    *   *Note:* This exceeds `int.MaxValue` and will overflow. Again, behavior depends on `checked` context.\n*   **Test Case:** Subtracting `int.MaxValue` from `int.MinValue`.\n    *   Input: `a = int.MinValue`, `b = int.MaxValue`\n    *   Expected Output: `int.MinValue - int.MaxValue` (which is `-4294967295`)\n    *   *Note:* This is less than `int.MinValue` and will overflow.\n\n#### 5. Identity and Symmetry\n*   **Test Case:** Subtracting the same number from itself.\n    *   Input: `a = 100`, `b = 100`\n    *   Expected Output: `0`\n*   **Test Case:** Commutativity check (subtraction is not commutative).\n    *   Input 1: `Sub(10, 3)` -> `7`\n    *   Input 2: `Sub(3, 10)` -> `-7`\n    *   Verification: The results should be opposite in sign (if non-zero) or different, confirming `a - b` is not `b - a`.\n\n### Summary of Test Coverage\n| Category | Test Case Description | Input (a, b) | Expected Output |\n| :--- | :--- | :--- | :--- |\n| Standard | Positive - Positive (Pos) | 10, 3 | 7 |\n| Standard | Positive - Positive (Zero) | 5, 5 | 0 |\n| Standard | Positive - Positive (Neg) | 3, 10 | -7 |\n| Standard | Positive - Negative | 5, -3 | 8 |\n| Standard | Negative - Positive | -5, 3 | -8 |\n| Standard | Negative - Negative | -5, -3 | -2 |\n| Zero | Zero - Zero | 0, 0 | 0 |\n| Zero | Positive - Zero | 10, 0 | 10 |\n| Zero | Negative - Zero | -10, 0 | -10 |\n| Zero | Zero - Positive | 0, 5 | -5 |\n| Zero | Zero - Negative | 0, -5 | 5 |\n| Boundary | Max - 1 | int.MaxValue, 1 | 2147483646 |\n| Boundary | Min - 1 | int.MinValue, 1 | *Overflow* |\n| Boundary | Max - Max | int.MaxValue, int.MaxValue | 0 |\n| Boundary | Min - Min | int.MinValue, int.MinValue | 0 |\n| Boundary | Max - Min | int.MaxValue, int.MinValue | *Overflow* |\n| Boundary | Min - Max | int.MinValue, int.MaxValue | *Overflow* |\n\n**Note on Overflow:** Since the documentation does not specify behavior for arithmetic overflow, the tests for boundary cases that cause overflow (Min-1, Max-Min, Min-Max) should be implemented to verify the specific behavior of the current implementation (e.g., whether it wraps around or throws an `OverflowException`). If the documentation is the sole source of truth, and it does not mention exceptions, the most neutral assumption is that the method performs standard integer subtraction. In production code, it is often best practice to either use `checked` to make overflow explicit or document that wrapping occurs. For the purpose of this specification, we highlight these cases as critical edge cases to be tested.",
+                            "refusal": null,
+                            "role": "assistant",
+                            "annotations": null,
+                            "audio": null,
+                            "function_call": null,
+                            "tool_calls": null,
+                            "provider_specific_fields": {
+                                "refusal": null,
+                                "reasoning": null
+                            }
+                        },
+                        "provider_specific_fields": {
+                            "stop_reason": null,
+                            "token_ids": null
+                        }
+                    }
+                ],
+                "created": 1784023698,
+                "model": "llm3",
+                "object": "chat.completion",
+                "service_tier": null,
+                "system_fingerprint": null,
+                "usage": {
+                    "completion_tokens": 1927,
+                    "prompt_tokens": 166,
+                    "total_tokens": 2093,
+                    "completion_tokens_details": null,
+                    "prompt_tokens_details": null
+                }
+            },
+            [
+                {
+                    "role": "system",
+                    "content": "You are an expert C# developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behaviour specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
+                },
+                {
+                    "role": "user",
+                    "content": "Give a complete description of the behavior that we should test when we want to assure that the code matches its documentation from the following method\n```csharp\n/// <summary>\n/// Subtracts the second integer from the first integer.\n/// </summary>\npublic static int Sub(int a, int b)\n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
+                },
+                {
+                    "content": "Based on the provided method signature and documentation, here is the complete behavior specification for unit testing.\n\n### Method Analysis\n*   **Signature:** `public static int Sub(int a, int b)`\n*   **Documentation:** \"Subtracts the second integer from the first integer.\"\n*   **Mathematical Definition:** The method should return `a - b`.\n*   **Constraints:** The documentation makes no mention of input validation (e.g., null checks, range checks) or exception throwing. In C#, `int` is a value type and cannot be null. Therefore, no validation tests are required based strictly on the documentation.\n\n### Behavior Specifications for Unit Tests\n\nThe following test cases cover the entire functionality as described, including standard operations and edge cases inherent to integer arithmetic in C#. Since the documentation does not specify overflow behavior, we test the standard arithmetic result. If the implementation uses `checked` context, overflows would throw; if not, they wrap. However, without explicit documentation on overflow handling, the primary specification is the mathematical result within the bounds of a 32-bit signed integer.\n\n#### 1. Standard Positive Integers\n*   **Test Case:** Subtracting two positive integers where the result is positive.\n    *   Input: `a = 10`, `b = 3`\n    *   Expected Output: `7`\n*   **Test Case:** Subtracting two positive integers where the result is zero.\n    *   Input: `a = 5`, `b = 5`\n    *   Expected Output: `0`\n*   **Test Case:** Subtracting two positive integers where the result is negative.\n    *   Input: `a = 3`, `b = 10`\n    *   Expected Output: `-7`\n\n#### 2. Standard Negative Integers\n*   **Test Case:** Subtracting a negative integer from a positive integer (equivalent to addition).\n    *   Input: `a = 5`, `b = -3`\n    *   Expected Output: `8`\n*   **Test Case:** Subtracting a positive integer from a negative integer.\n    *   Input: `a = -5`, `b = 3`\n    *   Expected Output: `-8`\n*   **Test Case:** Subtracting a negative integer from a negative integer.\n    *   Input: `a = -5`, `b = -3`\n    *   Expected Output: `-2`\n\n#### 3. Zero Handling\n*   **Test Case:** Subtracting zero from a positive integer.\n    *   Input: `a = 10`, `b = 0`\n    *   Expected Output: `10`\n*   **Test Case:** Subtracting zero from a negative integer.\n    *   Input: `a = -10`, `b = 0`\n    *   Expected Output: `-10`\n*   **Test Case:** Subtracting a positive integer from zero.\n    *   Input: `a = 0`, `b = 5`\n    *   Expected Output: `-5`\n*   **Test Case:** Subtracting a negative integer from zero.\n    *   Input: `a = 0`, `b = -5`\n    *   Expected Output: `5`\n*   **Test Case:** Subtracting zero from zero.\n    *   Input: `a = 0`, `b = 0`\n    *   Expected Output: `0`\n\n#### 4. Boundary Values (int.MaxValue and int.MinValue)\n*   **Test Case:** Subtracting 1 from `int.MaxValue`.\n    *   Input: `a = int.MaxValue`, `b = 1`\n    *   Expected Output: `int.MaxValue - 1` (which is `2147483646`)\n*   **Test Case:** Subtracting `int.MaxValue` from `int.MaxValue`.\n    *   Input: `a = int.MaxValue`, `b = int.MaxValue`\n    *   Expected Output: `0`\n*   **Test Case:** Subtracting 1 from `int.MinValue`.\n    *   Input: `a = int.MinValue`, `b = 1`\n    *   Expected Output: `int.MinValue - 1` (which is `-2147483649`)\n    *   *Note:* This will cause an overflow in C# unchecked context (wrapping to `int.MaxValue`) or throw `OverflowException` in checked context. Since the documentation does not specify overflow behavior, this test verifies the implementation's chosen strategy. However, the most faithful interpretation of \"subtracts\" is the mathematical result, which cannot be represented in `int`. A common robust test is to ensure the operation completes without crashing if unchecked, or throws if checked. For strict documentation adherence, we note the result is mathematically `-2147483649`.\n*   **Test Case:** Subtracting `int.MinValue` from `int.MinValue`.\n    *   Input: `a = int.MinValue`, `b = int.MinValue`\n    *   Expected Output: `0`\n*   **Test Case:** Subtracting `int.MinValue` from `int.MaxValue`.\n    *   Input: `a = int.MaxValue`, `b = int.MinValue`\n    *   Expected Output: `int.MaxValue - int.MinValue` (which is `4294967295`)\n    *   *Note:* This exceeds `int.MaxValue` and will overflow. Again, behavior depends on `checked` context.\n*   **Test Case:** Subtracting `int.MaxValue` from `int.MinValue`.\n    *   Input: `a = int.MinValue`, `b = int.MaxValue`\n    *   Expected Output: `int.MinValue - int.MaxValue` (which is `-4294967295`)\n    *   *Note:* This is less than `int.MinValue` and will overflow.\n\n#### 5. Identity and Symmetry\n*   **Test Case:** Subtracting the same number from itself.\n    *   Input: `a = 100`, `b = 100`\n    *   Expected Output: `0`\n*   **Test Case:** Commutativity check (subtraction is not commutative).\n    *   Input 1: `Sub(10, 3)` -> `7`\n    *   Input 2: `Sub(3, 10)` -> `-7`\n    *   Verification: The results should be opposite in sign (if non-zero) or different, confirming `a - b` is not `b - a`.\n\n### Summary of Test Coverage\n| Category | Test Case Description | Input (a, b) | Expected Output |\n| :--- | :--- | :--- | :--- |\n| Standard | Positive - Positive (Pos) | 10, 3 | 7 |\n| Standard | Positive - Positive (Zero) | 5, 5 | 0 |\n| Standard | Positive - Positive (Neg) | 3, 10 | -7 |\n| Standard | Positive - Negative | 5, -3 | 8 |\n| Standard | Negative - Positive | -5, 3 | -8 |\n| Standard | Negative - Negative | -5, -3 | -2 |\n| Zero | Zero - Zero | 0, 0 | 0 |\n| Zero | Positive - Zero | 10, 0 | 10 |\n| Zero | Negative - Zero | -10, 0 | -10 |\n| Zero | Zero - Positive | 0, 5 | -5 |\n| Zero | Zero - Negative | 0, -5 | 5 |\n| Boundary | Max - 1 | int.MaxValue, 1 | 2147483646 |\n| Boundary | Min - 1 | int.MinValue, 1 | *Overflow* |\n| Boundary | Max - Max | int.MaxValue, int.MaxValue | 0 |\n| Boundary | Min - Min | int.MinValue, int.MinValue | 0 |\n| Boundary | Max - Min | int.MaxValue, int.MinValue | *Overflow* |\n| Boundary | Min - Max | int.MinValue, int.MaxValue | *Overflow* |\n\n**Note on Overflow:** Since the documentation does not specify behavior for arithmetic overflow, the tests for boundary cases that cause overflow (Min-1, Max-Min, Min-Max) should be implemented to verify the specific behavior of the current implementation (e.g., whether it wraps around or throws an `OverflowException`). If the documentation is the sole source of truth, and it does not mention exceptions, the most neutral assumption is that the method performs standard integer subtraction. In production code, it is often best practice to either use `checked` to make overflow explicit or document that wrapping occurs. For the purpose of this specification, we highlight these cases as critical edge cases to be tested.",
+                    "refusal": null,
+                    "role": "assistant",
+                    "annotations": null,
+                    "audio": null,
+                    "function_call": null,
+                    "tool_calls": null,
+                    "provider_specific_fields": {
+                        "refusal": null,
+                        "reasoning": null
+                    }
+                },
+                {
+                    "role": "user",
+                    "content": "Now turn this into a JSON array of C# unit tests we should write for test driven development. Each entry in the array should have: \"test_name\": a descriptive C# test method name, \"test_description\": a detailed description for the developer of what this test should do and which specific behavior from the documentation it tests. In particular, I want testable statements of the 'if this then that' type.\nFocus on those tests that follow directly from the documentation, e.g. no performance based ones."
+                }
+            ],
+            {
+                "id": "chatcmpl-bc1b965e4e755a97",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "logprobs": null,
+                        "message": {
+                            "content": "```json\n[\n  {\n    \"test_name\": \"Sub_Trivial_Case_ZeroFromZero\",\n    \"test_description\": \"Verify that subtracting zero from zero results in zero. This tests the base case of the operation where both operands are the additive identity.\"\n  },\n  {\n    \"test_name\": \"Sub_PositiveIntegers_ResultPositive\",\n    \"test_description\": \"Verify that subtracting a smaller positive integer from a larger positive integer yields the correct positive difference (e.g., 10 - 3 = 7). This confirms standard subtraction logic for positive operands.\"\n  },\n  {\n    \"test_name\": \"Sub_PositiveIntegers_ResultNegative\",\n    \"test_description\": \"Verify that subtracting a larger positive integer from a smaller positive integer yields the correct negative difference (e.g., 3 - 10 = -7). This confirms the method correctly handles sign inversion when the subtrahend is greater than the minuend.\"\n  },\n  {\n    \"test_name\": \"Sub_EqualPositiveIntegers_ResultZero\",\n    \"test_description\": \"Verify that subtracting a positive integer from an equal positive integer results in zero (e.g., 5 - 5 = 0). This tests the cancellation property of subtraction.\"\n  },\n  {\n    \"test_name\": \"Sub_NegativeIntegerFromPositive\",\n    \"test_description\": \"Verify that subtracting a negative integer from a positive integer is equivalent to addition (e.g., 5 - (-3) = 8). This ensures the method correctly handles the double negative logic inherent in integer arithmetic.\"\n  },\n  {\n    \"test_name\": \"Sub_PositiveIntegerFromNegative\",\n    \"test_description\": \"Verify that subtracting a positive integer from a negative integer results in a more negative number (e.g., -5 - 3 = -8). This tests correct magnitude increase in the negative direction.\"\n  },\n  {\n    \"test_name\": \"Sub_NegativeIntegerFromNegative\",\n    \"test_description\": \"Verify that subtracting a negative integer from a negative integer results in a value closer to zero or positive (e.g., -5 - (-3) = -2). This confirms correct handling of signs when both operands are negative.\"\n  },\n  {\n    \"test_name\": \"Sub_ZeroFromPositive\",\n    \"test_description\": \"Verify that subtracting zero from a positive integer returns the original positive integer (e.g., 10 - 0 = 10). This tests the identity property where the subtrahend is zero.\"\n  },\n  {\n    \"test_name\": \"Sub_ZeroFromNegative\",\n    \"test_description\": \"Verify that subtracting zero from a negative integer returns the original negative integer (e.g., -10 - 0 = -10). This confirms the identity property holds for negative operands.\"\n  },\n  {\n    \"test_name\": \"Sub_PositiveFromZero\",\n    \"test_description\": \"Verify that subtracting a positive integer from zero yields the negative of that integer (e.g., 0 - 5 = -5). This tests the sign inversion property when the minuend is zero.\"\n  },\n  {\n    \"test_name\": \"Sub_NegativeFromZero\",\n    \"test_description\": \"Verify that subtracting a negative integer from zero yields the positive absolute value of that integer (e.g., 0 - (-5) = 5). This tests the conversion of negative subtrahends to positive results when starting from zero.\"\n  },\n  {\n    \"test_name\": \"Sub_MaxValueMinusOne\",\n    \"test_description\": \"Verify that subtracting 1 from int.MaxValue results in int.MaxValue - 1 (2147483646). This tests the upper boundary of the integer range without overflow.\"\n  },\n  {\n    \"test_name\": \"Sub_MinValueMinusOne_OverflowBehavior\",\n    \"test_description\": \"Verify the behavior when subtracting 1 from int.MinValue. Since int.MinValue - 1 exceeds the minimum representable integer, this test checks if the implementation throws an OverflowException (if checked) or wraps around (if unchecked). Documentation does not specify, so we verify consistent arithmetic behavior.\"\n  },\n  {\n    \"test_name\": \"Sub_MaxValueMinusMaxValue\",\n    \"test_description\": \"Verify that subtracting int.MaxValue from int.MaxValue results in 0. This tests the cancellation property at the upper boundary.\"\n  },\n  {\n    \"test_name\": \"Sub_MinValueMinusMinValue\",\n    \"test_description\": \"Verify that subtracting int.MinValue from int.MinValue results in 0. This tests the cancellation property at the lower boundary.\"\n  },\n  {\n    \"test_name\": \"Sub_MaxValueMinusMinValue_OverflowBehavior\",\n    \"test_description\": \"Verify the behavior when subtracting int.MinValue from int.MaxValue. The mathematical result is 4,294,967,295, which exceeds int.MaxValue. This test checks for OverflowException or wrap-around behavior.\"\n  },\n  {\n    \"test_name\": \"Sub_MinValueMinusMaxValue_OverflowBehavior\",\n    \"test_description\": \"Verify the behavior when subtracting int.MaxValue from int.MinValue. The mathematical result is -4,294,967,295, which is less than int.MinValue. This test checks for OverflowException or wrap-around behavior.\"\n  },\n  {\n    \"test_name\": \"Sub_NonCommutativeCheck\",\n    \"test_description\": \"Verify that Sub(a, b) is not equal to Sub(b, a) for distinct a and b (e.g., Sub(10, 3) != Sub(3, 10)). This confirms the method follows standard subtraction logic which is non-commutative.\"\n  }\n]\n```",
+                            "refusal": null,
+                            "role": "assistant",
+                            "annotations": null,
+                            "audio": null,
+                            "function_call": null,
+                            "tool_calls": null,
+                            "provider_specific_fields": {
+                                "refusal": null,
+                                "reasoning": null
+                            }
+                        },
+                        "provider_specific_fields": {
+                            "stop_reason": null,
+                            "token_ids": null
+                        }
+                    }
+                ],
+                "created": 1784023716,
+                "model": "llm3",
+                "object": "chat.completion",
+                "service_tier": null,
+                "system_fingerprint": null,
+                "usage": {
+                    "completion_tokens": 1261,
+                    "prompt_tokens": 2206,
+                    "total_tokens": 3467,
+                    "completion_tokens_details": null,
+                    "prompt_tokens_details": null
+                }
+            },
+            [
+                {
+                    "role": "system",
+                    "content": "You are an expert C# developer. You will generate xUnit tests for the specific method Sub(int a, int b). You can import anything from the project itself. Make sure all method signatures and calls are correct. Handle exceptions, nullable values, async behavior, and error cases appropriately when relevant. The code should compile on its own without errors."
+                },
+                {
+                    "role": "user",
+                    "content": "The interesting method under test is:\n```csharp\n/// <summary>\n/// Subtracts the second integer from the first integer.\n/// </summary>\npublic static int Sub(int a, int b)\n```\n\nThe other methods will be tested later. Fill in C# unit tests for the provided test class below. This is for test driven development, so the tests should be designed to fail if the later implementation does not exactly conform to the documentation.\n\nThis is the parent class the method under test resides in:\n## Parent class\n```csharp\npublic class Calculator\n{\n    /// <summary>\n    /// Subtracts the second integer from the first integer.\n    /// </summary>\n    public static int Sub(int a, int b)\n    {\n        // this is the method to be tested\n    }\n}\n```\n\nAdd or adjust using directives as needed. Use only the configured C# test framework, the .NET standard libraries, and imports from the project itself. Instantiate every object you use. Match method signatures and calls exactly, including generics, overloads, async/await, nullable values, and exceptions. Respond with the complete filled C# test class only:\n\n```csharp\nusing Xunit;\nusing Calc;\n\nnamespace Calc.Tests\n{\n\npublic class CalculatorTest\n{\n    [Fact]\n    public void TestSubTrivialCaseZeroFromZero()\n    {\n        // Verify that subtracting zero from zero results in zero. This tests the base case of the operation where both operands are the additive identity.\n    }\n\n    [Fact]\n    public void TestSubPositiveIntegersResultPositive()\n    {\n        // Verify that subtracting a smaller positive integer from a larger positive integer yields the correct positive difference (e.g., 10 - 3 = 7). This confirms standard subtraction logic for positive operands.\n    }\n\n    [Fact]\n    public void TestSubPositiveIntegersResultNegative()\n    {\n        // Verify that subtracting a larger positive integer from a smaller positive integer yields the correct negative difference (e.g., 3 - 10 = -7). This confirms the method correctly handles sign inversion when the subtrahend is greater than the minuend.\n    }\n\n    [Fact]\n    public void TestSubEqualPositiveIntegersResultZero()\n    {\n        // Verify that subtracting a positive integer from an equal positive integer results in zero (e.g., 5 - 5 = 0). This tests the cancellation property of subtraction.\n    }\n\n    [Fact]\n    public void TestSubNegativeIntegerFromPositive()\n    {\n        // Verify that subtracting a negative integer from a positive integer is equivalent to addition (e.g., 5 - (-3) = 8). This ensures the method correctly handles the double negative logic inherent in integer arithmetic.\n    }\n\n    [Fact]\n    public void TestSubPositiveIntegerFromNegative()\n    {\n        // Verify that subtracting a positive integer from a negative integer results in a more negative number (e.g., -5 - 3 = -8). This tests correct magnitude increase in the negative direction.\n    }\n\n    [Fact]\n    public void TestSubNegativeIntegerFromNegative()\n    {\n        // Verify that subtracting a negative integer from a negative integer results in a value closer to zero or positive (e.g., -5 - (-3) = -2). This confirms correct handling of signs when both operands are negative.\n    }\n\n    [Fact]\n    public void TestSubZeroFromPositive()\n    {\n        // Verify that subtracting zero from a positive integer returns the original positive integer (e.g., 10 - 0 = 10). This tests the identity property where the subtrahend is zero.\n    }\n\n    [Fact]\n    public void TestSubZeroFromNegative()\n    {\n        // Verify that subtracting zero from a negative integer returns the original negative integer (e.g., -10 - 0 = -10). This confirms the identity property holds for negative operands.\n    }\n\n    [Fact]\n    public void TestSubPositiveFromZero()\n    {\n        // Verify that subtracting a positive integer from zero yields the negative of that integer (e.g., 0 - 5 = -5). This tests the sign inversion property when the minuend is zero.\n    }\n\n    [Fact]\n    public void TestSubNegativeFromZero()\n    {\n        // Verify that subtracting a negative integer from zero yields the positive absolute value of that integer (e.g., 0 - (-5) = 5). This tests the conversion of negative subtrahends to positive results when starting from zero.\n    }\n\n    [Fact]\n    public void TestSubMaxValueMinusOne()\n    {\n        // Verify that subtracting 1 from int.MaxValue results in int.MaxValue - 1 (2147483646). This tests the upper boundary of the integer range without overflow.\n    }\n\n    [Fact]\n    public void TestSubMinValueMinusOneOverflowBehavior()\n    {\n        // Verify the behavior when subtracting 1 from int.MinValue. Since int.MinValue - 1 exceeds the minimum representable integer, this test checks if the implementation throws an OverflowException (if checked) or wraps around (if unchecked). Documentation does not specify, so we verify consistent arithmetic behavior.\n    }\n\n    [Fact]\n    public void TestSubMaxValueMinusMaxValue()\n    {\n        // Verify that subtracting int.MaxValue from int.MaxValue results in 0. This tests the cancellation property at the upper boundary.\n    }\n\n    [Fact]\n    public void TestSubMinValueMinusMinValue()\n    {\n        // Verify that subtracting int.MinValue from int.MinValue results in 0. This tests the cancellation property at the lower boundary.\n    }\n\n    [Fact]\n    public void TestSubMaxValueMinusMinValueOverflowBehavior()\n    {\n        // Verify the behavior when subtracting int.MinValue from int.MaxValue. The mathematical result is 4,294,967,295, which exceeds int.MaxValue. This test checks for OverflowException or wrap-around behavior.\n    }\n\n    [Fact]\n    public void TestSubMinValueMinusMaxValueOverflowBehavior()\n    {\n        // Verify the behavior when subtracting int.MaxValue from int.MinValue. The mathematical result is -4,294,967,295, which is less than int.MinValue. This test checks for OverflowException or wrap-around behavior.\n    }\n\n    [Fact]\n    public void TestSubNonCommutativeCheck()\n    {\n        // Verify that Sub(a, b) is not equal to Sub(b, a) for distinct a and b (e.g., Sub(10, 3) != Sub(3, 10)). This confirms the method follows standard subtraction logic which is non-commutative.\n    }\n}\n}\n```"
+                },
+                {
+                    "content": "```csharp\nusing Xunit;\nusing Calc;\n\nnamespace Calc.Tests\n{\n\npublic class CalculatorTest\n{\n    [Fact]\n    public void TestSubTrivialCaseZeroFromZero()\n    {\n        // Verify that subtracting zero from zero results in zero. This tests the base case of the operation where both operands are the additive identity.\n        int result = Calculator.Sub(0, 0);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestSubPositiveIntegersResultPositive()\n    {\n        // Verify that subtracting a smaller positive integer from a larger positive integer yields the correct positive difference (e.g., 10 - 3 = 7). This confirms standard subtraction logic for positive operands.\n        int result = Calculator.Sub(10, 3);\n        Assert.Equal(7, result);\n    }\n\n    [Fact]\n    public void TestSubPositiveIntegersResultNegative()\n    {\n        // Verify that subtracting a larger positive integer from a smaller positive integer yields the correct negative difference (e.g., 3 - 10 = -7). This confirms the method correctly handles sign inversion when the subtrahend is greater than the minuend.\n        int result = Calculator.Sub(3, 10);\n        Assert.Equal(-7, result);\n    }\n\n    [Fact]\n    public void TestSubEqualPositiveIntegersResultZero()\n    {\n        // Verify that subtracting a positive integer from an equal positive integer results in zero (e.g., 5 - 5 = 0). This tests the cancellation property of subtraction.\n        int result = Calculator.Sub(5, 5);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestSubNegativeIntegerFromPositive()\n    {\n        // Verify that subtracting a negative integer from a positive integer is equivalent to addition (e.g., 5 - (-3) = 8). This ensures the method correctly handles the double negative logic inherent in integer arithmetic.\n        int result = Calculator.Sub(5, -3);\n        Assert.Equal(8, result);\n    }\n\n    [Fact]\n    public void TestSubPositiveIntegerFromNegative()\n    {\n        // Verify that subtracting a positive integer from a negative integer results in a more negative number (e.g., -5 - 3 = -8). This tests correct magnitude increase in the negative direction.\n        int result = Calculator.Sub(-5, 3);\n        Assert.Equal(-8, result);\n    }\n\n    [Fact]\n    public void TestSubNegativeIntegerFromNegative()\n    {\n        // Verify that subtracting a negative integer from a negative integer results in a value closer to zero or positive (e.g., -5 - (-3) = -2). This confirms correct handling of signs when both operands are negative.\n        int result = Calculator.Sub(-5, -3);\n        Assert.Equal(-2, result);\n    }\n\n    [Fact]\n    public void TestSubZeroFromPositive()\n    {\n        // Verify that subtracting zero from a positive integer returns the original positive integer (e.g., 10 - 0 = 10). This tests the identity property where the subtrahend is zero.\n        int result = Calculator.Sub(10, 0);\n        Assert.Equal(10, result);\n    }\n\n    [Fact]\n    public void TestSubZeroFromNegative()\n    {\n        // Verify that subtracting zero from a negative integer returns the original negative integer (e.g., -10 - 0 = -10). This confirms the identity property holds for negative operands.\n        int result = Calculator.Sub(-10, 0);\n        Assert.Equal(-10, result);\n    }\n\n    [Fact]\n    public void TestSubPositiveFromZero()\n    {\n        // Verify that subtracting a positive integer from zero yields the negative of that integer (e.g., 0 - 5 = -5). This tests the sign inversion property when the minuend is zero.\n        int result = Calculator.Sub(0, 5);\n        Assert.Equal(-5, result);\n    }\n\n    [Fact]\n    public void TestSubNegativeFromZero()\n    {\n        // Verify that subtracting a negative integer from zero yields the positive absolute value of that integer (e.g., 0 - (-5) = 5). This tests the conversion of negative subtrahends to positive results when starting from zero.\n        int result = Calculator.Sub(0, -5);\n        Assert.Equal(5, result);\n    }\n\n    [Fact]\n    public void TestSubMaxValueMinusOne()\n    {\n        // Verify that subtracting 1 from int.MaxValue results in int.MaxValue - 1 (2147483646). This tests the upper boundary of the integer range without overflow.\n        int result = Calculator.Sub(int.MaxValue, 1);\n        Assert.Equal(int.MaxValue - 1, result);\n    }\n\n    [Fact]\n    public void TestSubMinValueMinusOneOverflowBehavior()\n    {\n        // Verify the behavior when subtracting 1 from int.MinValue. Since int.MinValue - 1 exceeds the minimum representable integer, this test checks if the implementation throws an OverflowException (if checked) or wraps around (if unchecked). Documentation does not specify, so we verify consistent arithmetic behavior.\n        // Standard C# unchecked arithmetic wraps around.\n        int result = Calculator.Sub(int.MinValue, 1);\n        Assert.Equal(int.MaxValue, result);\n    }\n\n    [Fact]\n    public void TestSubMaxValueMinusMaxValue()\n    {\n        // Verify that subtracting int.MaxValue from int.MaxValue results in 0. This tests the cancellation property at the upper boundary.\n        int result = Calculator.Sub(int.MaxValue, int.MaxValue);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestSubMinValueMinusMinValue()\n    {\n        // Verify that subtracting int.MinValue from int.MinValue results in 0. This tests the cancellation property at the lower boundary.\n        int result = Calculator.Sub(int.MinValue, int.MinValue);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestSubMaxValueMinusMinValueOverflowBehavior()\n    {\n        // Verify the behavior when subtracting int.MinValue from int.MaxValue. The mathematical result is 4,294,967,295, which exceeds int.MaxValue. This test checks for OverflowException or wrap-around behavior.\n        // Standard C# unchecked arithmetic wraps around.\n        int result = Calculator.Sub(int.MaxValue, int.MinValue);\n        Assert.Equal(-1, result);\n    }\n\n    [Fact]\n    public void TestSubMinValueMinusMaxValueOverflowBehavior()\n    {\n        // Verify the behavior when subtracting int.MaxValue from int.MinValue. The mathematical result is -4,294,967,295, which is less than int.MinValue. This test checks for OverflowException or wrap-around behavior.\n        // Standard C# unchecked arithmetic wraps around.\n        int result = Calculator.Sub(int.MinValue, int.MaxValue);\n        Assert.Equal(1, result);\n    }\n\n    [Fact]\n    public void TestSubNonCommutativeCheck()\n    {\n        // Verify that Sub(a, b) is not equal to Sub(b, a) for distinct a and b (e.g., Sub(10, 3) != Sub(3, 10)). This confirms the method follows standard subtraction logic which is non-commutative.\n        int result1 = Calculator.Sub(10, 3);\n        int result2 = Calculator.Sub(3, 10);\n        Assert.NotEqual(result1, result2);\n    }\n}\n}\n```",
+                    "refusal": null,
+                    "role": "assistant",
+                    "annotations": null,
+                    "audio": null,
+                    "function_call": null,
+                    "tool_calls": null,
+                    "provider_specific_fields": {
+                        "refusal": null,
+                        "reasoning": null
+                    }
+                },
+                {
+                    "role": "user",
+                    "content": "Make sure that this C# test class compiles or runs without errors. Check that all imports are correct, all referenced symbols exist, and errors or exceptions are handled appropriately. Reply with the corrected C# test class only."
+                }
+            ],
+            {
+                "id": "chatcmpl-b5140070c5f5e549",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "logprobs": null,
+                        "message": {
+                            "content": "```csharp\nusing Xunit;\nusing Calc;\n\nnamespace Calc.Tests\n{\n\npublic class CalculatorTest\n{\n    [Fact]\n    public void TestSubTrivialCaseZeroFromZero()\n    {\n        // Verify that subtracting zero from zero results in zero. This tests the base case of the operation where both operands are the additive identity.\n        int result = Calculator.Sub(0, 0);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestSubPositiveIntegersResultPositive()\n    {\n        // Verify that subtracting a smaller positive integer from a larger positive integer yields the correct positive difference (e.g., 10 - 3 = 7). This confirms standard subtraction logic for positive operands.\n        int result = Calculator.Sub(10, 3);\n        Assert.Equal(7, result);\n    }\n\n    [Fact]\n    public void TestSubPositiveIntegersResultNegative()\n    {\n        // Verify that subtracting a larger positive integer from a smaller positive integer yields the correct negative difference (e.g., 3 - 10 = -7). This confirms the method correctly handles sign inversion when the subtrahend is greater than the minuend.\n        int result = Calculator.Sub(3, 10);\n        Assert.Equal(-7, result);\n    }\n\n    [Fact]\n    public void TestSubEqualPositiveIntegersResultZero()\n    {\n        // Verify that subtracting a positive integer from an equal positive integer results in zero (e.g., 5 - 5 = 0). This tests the cancellation property of subtraction.\n        int result = Calculator.Sub(5, 5);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestSubNegativeIntegerFromPositive()\n    {\n        // Verify that subtracting a negative integer from a positive integer is equivalent to addition (e.g., 5 - (-3) = 8). This ensures the method correctly handles the double negative logic inherent in integer arithmetic.\n        int result = Calculator.Sub(5, -3);\n        Assert.Equal(8, result);\n    }\n\n    [Fact]\n    public void TestSubPositiveIntegerFromNegative()\n    {\n        // Verify that subtracting a positive integer from a negative integer results in a more negative number (e.g., -5 - 3 = -8). This tests correct magnitude increase in the negative direction.\n        int result = Calculator.Sub(-5, 3);\n        Assert.Equal(-8, result);\n    }\n\n    [Fact]\n    public void TestSubNegativeIntegerFromNegative()\n    {\n        // Verify that subtracting a negative integer from a negative integer results in a value closer to zero or positive (e.g., -5 - (-3) = -2). This confirms correct handling of signs when both operands are negative.\n        int result = Calculator.Sub(-5, -3);\n        Assert.Equal(-2, result);\n    }\n\n    [Fact]\n    public void TestSubZeroFromPositive()\n    {\n        // Verify that subtracting zero from a positive integer returns the original positive integer (e.g., 10 - 0 = 10). This tests the identity property where the subtrahend is zero.\n        int result = Calculator.Sub(10, 0);\n        Assert.Equal(10, result);\n    }\n\n    [Fact]\n    public void TestSubZeroFromNegative()\n    {\n        // Verify that subtracting zero from a negative integer returns the original negative integer (e.g., -10 - 0 = -10). This confirms the identity property holds for negative operands.\n        int result = Calculator.Sub(-10, 0);\n        Assert.Equal(-10, result);\n    }\n\n    [Fact]\n    public void TestSubPositiveFromZero()\n    {\n        // Verify that subtracting a positive integer from zero yields the negative of that integer (e.g., 0 - 5 = -5). This tests the sign inversion property when the minuend is zero.\n        int result = Calculator.Sub(0, 5);\n        Assert.Equal(-5, result);\n    }\n\n    [Fact]\n    public void TestSubNegativeFromZero()\n    {\n        // Verify that subtracting a negative integer from zero yields the positive absolute value of that integer (e.g., 0 - (-5) = 5). This tests the conversion of negative subtrahends to positive results when starting from zero.\n        int result = Calculator.Sub(0, -5);\n        Assert.Equal(5, result);\n    }\n\n    [Fact]\n    public void TestSubMaxValueMinusOne()\n    {\n        // Verify that subtracting 1 from int.MaxValue results in int.MaxValue - 1 (2147483646). This tests the upper boundary of the integer range without overflow.\n        int result = Calculator.Sub(int.MaxValue, 1);\n        Assert.Equal(int.MaxValue - 1, result);\n    }\n\n    [Fact]\n    public void TestSubMinValueMinusOneOverflowBehavior()\n    {\n        // Verify the behavior when subtracting 1 from int.MinValue. Since int.MinValue - 1 exceeds the minimum representable integer, this test checks if the implementation throws an OverflowException (if checked) or wraps around (if unchecked). Documentation does not specify, so we verify consistent arithmetic behavior.\n        // Standard C# unchecked arithmetic wraps around.\n        int result = Calculator.Sub(int.MinValue, 1);\n        Assert.Equal(int.MaxValue, result);\n    }\n\n    [Fact]\n    public void TestSubMaxValueMinusMaxValue()\n    {\n        // Verify that subtracting int.MaxValue from int.MaxValue results in 0. This tests the cancellation property at the upper boundary.\n        int result = Calculator.Sub(int.MaxValue, int.MaxValue);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestSubMinValueMinusMinValue()\n    {\n        // Verify that subtracting int.MinValue from int.MinValue results in 0. This tests the cancellation property at the lower boundary.\n        int result = Calculator.Sub(int.MinValue, int.MinValue);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestSubMaxValueMinusMinValueOverflowBehavior()\n    {\n        // Verify the behavior when subtracting int.MinValue from int.MaxValue. The mathematical result is 4,294,967,295, which exceeds int.MaxValue. This test checks for OverflowException or wrap-around behavior.\n        // Standard C# unchecked arithmetic wraps around.\n        int result = Calculator.Sub(int.MaxValue, int.MinValue);\n        Assert.Equal(-1, result);\n    }\n\n    [Fact]\n    public void TestSubMinValueMinusMaxValueOverflowBehavior()\n    {\n        // Verify the behavior when subtracting int.MaxValue from int.MinValue. The mathematical result is -4,294,967,295, which is less than int.MinValue. This test checks for OverflowException or wrap-around behavior.\n        // Standard C# unchecked arithmetic wraps around.\n        int result = Calculator.Sub(int.MinValue, int.MaxValue);\n        Assert.Equal(1, result);\n    }\n\n    [Fact]\n    public void TestSubNonCommutativeCheck()\n    {\n        // Verify that Sub(a, b) is not equal to Sub(b, a) for distinct a and b (e.g., Sub(10, 3) != Sub(3, 10)). This confirms the method follows standard subtraction logic which is non-commutative.\n        int result1 = Calculator.Sub(10, 3);\n        int result2 = Calculator.Sub(3, 10);\n        Assert.NotEqual(result1, result2);\n    }\n}\n}\n```",
+                            "refusal": null,
+                            "role": "assistant",
+                            "annotations": null,
+                            "audio": null,
+                            "function_call": null,
+                            "tool_calls": null,
+                            "provider_specific_fields": {
+                                "refusal": null,
+                                "reasoning": null
+                            }
+                        },
+                        "provider_specific_fields": {
+                            "stop_reason": null,
+                            "token_ids": null
+                        }
+                    }
+                ],
+                "created": 1784023747,
+                "model": "llm3",
+                "object": "chat.completion",
+                "service_tier": null,
+                "system_fingerprint": null,
+                "usage": {
+                    "completion_tokens": 1709,
+                    "prompt_tokens": 3352,
+                    "total_tokens": 5061,
+                    "completion_tokens_details": null,
+                    "prompt_tokens_details": null
+                }
+            }
+        ],
+        "repair_history": [],
+        "verdict": "NoInco; pass; step 1 (C +T'); (18, 0, 0); ; "
+    },
+    {
+        "id": 2,
+        "language": "C#",
+        "doc": "/// <summary>\n/// Multiplies two integers.\n/// </summary>",
+        "signature": {
+            "name": "Mul",
+            "returns": "int",
+            "params": [
+                "int a",
+                "int b"
+            ],
+            "modifier": [
+                "public",
+                "static"
+            ],
+            "annotations": [],
+            "attributes": [],
+            "generics": [],
+            "constraints": []
+        },
+        "parent": {
+            "name": "Calculator",
+            "namespace": "Calc",
+            "doc": "/// <summary>\n/// Provides basic calculator operations.\n/// </summary>",
+            "imports": [],
+            "constructors": [],
+            "implements": [],
+            "extends": "",
+            "modifiers": [
+                "public"
+            ],
+            "kind": "class",
+            "other_methods": [
+                {
+                    "doc": "/// <summary>\n/// Adds two integers.\n/// </summary>",
+                    "signature": {
+                        "name": "Add",
+                        "returns": "int",
+                        "params": [
+                            "int a",
+                            "int b"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "attributes": [],
+                        "generics": [],
+                        "constraints": []
+                    },
+                    "code": "{\n        return a + b;\n    }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Subtracts the second integer from the first integer.\n/// </summary>",
+                    "signature": {
+                        "name": "Sub",
+                        "returns": "int",
+                        "params": [
+                            "int a",
+                            "int b"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "attributes": [],
+                        "generics": [],
+                        "constraints": []
+                    },
+                    "code": "{\n        return a - b;\n    }"
+                }
+            ],
+            "variables": [],
+            "generics": []
+        },
+        "code": "{\n        return a / b;\n    }",
+        "code_file_path": "Calc/Calculator.cs",
+        "code_file_content": "namespace Calc;\n\n/// <summary>\n/// Provides basic calculator operations.\n/// </summary>\npublic class Calculator\n{\n    /// <summary>\n    /// Adds two integers.\n    /// </summary>\n    public static int Add(int a, int b)\n    {\n        return a + b;\n    }\n\n    /// <summary>\n    /// Subtracts the second integer from the first integer.\n    /// </summary>\n    public static int Sub(int a, int b)\n    {\n        return a - b;\n    }\n\n    /// <summary>\n    /// Multiplies two integers.\n    /// </summary>\n    public static int Mul(int a, int b)\n    {\n        return a / b;\n    }\n}\n",
+        "called_functions": [],
+        "tests": [
+            {
+                "test_file_path": "Calc.Tests/CalculatorTest.cs",
+                "test_class_name": "CalculatorTest",
+                "test_namespace": "Calc.Tests",
+                "test_runner": "xUnit",
+                "test_imports": [
+                    "using Xunit;",
+                    "using Calc;"
+                ],
+                "project_path": "Calc.Tests/Calc.Tests.csproj"
+            }
+        ],
+        "test_imports": [
+            "using Xunit;",
+            "using Calc;"
+        ],
+        "test_file_path": "Calc.Tests/CalculatorTest.cs",
+        "test_class_name": "CalculatorTest",
+        "test_namespace": "Calc.Tests",
+        "test_runner": "xUnit",
+        "project_path": "Calc.Tests/Calc.Tests.csproj",
+        "results": {
+            "(code, new_tests)": [
+                [
+                    "TestMulShouldReturnSameValueWhenMultipliedByOne",
+                    "TestMulShouldReturnNegatedValueWhenMultipliedByNegativeOne",
+                    "TestMulShouldReturnMaxValueWhenMultiplyingMaxValueByOne",
+                    "TestMulShouldReturnMinValueWhenMultiplyingMinValueByOne",
+                    "TestMulShouldReturnZeroWhenFirstOperandIsZero"
+                ],
+                [
+                    "TestMulShouldReturnNegativeProductForNegativeAndPositiveInteger",
+                    "TestMulShouldReturnCorrectProductForLargeNumbersWithinRange",
+                    "TestMulShouldHandleOverflowWithStandardCSharpBehavior",
+                    "TestMulShouldReturnSameValueWhenOneIsFirstOperand",
+                    "TestMulShouldReturnZeroWhenSecondOperandIsZero",
+                    "TestMulShouldReturnNegativeProductForPositiveAndNegativeInteger",
+                    "TestMulShouldReturnPositiveProductForTwoNegativeIntegers",
+                    "TestMulShouldReturnZeroWhenBothOperandsAreZero",
+                    "TestMulShouldReturnPositiveProductForTwoPositiveIntegers"
+                ],
+                []
+            ],
+            "(new_code, new_tests)": [
+                [
+                    "TestMulShouldReturnPositiveProductForTwoNegativeIntegers",
+                    "TestMulShouldReturnSameValueWhenMultipliedByOne",
+                    "TestMulShouldReturnPositiveProductForTwoPositiveIntegers",
+                    "TestMulShouldReturnNegativeProductForPositiveAndNegativeInteger",
+                    "TestMulShouldReturnCorrectProductForLargeNumbersWithinRange",
+                    "TestMulShouldHandleOverflowWithStandardCSharpBehavior",
+                    "TestMulShouldReturnZeroWhenBothOperandsAreZero",
+                    "TestMulShouldReturnNegatedValueWhenMultipliedByNegativeOne",
+                    "TestMulShouldReturnSameValueWhenOneIsFirstOperand",
+                    "TestMulShouldReturnZeroWhenSecondOperandIsZero",
+                    "TestMulShouldReturnZeroWhenFirstOperandIsZero",
+                    "TestMulShouldReturnMinValueWhenMultiplyingMinValueByOne",
+                    "TestMulShouldReturnMaxValueWhenMultiplyingMaxValueByOne",
+                    "TestMulShouldReturnNegativeProductForNegativeAndPositiveInteger"
+                ],
+                [],
+                []
+            ]
+        },
+        "new_tests": "\nusing Xunit;\nusing Calc;\n\nnamespace Calc.Tests\n{\n\npublic class CalculatorTest\n{\n    [Fact]\n    public void TestMulShouldReturnPositiveProductForTwoPositiveIntegers()\n    {\n        // If the method Mul is called with two positive integers (e.g., 5 and 4), then it should return their correct mathematical product (20). This tests the basic functionality described in 'Multiplies two integers' for standard positive cases.\n        var result = Calculator.Mul(5, 4);\n        Assert.Equal(20, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnNegativeProductForNegativeAndPositiveInteger()\n    {\n        // If the method Mul is called with a negative integer and a positive integer (e.g., -5 and 4), then it should return a negative integer equal to their mathematical product (-20). This verifies correct sign handling for mixed operands.\n        var result = Calculator.Mul(-5, 4);\n        Assert.Equal(-20, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnNegativeProductForPositiveAndNegativeInteger()\n    {\n        // If the method Mul is called with a positive integer and a negative integer (e.g., 5 and -4), then it should return a negative integer equal to their mathematical product (-20). This verifies correct sign handling when the second operand is negative.\n        var result = Calculator.Mul(5, -4);\n        Assert.Equal(-20, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnPositiveProductForTwoNegativeIntegers()\n    {\n        // If the method Mul is called with two negative integers (e.g., -5 and -4), then it should return a positive integer equal to their mathematical product (20). This verifies that the method correctly handles the rule that a negative times a negative equals a positive.\n        var result = Calculator.Mul(-5, -4);\n        Assert.Equal(20, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnZeroWhenFirstOperandIsZero()\n    {\n        // If the method Mul is called with zero as the first argument and any non-zero integer as the second argument (e.g., 0 and 5), then it should return 0. This tests the multiplicative property of zero.\n        var result = Calculator.Mul(0, 5);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnZeroWhenSecondOperandIsZero()\n    {\n        // If the method Mul is called with any non-zero integer as the first argument and zero as the second argument (e.g., 5 and 0), then it should return 0. This tests the multiplicative property of zero when zero is the second operand.\n        var result = Calculator.Mul(5, 0);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnZeroWhenBothOperandsAreZero()\n    {\n        // If the method Mul is called with zero for both arguments (e.g., 0 and 0), then it should return 0. This tests the edge case of zero multiplied by zero.\n        var result = Calculator.Mul(0, 0);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnSameValueWhenMultipliedByOne()\n    {\n        // If the method Mul is called with any integer as the first argument and 1 as the second argument (e.g., 5 and 1), then it should return the value of the first argument (5). This tests the multiplicative identity property.\n        var result = Calculator.Mul(5, 1);\n        Assert.Equal(5, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnSameValueWhenOneIsFirstOperand()\n    {\n        // If the method Mul is called with 1 as the first argument and any integer as the second argument (e.g., 1 and 5), then it should return the value of the second argument (5). This tests the multiplicative identity property when 1 is the first operand.\n        var result = Calculator.Mul(1, 5);\n        Assert.Equal(5, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnNegatedValueWhenMultipliedByNegativeOne()\n    {\n        // If the method Mul is called with any integer and -1 (e.g., 5 and -1), then it should return the additive inverse (negation) of that integer (-5). This tests behavior with the additive inverse identity.\n        var result = Calculator.Mul(5, -1);\n        Assert.Equal(-5, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnMinValueWhenMultiplyingMinValueByOne()\n    {\n        // If the method Mul is called with int.MinValue and 1, then it should return int.MinValue. This tests the boundary condition where the result is exactly the minimum integer value.\n        var result = Calculator.Mul(int.MinValue, 1);\n        Assert.Equal(int.MinValue, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnMaxValueWhenMultiplyingMaxValueByOne()\n    {\n        // If the method Mul is called with int.MaxValue and 1, then it should return int.MaxValue. This tests the boundary condition where the result is exactly the maximum integer value.\n        var result = Calculator.Mul(int.MaxValue, 1);\n        Assert.Equal(int.MaxValue, result);\n    }\n\n    [Fact]\n    public void TestMulShouldHandleOverflowWithStandardCSharpBehavior()\n    {\n        // If the method Mul is called with two integers whose mathematical product exceeds the range of int (e.g., int.MaxValue and 2), then it should return the wrapped/low-order 32 bits result as per default C# unchecked arithmetic behavior, OR throw OverflowException if executed in a checked context. This tests implicit overflow handling since no specific exception behavior is documented.\n        // In default unchecked context, int.MaxValue * 2 overflows.\n        // Expected result: (int.MaxValue * 2) in unchecked context\n        // int.MaxValue is 2147483647. 2147483647 * 2 = 4294967294.\n        // 4294967294 in hex is 0xFFFFFFF\u0415.\n        // In 32-bit signed, this is -2.\n        var result = Calculator.Mul(int.MaxValue, 2);\n        Assert.Equal(-2, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnCorrectProductForLargeNumbersWithinRange()\n    {\n        // If the method Mul is called with two large integers whose product fits within the int range (e.g., 100000 and 100000 is too big, but 40000 and 5000 = 200,000,000), then it should return the exact correct mathematical product (200,000,000). This tests correctness for larger but valid inputs.\n        var result = Calculator.Mul(40000, 5000);\n        Assert.Equal(200000000, result);\n    }\n}\n}",
+        "new_tests_history": [
+            [
+                {
+                    "role": "system",
+                    "content": "You are an expert C# developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behaviour specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
+                },
+                {
+                    "role": "user",
+                    "content": "Give a complete description of the behavior that we should test when we want to assure that the code matches its documentation from the following method\n```csharp\n/// <summary>\n/// Multiplies two integers.\n/// </summary>\npublic static int Mul(int a, int b)\n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
+                }
+            ],
+            {
+                "id": "chatcmpl-a0375d75d97eb48f",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "logprobs": null,
+                        "message": {
+                            "content": "Based on the provided method signature and documentation, here is the complete behavior specification for unit testing.\n\n### Analysis of Documentation\n1.  **Input**: Two integers (`int a`, `int b`).\n2.  **Operation**: Multiplication.\n3.  **Output**: An integer (`int`).\n4.  **Constraint**: The documentation does **not** mention overflow handling, null checks (impossible for `int`), or specific error codes. Therefore, we must assume standard C# `int` behavior applies.\n\n### Behavior Specifications for Unit Tests\n\nTo ensure the code matches its documentation, the following scenarios must be tested:\n\n#### 1. Basic Correctness (Happy Path)\nThe method must correctly compute the mathematical product of two integers within the range of the `int` type.\n\n*   **Positive \u00d7 Positive**: Given two positive integers, the result should be their standard mathematical product.\n*   **Negative \u00d7 Positive**: Given a negative integer and a positive integer, the result should be a negative integer equal to their mathematical product.\n*   **Positive \u00d7 Negative**: Given a positive integer and a negative integer, the result should be a negative integer equal to their mathematical product.\n*   **Negative \u00d7 Negative**: Given two negative integers, the result should be a positive integer equal to their mathematical product.\n\n#### 2. Identity and Zero Cases\nThe method must handle multiplicative identity and zero correctly.\n\n*   **Zero \u00d7 Any**: Given one operand as `0` and the other as any integer, the result must be `0`.\n*   **One \u00d7 Any**: Given one operand as `1` and the other as any integer, the result must be equal to the other operand.\n*   **Negative One \u00d7 Any**: Given one operand as `-1` and the other as any integer, the result must be the additive inverse (negation) of the other operand.\n\n#### 3. Boundary Values\nThe method must handle the limits of the `int` data type correctly.\n\n*   **MinValue \u00d7 0**: Given `int.MinValue` and `0`, the result must be `0`.\n*   **MaxValue \u00d7 0**: Given `int.MaxValue` and `0`, the result must be `0`.\n*   **MinValue \u00d7 1**: Given `int.MinValue` and `1`, the result must be `int.MinValue`.\n*   **MaxValue \u00d7 1**: Given `int.MaxValue` and `1`, the result must be `int.MaxValue`.\n*   **MinValue \u00d7 -1**: Given `int.MinValue` and `-1`, the behavior is undefined by standard mathematical rules within a 32-bit signed integer (overflow). In non-checked context, this will wrap around. In checked context, this throws an exception. *Since the documentation does not specify checked/unchecked, test the default C# behavior (wrap-around in release/unchecked, exception in checked).*\n*   **Large Numbers within Range**: Given two large integers whose product fits within `int` range (e.g., `int.MaxValue / 2` and `2`), the result must be correct.\n\n#### 4. Overflow Behavior (Implicit by Type)\nBecause the return type is `int`, the method cannot return values outside the range `[int.MinValue, int.MaxValue]`.\n\n*   **Overflow Case (Unchecked)**: Given two integers whose mathematical product exceeds `int.MaxValue` or is less than `int.MinValue`, the result must be the truncated/wrapped value as per standard C# `int` multiplication semantics (low-order 32 bits).\n*   **Overflow Case (Checked)**: If the code is executed in a checked context, the method must throw an `OverflowException`. *Note: This is a contextual behavior, but since the documentation does not specify safety, the default unchecked behavior is the primary test target.*\n\n### Summary of Test Cases\n\n| Test Case | Input `a` | Input `b` | Expected Output | Notes |\n| :--- | :--- | :--- | :--- | :--- |\n| Positive \u00d7 Positive | `5` | `4` | `20` | Basic correctness |\n| Negative \u00d7 Positive | `-5` | `4` | `-20` | Sign handling |\n| Positive \u00d7 Negative | `5` | `-4` | `-20` | Sign handling |\n| Negative \u00d7 Negative | `-5` | `-4` | `20` | Sign handling |\n| Zero \u00d7 Positive | `0` | `5` | `0` | Zero property |\n| Zero \u00d7 Negative | `0` | `-5` | `0` | Zero property |\n| One \u00d7 Positive | `1` | `5` | `5` | Identity |\n| One \u00d7 Negative | `1` | `-5` | `-5` | Identity |\n| MinValue \u00d7 0 | `int.MinValue` | `0` | `0` | Boundary |\n| MaxValue \u00d7 0 | `int.MaxValue` | `0` | `0` | Boundary |\n| MinValue \u00d7 1 | `int.MinValue` | `1` | `int.MinValue` | Boundary |\n| MaxValue \u00d7 1 | `int.MaxValue` | `1` | `int.MaxValue` | Boundary |\n| Overflow (Unchecked) | `100000` | `100000` | `1410065408` (wrapped) | Overflow handling |\n\n### Important Note\nThe documentation is minimal. It does **not** specify:\n*   Whether overflow should throw an exception.\n*   Whether the method should handle `null` (impossible for `int`).\n*   Any specific side effects (none expected for a pure static method).\n\nTherefore, tests should only verify standard C# `int` multiplication behavior. If the intent was to handle overflow explicitly, the documentation would need to specify that.",
+                            "refusal": null,
+                            "role": "assistant",
+                            "annotations": null,
+                            "audio": null,
+                            "function_call": null,
+                            "tool_calls": null,
+                            "provider_specific_fields": {
+                                "refusal": null,
+                                "reasoning": null
+                            }
+                        },
+                        "provider_specific_fields": {
+                            "stop_reason": null,
+                            "token_ids": null
+                        }
+                    }
+                ],
+                "created": 1784023768,
+                "model": "llm3",
+                "object": "chat.completion",
+                "service_tier": null,
+                "system_fingerprint": null,
+                "usage": {
+                    "completion_tokens": 1249,
+                    "prompt_tokens": 161,
+                    "total_tokens": 1410,
+                    "completion_tokens_details": null,
+                    "prompt_tokens_details": null
+                }
+            },
+            [
+                {
+                    "role": "system",
+                    "content": "You are an expert C# developer and requirements engineer. You will be given a method signature and its documentation. Your task is to extract behaviour specifications from the documentation that can be turned into unit tests to ensure the code is bug free and faithful to its documentation."
+                },
+                {
+                    "role": "user",
+                    "content": "Give a complete description of the behavior that we should test when we want to assure that the code matches its documentation from the following method\n```csharp\n/// <summary>\n/// Multiplies two integers.\n/// </summary>\npublic static int Mul(int a, int b)\n```\n\nMake sure you consider the entire functionality exactly as described in the documentation, and cover all edge cases but make no assumptions that are not stated in the documentation."
+                },
+                {
+                    "content": "Based on the provided method signature and documentation, here is the complete behavior specification for unit testing.\n\n### Analysis of Documentation\n1.  **Input**: Two integers (`int a`, `int b`).\n2.  **Operation**: Multiplication.\n3.  **Output**: An integer (`int`).\n4.  **Constraint**: The documentation does **not** mention overflow handling, null checks (impossible for `int`), or specific error codes. Therefore, we must assume standard C# `int` behavior applies.\n\n### Behavior Specifications for Unit Tests\n\nTo ensure the code matches its documentation, the following scenarios must be tested:\n\n#### 1. Basic Correctness (Happy Path)\nThe method must correctly compute the mathematical product of two integers within the range of the `int` type.\n\n*   **Positive \u00d7 Positive**: Given two positive integers, the result should be their standard mathematical product.\n*   **Negative \u00d7 Positive**: Given a negative integer and a positive integer, the result should be a negative integer equal to their mathematical product.\n*   **Positive \u00d7 Negative**: Given a positive integer and a negative integer, the result should be a negative integer equal to their mathematical product.\n*   **Negative \u00d7 Negative**: Given two negative integers, the result should be a positive integer equal to their mathematical product.\n\n#### 2. Identity and Zero Cases\nThe method must handle multiplicative identity and zero correctly.\n\n*   **Zero \u00d7 Any**: Given one operand as `0` and the other as any integer, the result must be `0`.\n*   **One \u00d7 Any**: Given one operand as `1` and the other as any integer, the result must be equal to the other operand.\n*   **Negative One \u00d7 Any**: Given one operand as `-1` and the other as any integer, the result must be the additive inverse (negation) of the other operand.\n\n#### 3. Boundary Values\nThe method must handle the limits of the `int` data type correctly.\n\n*   **MinValue \u00d7 0**: Given `int.MinValue` and `0`, the result must be `0`.\n*   **MaxValue \u00d7 0**: Given `int.MaxValue` and `0`, the result must be `0`.\n*   **MinValue \u00d7 1**: Given `int.MinValue` and `1`, the result must be `int.MinValue`.\n*   **MaxValue \u00d7 1**: Given `int.MaxValue` and `1`, the result must be `int.MaxValue`.\n*   **MinValue \u00d7 -1**: Given `int.MinValue` and `-1`, the behavior is undefined by standard mathematical rules within a 32-bit signed integer (overflow). In non-checked context, this will wrap around. In checked context, this throws an exception. *Since the documentation does not specify checked/unchecked, test the default C# behavior (wrap-around in release/unchecked, exception in checked).*\n*   **Large Numbers within Range**: Given two large integers whose product fits within `int` range (e.g., `int.MaxValue / 2` and `2`), the result must be correct.\n\n#### 4. Overflow Behavior (Implicit by Type)\nBecause the return type is `int`, the method cannot return values outside the range `[int.MinValue, int.MaxValue]`.\n\n*   **Overflow Case (Unchecked)**: Given two integers whose mathematical product exceeds `int.MaxValue` or is less than `int.MinValue`, the result must be the truncated/wrapped value as per standard C# `int` multiplication semantics (low-order 32 bits).\n*   **Overflow Case (Checked)**: If the code is executed in a checked context, the method must throw an `OverflowException`. *Note: This is a contextual behavior, but since the documentation does not specify safety, the default unchecked behavior is the primary test target.*\n\n### Summary of Test Cases\n\n| Test Case | Input `a` | Input `b` | Expected Output | Notes |\n| :--- | :--- | :--- | :--- | :--- |\n| Positive \u00d7 Positive | `5` | `4` | `20` | Basic correctness |\n| Negative \u00d7 Positive | `-5` | `4` | `-20` | Sign handling |\n| Positive \u00d7 Negative | `5` | `-4` | `-20` | Sign handling |\n| Negative \u00d7 Negative | `-5` | `-4` | `20` | Sign handling |\n| Zero \u00d7 Positive | `0` | `5` | `0` | Zero property |\n| Zero \u00d7 Negative | `0` | `-5` | `0` | Zero property |\n| One \u00d7 Positive | `1` | `5` | `5` | Identity |\n| One \u00d7 Negative | `1` | `-5` | `-5` | Identity |\n| MinValue \u00d7 0 | `int.MinValue` | `0` | `0` | Boundary |\n| MaxValue \u00d7 0 | `int.MaxValue` | `0` | `0` | Boundary |\n| MinValue \u00d7 1 | `int.MinValue` | `1` | `int.MinValue` | Boundary |\n| MaxValue \u00d7 1 | `int.MaxValue` | `1` | `int.MaxValue` | Boundary |\n| Overflow (Unchecked) | `100000` | `100000` | `1410065408` (wrapped) | Overflow handling |\n\n### Important Note\nThe documentation is minimal. It does **not** specify:\n*   Whether overflow should throw an exception.\n*   Whether the method should handle `null` (impossible for `int`).\n*   Any specific side effects (none expected for a pure static method).\n\nTherefore, tests should only verify standard C# `int` multiplication behavior. If the intent was to handle overflow explicitly, the documentation would need to specify that.",
+                    "refusal": null,
+                    "role": "assistant",
+                    "annotations": null,
+                    "audio": null,
+                    "function_call": null,
+                    "tool_calls": null,
+                    "provider_specific_fields": {
+                        "refusal": null,
+                        "reasoning": null
+                    }
+                },
+                {
+                    "role": "user",
+                    "content": "Now turn this into a JSON array of C# unit tests we should write for test driven development. Each entry in the array should have: \"test_name\": a descriptive C# test method name, \"test_description\": a detailed description for the developer of what this test should do and which specific behavior from the documentation it tests. In particular, I want testable statements of the 'if this then that' type.\nFocus on those tests that follow directly from the documentation, e.g. no performance based ones."
+                }
+            ],
+            {
+                "id": "chatcmpl-8e26b91f143c36ef",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "logprobs": null,
+                        "message": {
+                            "content": "[\n  {\n    \"test_name\": \"Mul_ShouldReturnPositiveProductForTwoPositiveIntegers\",\n    \"test_description\": \"If the method Mul is called with two positive integers (e.g., 5 and 4), then it should return their correct mathematical product (20). This tests the basic functionality described in 'Multiplies two integers' for standard positive cases.\"\n  },\n  {\n    \"test_name\": \"Mul_ShouldReturnNegativeProductForNegativeAndPositiveInteger\",\n    \"test_description\": \"If the method Mul is called with a negative integer and a positive integer (e.g., -5 and 4), then it should return a negative integer equal to their mathematical product (-20). This verifies correct sign handling for mixed operands.\"\n  },\n  {\n    \"test_name\": \"Mul_ShouldReturnNegativeProductForPositiveAndNegativeInteger\",\n    \"test_description\": \"If the method Mul is called with a positive integer and a negative integer (e.g., 5 and -4), then it should return a negative integer equal to their mathematical product (-20). This verifies correct sign handling when the second operand is negative.\"\n  },\n  {\n    \"test_name\": \"Mul_ShouldReturnPositiveProductForTwoNegativeIntegers\",\n    \"test_description\": \"If the method Mul is called with two negative integers (e.g., -5 and -4), then it should return a positive integer equal to their mathematical product (20). This verifies that the method correctly handles the rule that a negative times a negative equals a positive.\"\n  },\n  {\n    \"test_name\": \"Mul_ShouldReturnZeroWhenFirstOperandIsZero\",\n    \"test_description\": \"If the method Mul is called with zero as the first argument and any non-zero integer as the second argument (e.g., 0 and 5), then it should return 0. This tests the multiplicative property of zero.\"\n  },\n  {\n    \"test_name\": \"Mul_ShouldReturnZeroWhenSecondOperandIsZero\",\n    \"test_description\": \"If the method Mul is called with any non-zero integer as the first argument and zero as the second argument (e.g., 5 and 0), then it should return 0. This tests the multiplicative property of zero when zero is the second operand.\"\n  },\n  {\n    \"test_name\": \"Mul_ShouldReturnZeroWhenBothOperandsAreZero\",\n    \"test_description\": \"If the method Mul is called with zero for both arguments (e.g., 0 and 0), then it should return 0. This tests the edge case of zero multiplied by zero.\"\n  },\n  {\n    \"test_name\": \"Mul_ShouldReturnSameValueWhenMultipliedByOne\",\n    \"test_description\": \"If the method Mul is called with any integer as the first argument and 1 as the second argument (e.g., 5 and 1), then it should return the value of the first argument (5). This tests the multiplicative identity property.\"\n  },\n  {\n    \"test_name\": \"Mul_ShouldReturnSameValueWhenOneIsFirstOperand\",\n    \"test_description\": \"If the method Mul is called with 1 as the first argument and any integer as the second argument (e.g., 1 and 5), then it should return the value of the second argument (5). This tests the multiplicative identity property when 1 is the first operand.\"\n  },\n  {\n    \"test_name\": \"Mul_ShouldReturnNegatedValueWhenMultipliedByNegativeOne\",\n    \"test_description\": \"If the method Mul is called with any integer and -1 (e.g., 5 and -1), then it should return the additive inverse (negation) of that integer (-5). This tests behavior with the additive inverse identity.\"\n  },\n  {\n    \"test_name\": \"Mul_ShouldReturnMinValueWhenMultiplyingMinValueByOne\",\n    \"test_description\": \"If the method Mul is called with int.MinValue and 1, then it should return int.MinValue. This tests the boundary condition where the result is exactly the minimum integer value.\"\n  },\n  {\n    \"test_name\": \"Mul_ShouldReturnMaxValueWhenMultiplyingMaxValueByOne\",\n    \"test_description\": \"If the method Mul is called with int.MaxValue and 1, then it should return int.MaxValue. This tests the boundary condition where the result is exactly the maximum integer value.\"\n  },\n  {\n    \"test_name\": \"Mul_ShouldHandleOverflowWithStandardCSharpBehavior\",\n    \"test_description\": \"If the method Mul is called with two integers whose mathematical product exceeds the range of int (e.g., int.MaxValue and 2), then it should return the wrapped/low-order 32 bits result as per default C# unchecked arithmetic behavior, OR throw OverflowException if executed in a checked context. This tests implicit overflow handling since no specific exception behavior is documented.\"\n  },\n  {\n    \"test_name\": \"Mul_ShouldReturnCorrectProductForLargeNumbersWithinRange\",\n    \"test_description\": \"If the method Mul is called with two large integers whose product fits within the int range (e.g., 100000 and 100000 is too big, but 40000 and 5000 = 200,000,000), then it should return the exact correct mathematical product (200,000,000). This tests correctness for larger but valid inputs.\"\n  }\n]",
+                            "refusal": null,
+                            "role": "assistant",
+                            "annotations": null,
+                            "audio": null,
+                            "function_call": null,
+                            "tool_calls": null,
+                            "provider_specific_fields": {
+                                "refusal": null,
+                                "reasoning": null
+                            }
+                        },
+                        "provider_specific_fields": {
+                            "stop_reason": null,
+                            "token_ids": null
+                        }
+                    }
+                ],
+                "created": 1784023781,
+                "model": "llm3",
+                "object": "chat.completion",
+                "service_tier": null,
+                "system_fingerprint": null,
+                "usage": {
+                    "completion_tokens": 1199,
+                    "prompt_tokens": 1523,
+                    "total_tokens": 2722,
+                    "completion_tokens_details": null,
+                    "prompt_tokens_details": null
+                }
+            },
+            [
+                {
+                    "role": "system",
+                    "content": "You are an expert C# developer. You will generate xUnit tests for the specific method Mul(int a, int b). You can import anything from the project itself. Make sure all method signatures and calls are correct. Handle exceptions, nullable values, async behavior, and error cases appropriately when relevant. The code should compile on its own without errors."
+                },
+                {
+                    "role": "user",
+                    "content": "The interesting method under test is:\n```csharp\n/// <summary>\n/// Multiplies two integers.\n/// </summary>\npublic static int Mul(int a, int b)\n```\n\nThe other methods will be tested later. Fill in C# unit tests for the provided test class below. This is for test driven development, so the tests should be designed to fail if the later implementation does not exactly conform to the documentation.\n\nThis is the parent class the method under test resides in:\n## Parent class\n```csharp\npublic class Calculator\n{\n    /// <summary>\n    /// Multiplies two integers.\n    /// </summary>\n    public static int Mul(int a, int b)\n    {\n        // this is the method to be tested\n    }\n}\n```\n\nAdd or adjust using directives as needed. Use only the configured C# test framework, the .NET standard libraries, and imports from the project itself. Instantiate every object you use. Match method signatures and calls exactly, including generics, overloads, async/await, nullable values, and exceptions. Respond with the complete filled C# test class only:\n\n```csharp\nusing Xunit;\nusing Calc;\n\nnamespace Calc.Tests\n{\n\npublic class CalculatorTest\n{\n    [Fact]\n    public void TestMulShouldReturnPositiveProductForTwoPositiveIntegers()\n    {\n        // If the method Mul is called with two positive integers (e.g., 5 and 4), then it should return their correct mathematical product (20). This tests the basic functionality described in 'Multiplies two integers' for standard positive cases.\n    }\n\n    [Fact]\n    public void TestMulShouldReturnNegativeProductForNegativeAndPositiveInteger()\n    {\n        // If the method Mul is called with a negative integer and a positive integer (e.g., -5 and 4), then it should return a negative integer equal to their mathematical product (-20). This verifies correct sign handling for mixed operands.\n    }\n\n    [Fact]\n    public void TestMulShouldReturnNegativeProductForPositiveAndNegativeInteger()\n    {\n        // If the method Mul is called with a positive integer and a negative integer (e.g., 5 and -4), then it should return a negative integer equal to their mathematical product (-20). This verifies correct sign handling when the second operand is negative.\n    }\n\n    [Fact]\n    public void TestMulShouldReturnPositiveProductForTwoNegativeIntegers()\n    {\n        // If the method Mul is called with two negative integers (e.g., -5 and -4), then it should return a positive integer equal to their mathematical product (20). This verifies that the method correctly handles the rule that a negative times a negative equals a positive.\n    }\n\n    [Fact]\n    public void TestMulShouldReturnZeroWhenFirstOperandIsZero()\n    {\n        // If the method Mul is called with zero as the first argument and any non-zero integer as the second argument (e.g., 0 and 5), then it should return 0. This tests the multiplicative property of zero.\n    }\n\n    [Fact]\n    public void TestMulShouldReturnZeroWhenSecondOperandIsZero()\n    {\n        // If the method Mul is called with any non-zero integer as the first argument and zero as the second argument (e.g., 5 and 0), then it should return 0. This tests the multiplicative property of zero when zero is the second operand.\n    }\n\n    [Fact]\n    public void TestMulShouldReturnZeroWhenBothOperandsAreZero()\n    {\n        // If the method Mul is called with zero for both arguments (e.g., 0 and 0), then it should return 0. This tests the edge case of zero multiplied by zero.\n    }\n\n    [Fact]\n    public void TestMulShouldReturnSameValueWhenMultipliedByOne()\n    {\n        // If the method Mul is called with any integer as the first argument and 1 as the second argument (e.g., 5 and 1), then it should return the value of the first argument (5). This tests the multiplicative identity property.\n    }\n\n    [Fact]\n    public void TestMulShouldReturnSameValueWhenOneIsFirstOperand()\n    {\n        // If the method Mul is called with 1 as the first argument and any integer as the second argument (e.g., 1 and 5), then it should return the value of the second argument (5). This tests the multiplicative identity property when 1 is the first operand.\n    }\n\n    [Fact]\n    public void TestMulShouldReturnNegatedValueWhenMultipliedByNegativeOne()\n    {\n        // If the method Mul is called with any integer and -1 (e.g., 5 and -1), then it should return the additive inverse (negation) of that integer (-5). This tests behavior with the additive inverse identity.\n    }\n\n    [Fact]\n    public void TestMulShouldReturnMinValueWhenMultiplyingMinValueByOne()\n    {\n        // If the method Mul is called with int.MinValue and 1, then it should return int.MinValue. This tests the boundary condition where the result is exactly the minimum integer value.\n    }\n\n    [Fact]\n    public void TestMulShouldReturnMaxValueWhenMultiplyingMaxValueByOne()\n    {\n        // If the method Mul is called with int.MaxValue and 1, then it should return int.MaxValue. This tests the boundary condition where the result is exactly the maximum integer value.\n    }\n\n    [Fact]\n    public void TestMulShouldHandleOverflowWithStandardCSharpBehavior()\n    {\n        // If the method Mul is called with two integers whose mathematical product exceeds the range of int (e.g., int.MaxValue and 2), then it should return the wrapped/low-order 32 bits result as per default C# unchecked arithmetic behavior, OR throw OverflowException if executed in a checked context. This tests implicit overflow handling since no specific exception behavior is documented.\n    }\n\n    [Fact]\n    public void TestMulShouldReturnCorrectProductForLargeNumbersWithinRange()\n    {\n        // If the method Mul is called with two large integers whose product fits within the int range (e.g., 100000 and 100000 is too big, but 40000 and 5000 = 200,000,000), then it should return the exact correct mathematical product (200,000,000). This tests correctness for larger but valid inputs.\n    }\n}\n}\n```"
+                },
+                {
+                    "content": "```csharp\nusing Xunit;\nusing Calc;\n\nnamespace Calc.Tests\n{\n\npublic class CalculatorTest\n{\n    [Fact]\n    public void TestMulShouldReturnPositiveProductForTwoPositiveIntegers()\n    {\n        // If the method Mul is called with two positive integers (e.g., 5 and 4), then it should return their correct mathematical product (20). This tests the basic functionality described in 'Multiplies two integers' for standard positive cases.\n        var result = Calculator.Mul(5, 4);\n        Assert.Equal(20, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnNegativeProductForNegativeAndPositiveInteger()\n    {\n        // If the method Mul is called with a negative integer and a positive integer (e.g., -5 and 4), then it should return a negative integer equal to their mathematical product (-20). This verifies correct sign handling for mixed operands.\n        var result = Calculator.Mul(-5, 4);\n        Assert.Equal(-20, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnNegativeProductForPositiveAndNegativeInteger()\n    {\n        // If the method Mul is called with a positive integer and a negative integer (e.g., 5 and -4), then it should return a negative integer equal to their mathematical product (-20). This verifies correct sign handling when the second operand is negative.\n        var result = Calculator.Mul(5, -4);\n        Assert.Equal(-20, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnPositiveProductForTwoNegativeIntegers()\n    {\n        // If the method Mul is called with two negative integers (e.g., -5 and -4), then it should return a positive integer equal to their mathematical product (20). This verifies that the method correctly handles the rule that a negative times a negative equals a positive.\n        var result = Calculator.Mul(-5, -4);\n        Assert.Equal(20, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnZeroWhenFirstOperandIsZero()\n    {\n        // If the method Mul is called with zero as the first argument and any non-zero integer as the second argument (e.g., 0 and 5), then it should return 0. This tests the multiplicative property of zero.\n        var result = Calculator.Mul(0, 5);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnZeroWhenSecondOperandIsZero()\n    {\n        // If the method Mul is called with any non-zero integer as the first argument and zero as the second argument (e.g., 5 and 0), then it should return 0. This tests the multiplicative property of zero when zero is the second operand.\n        var result = Calculator.Mul(5, 0);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnZeroWhenBothOperandsAreZero()\n    {\n        // If the method Mul is called with zero for both arguments (e.g., 0 and 0), then it should return 0. This tests the edge case of zero multiplied by zero.\n        var result = Calculator.Mul(0, 0);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnSameValueWhenMultipliedByOne()\n    {\n        // If the method Mul is called with any integer as the first argument and 1 as the second argument (e.g., 5 and 1), then it should return the value of the first argument (5). This tests the multiplicative identity property.\n        var result = Calculator.Mul(5, 1);\n        Assert.Equal(5, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnSameValueWhenOneIsFirstOperand()\n    {\n        // If the method Mul is called with 1 as the first argument and any integer as the second argument (e.g., 1 and 5), then it should return the value of the second argument (5). This tests the multiplicative identity property when 1 is the first operand.\n        var result = Calculator.Mul(1, 5);\n        Assert.Equal(5, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnNegatedValueWhenMultipliedByNegativeOne()\n    {\n        // If the method Mul is called with any integer and -1 (e.g., 5 and -1), then it should return the additive inverse (negation) of that integer (-5). This tests behavior with the additive inverse identity.\n        var result = Calculator.Mul(5, -1);\n        Assert.Equal(-5, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnMinValueWhenMultiplyingMinValueByOne()\n    {\n        // If the method Mul is called with int.MinValue and 1, then it should return int.MinValue. This tests the boundary condition where the result is exactly the minimum integer value.\n        var result = Calculator.Mul(int.MinValue, 1);\n        Assert.Equal(int.MinValue, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnMaxValueWhenMultiplyingMaxValueByOne()\n    {\n        // If the method Mul is called with int.MaxValue and 1, then it should return int.MaxValue. This tests the boundary condition where the result is exactly the maximum integer value.\n        var result = Calculator.Mul(int.MaxValue, 1);\n        Assert.Equal(int.MaxValue, result);\n    }\n\n    [Fact]\n    public void TestMulShouldHandleOverflowWithStandardCSharpBehavior()\n    {\n        // If the method Mul is called with two integers whose mathematical product exceeds the range of int (e.g., int.MaxValue and 2), then it should return the wrapped/low-order 32 bits result as per default C# unchecked arithmetic behavior, OR throw OverflowException if executed in a checked context. This tests implicit overflow handling since no specific exception behavior is documented.\n        // In default unchecked context, int.MaxValue * 2 overflows.\n        // Expected result: (int.MaxValue * 2) in unchecked context\n        // int.MaxValue is 2147483647. 2147483647 * 2 = 4294967294.\n        // 4294967294 in hex is 0xFFFFFFF\u0415.\n        // In 32-bit signed, this is -2.\n        var result = Calculator.Mul(int.MaxValue, 2);\n        Assert.Equal(-2, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnCorrectProductForLargeNumbersWithinRange()\n    {\n        // If the method Mul is called with two large integers whose product fits within the int range (e.g., 100000 and 100000 is too big, but 40000 and 5000 = 200,000,000), then it should return the exact correct mathematical product (200,000,000). This tests correctness for larger but valid inputs.\n        var result = Calculator.Mul(40000, 5000);\n        Assert.Equal(200000000, result);\n    }\n}\n}\n```",
+                    "refusal": null,
+                    "role": "assistant",
+                    "annotations": null,
+                    "audio": null,
+                    "function_call": null,
+                    "tool_calls": null,
+                    "provider_specific_fields": {
+                        "refusal": null,
+                        "reasoning": null
+                    }
+                },
+                {
+                    "role": "user",
+                    "content": "Make sure that this C# test class compiles or runs without errors. Check that all imports are correct, all referenced symbols exist, and errors or exceptions are handled appropriately. Reply with the corrected C# test class only."
+                }
+            ],
+            {
+                "id": "chatcmpl-85f7213166de7b0b",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "logprobs": null,
+                        "message": {
+                            "content": "```csharp\nusing Xunit;\nusing Calc;\n\nnamespace Calc.Tests\n{\n\npublic class CalculatorTest\n{\n    [Fact]\n    public void TestMulShouldReturnPositiveProductForTwoPositiveIntegers()\n    {\n        // If the method Mul is called with two positive integers (e.g., 5 and 4), then it should return their correct mathematical product (20). This tests the basic functionality described in 'Multiplies two integers' for standard positive cases.\n        var result = Calculator.Mul(5, 4);\n        Assert.Equal(20, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnNegativeProductForNegativeAndPositiveInteger()\n    {\n        // If the method Mul is called with a negative integer and a positive integer (e.g., -5 and 4), then it should return a negative integer equal to their mathematical product (-20). This verifies correct sign handling for mixed operands.\n        var result = Calculator.Mul(-5, 4);\n        Assert.Equal(-20, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnNegativeProductForPositiveAndNegativeInteger()\n    {\n        // If the method Mul is called with a positive integer and a negative integer (e.g., 5 and -4), then it should return a negative integer equal to their mathematical product (-20). This verifies correct sign handling when the second operand is negative.\n        var result = Calculator.Mul(5, -4);\n        Assert.Equal(-20, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnPositiveProductForTwoNegativeIntegers()\n    {\n        // If the method Mul is called with two negative integers (e.g., -5 and -4), then it should return a positive integer equal to their mathematical product (20). This verifies that the method correctly handles the rule that a negative times a negative equals a positive.\n        var result = Calculator.Mul(-5, -4);\n        Assert.Equal(20, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnZeroWhenFirstOperandIsZero()\n    {\n        // If the method Mul is called with zero as the first argument and any non-zero integer as the second argument (e.g., 0 and 5), then it should return 0. This tests the multiplicative property of zero.\n        var result = Calculator.Mul(0, 5);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnZeroWhenSecondOperandIsZero()\n    {\n        // If the method Mul is called with any non-zero integer as the first argument and zero as the second argument (e.g., 5 and 0), then it should return 0. This tests the multiplicative property of zero when zero is the second operand.\n        var result = Calculator.Mul(5, 0);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnZeroWhenBothOperandsAreZero()\n    {\n        // If the method Mul is called with zero for both arguments (e.g., 0 and 0), then it should return 0. This tests the edge case of zero multiplied by zero.\n        var result = Calculator.Mul(0, 0);\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnSameValueWhenMultipliedByOne()\n    {\n        // If the method Mul is called with any integer as the first argument and 1 as the second argument (e.g., 5 and 1), then it should return the value of the first argument (5). This tests the multiplicative identity property.\n        var result = Calculator.Mul(5, 1);\n        Assert.Equal(5, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnSameValueWhenOneIsFirstOperand()\n    {\n        // If the method Mul is called with 1 as the first argument and any integer as the second argument (e.g., 1 and 5), then it should return the value of the second argument (5). This tests the multiplicative identity property when 1 is the first operand.\n        var result = Calculator.Mul(1, 5);\n        Assert.Equal(5, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnNegatedValueWhenMultipliedByNegativeOne()\n    {\n        // If the method Mul is called with any integer and -1 (e.g., 5 and -1), then it should return the additive inverse (negation) of that integer (-5). This tests behavior with the additive inverse identity.\n        var result = Calculator.Mul(5, -1);\n        Assert.Equal(-5, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnMinValueWhenMultiplyingMinValueByOne()\n    {\n        // If the method Mul is called with int.MinValue and 1, then it should return int.MinValue. This tests the boundary condition where the result is exactly the minimum integer value.\n        var result = Calculator.Mul(int.MinValue, 1);\n        Assert.Equal(int.MinValue, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnMaxValueWhenMultiplyingMaxValueByOne()\n    {\n        // If the method Mul is called with int.MaxValue and 1, then it should return int.MaxValue. This tests the boundary condition where the result is exactly the maximum integer value.\n        var result = Calculator.Mul(int.MaxValue, 1);\n        Assert.Equal(int.MaxValue, result);\n    }\n\n    [Fact]\n    public void TestMulShouldHandleOverflowWithStandardCSharpBehavior()\n    {\n        // If the method Mul is called with two integers whose mathematical product exceeds the range of int (e.g., int.MaxValue and 2), then it should return the wrapped/low-order 32 bits result as per default C# unchecked arithmetic behavior, OR throw OverflowException if executed in a checked context. This tests implicit overflow handling since no specific exception behavior is documented.\n        // In default unchecked context, int.MaxValue * 2 overflows.\n        // Expected result: (int.MaxValue * 2) in unchecked context\n        // int.MaxValue is 2147483647. 2147483647 * 2 = 4294967294.\n        // 4294967294 in hex is 0xFFFFFFF\u0415.\n        // In 32-bit signed, this is -2.\n        var result = Calculator.Mul(int.MaxValue, 2);\n        Assert.Equal(-2, result);\n    }\n\n    [Fact]\n    public void TestMulShouldReturnCorrectProductForLargeNumbersWithinRange()\n    {\n        // If the method Mul is called with two large integers whose product fits within the int range (e.g., 100000 and 100000 is too big, but 40000 and 5000 = 200,000,000), then it should return the exact correct mathematical product (200,000,000). This tests correctness for larger but valid inputs.\n        var result = Calculator.Mul(40000, 5000);\n        Assert.Equal(200000000, result);\n    }\n}\n}\n```",
+                            "refusal": null,
+                            "role": "assistant",
+                            "annotations": null,
+                            "audio": null,
+                            "function_call": null,
+                            "tool_calls": null,
+                            "provider_specific_fields": {
+                                "refusal": null,
+                                "reasoning": null
+                            }
+                        },
+                        "provider_specific_fields": {
+                            "stop_reason": null,
+                            "token_ids": null
+                        }
+                    }
+                ],
+                "created": 1784023809,
+                "model": "llm3",
+                "object": "chat.completion",
+                "service_tier": null,
+                "system_fingerprint": null,
+                "usage": {
+                    "completion_tokens": 1654,
+                    "prompt_tokens": 3233,
+                    "total_tokens": 4887,
+                    "completion_tokens_details": null,
+                    "prompt_tokens_details": null
+                }
+            }
+        ],
+        "repair_history": [],
+        "new_code": "{return a * b;\n}",
+        "new_code_response": {
+            "prompt": [
+                {
+                    "role": "system",
+                    "content": "You are an Expert C# developer. You will be given a C# class and have to implement one specific method, following its documentation as close as possible. The documentation is the ground truth and should be seen as correct, even if the function name contradicts it. Handle exceptions properly, and ensure all calls are correct. Do not use any new imports. The code should compile without errors. Respond only with the method."
+                },
+                {
+                    "role": "user",
+                    "content": "The method you need to implement is `Mul(int a, int b)`.\nHere is the C# class it is situated in:\n```csharp\nnamespace Calc;\n\npublic class Calculator\n{\n    /// <summary>\n    /// Adds two integers.\n    /// </summary>\n    public static int Add(int a, int b);\n\n    /// <summary>\n    /// Subtracts the second integer from the first integer.\n    /// </summary>\n    public static int Sub(int a, int b);\n\n    /// <summary>\n    /// Multiplies two integers.\n    /// </summary>\n    public static int Mul(int a, int b) {\n    // write the function body for this method. Take the Documentation as literal as possible.\n    }\n}\n```\nNow respond with the working implemented method."
+                }
+            ],
+            "response": {
+                "id": "chatcmpl-92455eb844831142",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "logprobs": null,
+                        "message": {
+                            "content": "```csharp\n    /// <summary>\n    /// Multiplies two integers.\n    /// </summary>\n    public static int Mul(int a, int b) {\n        return a * b;\n    }\n```",
+                            "refusal": null,
+                            "role": "assistant",
+                            "annotations": null,
+                            "audio": null,
+                            "function_call": null,
+                            "tool_calls": null,
+                            "provider_specific_fields": {
+                                "refusal": null,
+                                "reasoning": null
+                            }
+                        },
+                        "provider_specific_fields": {
+                            "stop_reason": null,
+                            "token_ids": null
+                        }
+                    }
+                ],
+                "created": 1784023829,
+                "model": "llm3",
+                "object": "chat.completion",
+                "service_tier": null,
+                "system_fingerprint": null,
+                "usage": {
+                    "completion_tokens": 49,
+                    "prompt_tokens": 280,
+                    "total_tokens": 329,
+                    "completion_tokens_details": null,
+                    "prompt_tokens_details": null
+                }
+            }
+        },
+        "metric": {
+            "p2p": [
+                "TestMulShouldReturnSameValueWhenMultipliedByOne",
+                "TestMulShouldReturnNegatedValueWhenMultipliedByNegativeOne",
+                "TestMulShouldReturnMaxValueWhenMultiplyingMaxValueByOne",
+                "TestMulShouldReturnMinValueWhenMultiplyingMinValueByOne",
+                "TestMulShouldReturnZeroWhenFirstOperandIsZero"
+            ],
+            "f2f": [],
+            "p2f": [],
+            "f2p": [
+                "TestMulShouldReturnNegativeProductForNegativeAndPositiveInteger",
+                "TestMulShouldReturnCorrectProductForLargeNumbersWithinRange",
+                "TestMulShouldHandleOverflowWithStandardCSharpBehavior",
+                "TestMulShouldReturnSameValueWhenOneIsFirstOperand",
+                "TestMulShouldReturnZeroWhenSecondOperandIsZero",
+                "TestMulShouldReturnNegativeProductForPositiveAndNegativeInteger",
+                "TestMulShouldReturnPositiveProductForTwoNegativeIntegers",
+                "TestMulShouldReturnZeroWhenBothOperandsAreZero",
+                "TestMulShouldReturnPositiveProductForTwoPositiveIntegers"
+            ]
+        },
+        "verdict": "INCO; pass; step 2 (C'+T'); (5, 9, 0); (14, 0, 0); p2p: 5, f2f: 0, p2f: 0, f2p: 9"
+    }
+]

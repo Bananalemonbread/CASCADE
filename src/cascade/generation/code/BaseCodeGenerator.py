@@ -1,5 +1,7 @@
 from cascade.generation.Generator import Generator
 from cascade.generation.executor.OpenAICaller import OpenAICaller
+from abc import abstractmethod
+
 import tiktoken
 
 class BaseCodeGenerator(Generator):
@@ -104,8 +106,9 @@ class BaseCodeGenerator(Generator):
             **kwargs
         )
 
+    @abstractmethod
     def build_prompt_finisher(self, context, **kwargs):
-        raise NotImplementedError
+        pass
 
     def context_variants(self):
         return [
@@ -116,5 +119,6 @@ class BaseCodeGenerator(Generator):
             {"no_fields": True, "no_constructors": True, "no_other_method_docs": True, "no_other_methods": True},
         ]
 
+    @abstractmethod
     def extract_code(self, new_code, context, response, output_path):
-        raise NotImplementedError
+        pass

@@ -6,7 +6,7 @@
         "class_name": "Calculator",
         "function_name": "Mul",
         "full_function_signature": "public static int Mul(int a, int b)",
-        "verdict": "INCO; pass; step 2 (C'+T'); (5, 13, 0); (18, 0, 0); p2p: 5, f2f: 0, p2f: 0, f2p: 13",
+        "verdict": "INCO; pass; step 2 (C'+T'); (5, 9, 0); (14, 0, 0); p2p: 5, f2f: 0, p2f: 0, f2p: 9",
         "failed_testcases": [],
         "errored_testcases": [],
         "failing_testcases": []

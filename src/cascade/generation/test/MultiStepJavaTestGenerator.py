@@ -17,8 +17,6 @@ class MultiStepJavaTestGenerator(MultiStepTestGenerator):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.is_junit3 = False
-
     def test_generation_system_prompt(self, context):
         test_framework_instruction = ""
         if "junit_version" in context:
@@ -53,11 +51,10 @@ class MultiStepJavaTestGenerator(MultiStepTestGenerator):
         packg_declaration = f"package {context['test_package']};\n\n"
         imports = "".join(context["test_imports"]) + "\n" + "// add all other needed imports here\n\n"
 
-        # check if we are using junit 3 as there is a difference in structure
-        for import_ in context["test_imports"]:
-            if ("junit.framework") in import_:
-                self.is_junit3 = True
-                break
+        self.is_junit3 = any(
+            "junit.framework" in import_
+            for import_ in context["test_imports"]
+        )
 
         #class_name = context["test_file_path"].split("/")[-1].split(".")[0]
         class_name = os.path.splitext(os.path.basename(context["test_file_path"]))[0]

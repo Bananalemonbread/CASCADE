@@ -1,0 +1,1108 @@
+Command: cargo fetch; cargo build --tests ; RET=$?; exit $RET;
+0
+   Compiling example_rust_targetproject v0.1.0 (/root)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
+
+verify returned with:0
+
+#[cfg(test)]
+mod injected_test_mod_cascade {
+   use super::*;
+
+    #[test]
+    fn test_dummy2_returns_unit_type() {
+        // Verify that calling `dummy2()` returns the unit type `()`. If the function is called, then it must return `()`, ensuring no value is produced as implied by 'does nothing'.
+        let result = dummy2();
+        assert_eq!(result, ());
+    }
+
+    #[test]
+    fn test_dummy2_does_not_panic() {
+        // Verify that `dummy2()` executes without panicking. If the function is called, then it must complete successfully without triggering a runtime panic, adhering to the 'has no code' and 'does nothing' description.
+        // If this test panics, the assertion will fail.
+        let result = std::panic::catch_unwind(|| {
+            dummy2();
+        });
+        assert!(result.is_ok(), "dummy2() should not panic");
+    }
+
+    #[test]
+    fn test_dummy2_has_no_side_effects() {
+        // Verify that `dummy2()` does not alter global state or perform I/O. If the function is called, then no external state changes or side effects should occur, consistent with the documentation stating it 'does nothing'.
+        // Since dummy2() takes no parameters and returns (), and we assume it has no access to mutable global state in this context,
+        // we can verify that calling it multiple times has no observable effect beyond returning unit.
+        // We also verify that it doesn't panic or cause any unexpected behavior.
+        
+        // Call dummy2() multiple times to ensure no state changes occur between calls
+        dummy2();
+        dummy2();
+        dummy2();
+        
+        // If the function had side effects that could be observed (e.g., modifying a global variable, 
+        // writing to stdout, etc.), this test would need more sophisticated checks.
+        // For now, we simply verify it completes without error and returns unit each time.
+        let result = dummy2();
+        assert_eq!(result, ());
+    }
+}
+Syntactically correct!
+
+
+Modifying context with id: 4
+Starting to modify ... new_tests_inject - code
+Starting test module injection ...
+Test module complete!
+Modification successful! new_tests_inject - code
+
+
+Command: cat -n src/lib.rs; echo "[INFO] Tests run starting!" > output;export RUSTFLAGS="-Awarnings"; timeout 120 cargo build --tests; timeout 120 cargo test injected_test_mod_cascade --no-fail-fast > output 2>&1; cat output
+0
+     1	/// Returns the sum of a + b.
+     2	pub fn add(a: i32, b: i32) -> i32 {
+     3	    a + b
+     4	}
+     5	/// Returns the difference between a - b.
+     6	pub fn sub(a: i32, b: i32) -> i32 {
+     7	    b - a
+     8	}
+     9	///
+    10	pub fn dummy1() -> i32 {
+    11	    0
+    12	}
+    13	/// dummy method that does nothing and has no code
+    14	pub fn dummy2() {}
+    15	#[cfg(test)]
+    16	mod injected_test_mod_cascade {
+    17	    use super::*;
+    18	    #[test]
+    19	    fn test_dummy2_returns_unit_type() {
+    20	        let result = dummy2();
+    21	        assert_eq!(result, ());
+    22	    }
+    23	    #[test]
+    24	    fn test_dummy2_does_not_panic() {
+    25	        let result = std::panic::catch_unwind(|| {
+    26	            dummy2();
+    27	        });
+    28	        assert!(result.is_ok(), "dummy2() should not panic");
+    29	    }
+    30	    #[test]
+    31	    fn test_dummy2_has_no_side_effects() {
+    32	        dummy2();
+    33	        dummy2();
+    34	        dummy2();
+    35	        let result = dummy2();
+    36	        assert_eq!(result, ());
+    37	    }
+    38	}
+   Compiling example_rust_targetproject v0.1.0 (/root)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.12s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 3 tests
+test injected_test_mod_cascade::test_dummy2_does_not_panic ... ok
+test injected_test_mod_cascade::test_dummy2_returns_unit_type ... ok
+test injected_test_mod_cascade::test_dummy2_has_no_side_effects ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+Eval Command: cat output
+0
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 3 tests
+test injected_test_mod_cascade::test_dummy2_does_not_panic ... ok
+test injected_test_mod_cascade::test_dummy2_returns_unit_type ... ok
+test injected_test_mod_cascade::test_dummy2_has_no_side_effects ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+Results after step 1
+---------------------------EXECUTIONResults:
+----Results:
+[['injected_test_mod_cascade::test_dummy2_does_not_panic', 'injected_test_mod_cascade::test_dummy2_returns_unit_type', 'injected_test_mod_cascade::test_dummy2_has_no_side_effects'], [], []]
+----Numbers:
+(3, 0, 0)
+----Comp Errors:
+None
+----Parsed File:
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 3 tests
+test injected_test_mod_cascade::test_dummy2_does_not_panic ... ok
+test injected_test_mod_cascade::test_dummy2_returns_unit_type ... ok
+test injected_test_mod_cascade::test_dummy2_has_no_side_effects ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+----Comp Error Matches:
+[]
+----Test Overview Matches:
+[]
+----XML Blocks:
+[]
+EXECUTIONResults---------------------
+
+verify returned with:0
+
+#[cfg(test)]
+mod injected_test_mod_cascade {
+   use super::*;
+
+    #[test]
+    fn test_add_positive_integers() {
+      // Verify that adding two positive i32 values returns their correct mathematical sum. If a=5 and b=3, then the result must be 8.
+      let result = add(5, 3);
+      assert_eq!(result, 8);
+    }
+
+    #[test]
+    fn test_add_negative_integers() {
+      // Verify that adding two negative i32 values returns their correct mathematical sum. If a=-5 and b=-3, then the result must be -8.
+      let result = add(-5, -3);
+      assert_eq!(result, -8);
+    }
+
+    #[test]
+    fn test_add_mixed_signs_positive_first() {
+      // Verify that adding a positive i32 and a negative i32 (positive first) returns the correct algebraic sum. If a=5 and b=-3, then the result must be 2.
+      let result = add(5, -3);
+      assert_eq!(result, 2);
+    }
+
+    #[test]
+    fn test_add_mixed_signs_negative_first() {
+      // Verify that adding a negative i32 and a positive i32 (negative first) returns the correct algebraic sum. If a=-5 and b=3, then the result must be -2.
+      let result = add(-5, 3);
+      assert_eq!(result, -2);
+    }
+
+    #[test]
+    fn test_add_zero_to_positive() {
+      // Verify that adding zero to a positive i32 returns the positive i32 unchanged. If a=0 and b=5, then the result must be 5.
+      let result = add(0, 5);
+      assert_eq!(result, 5);
+    }
+
+    #[test]
+    fn test_add_zero_to_negative() {
+      // Verify that adding zero to a negative i32 returns the negative i32 unchanged. If a=0 and b=-5, then the result must be -5.
+      let result = add(0, -5);
+      assert_eq!(result, -5);
+    }
+
+    #[test]
+    fn test_add_zero_to_zero() {
+      // Verify that adding zero to zero returns zero. If a=0 and b=0, then the result must be 0.
+      let result = add(0, 0);
+      assert_eq!(result, 0);
+    }
+
+    #[test]
+    fn test_add_large_positive_within_range() {
+      // Verify that adding two large positive i32 values that do not overflow returns their correct sum. If a=1_000_000 and b=2_000_000, then the result must be 3_000_000.
+      let result = add(1_000_000, 2_000_000);
+      assert_eq!(result, 3_000_000);
+    }
+
+    #[test]
+    fn test_add_large_negative_within_range() {
+      // Verify that adding two large negative i32 values that do not underflow returns their correct sum. If a=-1_000_000 and b=-2_000_000, then the result must be -3_000_000.
+      let result = add(-1_000_000, -2_000_000);
+      assert_eq!(result, -3_000_000);
+    }
+
+    #[test]
+    fn test_add_max_i32_and_zero() {
+      // Verify that adding the maximum i32 value to zero returns the maximum i32 value. If a=i32::MAX and b=0, then the result must be i32::MAX.
+      let result = add(i32::MAX, 0);
+      assert_eq!(result, i32::MAX);
+    }
+
+    #[test]
+    fn test_add_min_i32_and_zero() {
+      // Verify that adding the minimum i32 value to zero returns the minimum i32 value. If a=i32::MIN and b=0, then the result must be i32::MIN.
+      let result = add(i32::MIN, 0);
+      assert_eq!(result, i32::MIN);
+    }
+}
+Syntactically correct!
+
+
+Modifying context with id: 1
+Starting to modify ... new_tests_inject - code
+Starting test module injection ...
+Test module complete!
+Modification successful! new_tests_inject - code
+
+
+Command: cat -n src/lib.rs; echo "[INFO] Tests run starting!" > output;export RUSTFLAGS="-Awarnings"; timeout 120 cargo build --tests; timeout 120 cargo test injected_test_mod_cascade --no-fail-fast > output 2>&1; cat output
+0
+     1	/// Returns the sum of a + b.
+     2	pub fn add(a: i32, b: i32) -> i32 {
+     3	    a + b
+     4	}
+     5	#[cfg(test)]
+     6	mod injected_test_mod_cascade {
+     7	    use super::*;
+     8	    #[test]
+     9	    fn test_add_positive_integers() {
+    10	        let result = add(5, 3);
+    11	        assert_eq!(result, 8);
+    12	    }
+    13	    #[test]
+    14	    fn test_add_negative_integers() {
+    15	        let result = add(-5, -3);
+    16	        assert_eq!(result, - 8);
+    17	    }
+    18	    #[test]
+    19	    fn test_add_mixed_signs_positive_first() {
+    20	        let result = add(5, -3);
+    21	        assert_eq!(result, 2);
+    22	    }
+    23	    #[test]
+    24	    fn test_add_mixed_signs_negative_first() {
+    25	        let result = add(-5, 3);
+    26	        assert_eq!(result, - 2);
+    27	    }
+    28	    #[test]
+    29	    fn test_add_zero_to_positive() {
+    30	        let result = add(0, 5);
+    31	        assert_eq!(result, 5);
+    32	    }
+    33	    #[test]
+    34	    fn test_add_zero_to_negative() {
+    35	        let result = add(0, -5);
+    36	        assert_eq!(result, - 5);
+    37	    }
+    38	    #[test]
+    39	    fn test_add_zero_to_zero() {
+    40	        let result = add(0, 0);
+    41	        assert_eq!(result, 0);
+    42	    }
+    43	    #[test]
+    44	    fn test_add_large_positive_within_range() {
+    45	        let result = add(1_000_000, 2_000_000);
+    46	        assert_eq!(result, 3_000_000);
+    47	    }
+    48	    #[test]
+    49	    fn test_add_large_negative_within_range() {
+    50	        let result = add(-1_000_000, -2_000_000);
+    51	        assert_eq!(result, - 3_000_000);
+    52	    }
+    53	    #[test]
+    54	    fn test_add_max_i32_and_zero() {
+    55	        let result = add(i32::MAX, 0);
+    56	        assert_eq!(result, i32::MAX);
+    57	    }
+    58	    #[test]
+    59	    fn test_add_min_i32_and_zero() {
+    60	        let result = add(i32::MIN, 0);
+    61	        assert_eq!(result, i32::MIN);
+    62	    }
+    63	}
+    64	/// Returns the difference between a - b.
+    65	pub fn sub(a: i32, b: i32) -> i32 {
+    66	    b - a
+    67	}
+    68	///
+    69	pub fn dummy1() -> i32 {
+    70	    0
+    71	}
+    72	/// dummy method that does nothing and has no code
+    73	pub fn dummy2() {}
+   Compiling example_rust_targetproject v0.1.0 (/root)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.14s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 11 tests
+test injected_test_mod_cascade::test_add_large_negative_within_range ... ok
+test injected_test_mod_cascade::test_add_large_positive_within_range ... ok
+test injected_test_mod_cascade::test_add_max_i32_and_zero ... ok
+test injected_test_mod_cascade::test_add_min_i32_and_zero ... ok
+test injected_test_mod_cascade::test_add_mixed_signs_negative_first ... ok
+test injected_test_mod_cascade::test_add_mixed_signs_positive_first ... ok
+test injected_test_mod_cascade::test_add_positive_integers ... ok
+test injected_test_mod_cascade::test_add_negative_integers ... ok
+test injected_test_mod_cascade::test_add_zero_to_negative ... ok
+test injected_test_mod_cascade::test_add_zero_to_zero ... ok
+test injected_test_mod_cascade::test_add_zero_to_positive ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+Eval Command: cat output
+0
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 11 tests
+test injected_test_mod_cascade::test_add_large_negative_within_range ... ok
+test injected_test_mod_cascade::test_add_large_positive_within_range ... ok
+test injected_test_mod_cascade::test_add_max_i32_and_zero ... ok
+test injected_test_mod_cascade::test_add_min_i32_and_zero ... ok
+test injected_test_mod_cascade::test_add_mixed_signs_negative_first ... ok
+test injected_test_mod_cascade::test_add_mixed_signs_positive_first ... ok
+test injected_test_mod_cascade::test_add_positive_integers ... ok
+test injected_test_mod_cascade::test_add_negative_integers ... ok
+test injected_test_mod_cascade::test_add_zero_to_negative ... ok
+test injected_test_mod_cascade::test_add_zero_to_zero ... ok
+test injected_test_mod_cascade::test_add_zero_to_positive ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+Results after step 1
+---------------------------EXECUTIONResults:
+----Results:
+[['injected_test_mod_cascade::test_add_large_negative_within_range', 'injected_test_mod_cascade::test_add_large_positive_within_range', 'injected_test_mod_cascade::test_add_max_i32_and_zero', 'injected_test_mod_cascade::test_add_min_i32_and_zero', 'injected_test_mod_cascade::test_add_mixed_signs_negative_first', 'injected_test_mod_cascade::test_add_mixed_signs_positive_first', 'injected_test_mod_cascade::test_add_positive_integers', 'injected_test_mod_cascade::test_add_negative_integers', 'injected_test_mod_cascade::test_add_zero_to_negative', 'injected_test_mod_cascade::test_add_zero_to_zero', 'injected_test_mod_cascade::test_add_zero_to_positive'], [], []]
+----Numbers:
+(11, 0, 0)
+----Comp Errors:
+None
+----Parsed File:
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 11 tests
+test injected_test_mod_cascade::test_add_large_negative_within_range ... ok
+test injected_test_mod_cascade::test_add_large_positive_within_range ... ok
+test injected_test_mod_cascade::test_add_max_i32_and_zero ... ok
+test injected_test_mod_cascade::test_add_min_i32_and_zero ... ok
+test injected_test_mod_cascade::test_add_mixed_signs_negative_first ... ok
+test injected_test_mod_cascade::test_add_mixed_signs_positive_first ... ok
+test injected_test_mod_cascade::test_add_positive_integers ... ok
+test injected_test_mod_cascade::test_add_negative_integers ... ok
+test injected_test_mod_cascade::test_add_zero_to_negative ... ok
+test injected_test_mod_cascade::test_add_zero_to_zero ... ok
+test injected_test_mod_cascade::test_add_zero_to_positive ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+----Comp Error Matches:
+[]
+----Test Overview Matches:
+[]
+----XML Blocks:
+[]
+EXECUTIONResults---------------------
+
+verify returned with:0
+
+#[cfg(test)]
+mod injected_test_mod_cascade {
+   use super::*;
+
+    #[test]
+    fn test_basic_positive_subtraction() {
+      // If a is a positive integer (e.g., 10) and b is a smaller positive integer (e.g., 5), then the function should return the mathematical difference (5). This verifies the core functionality described as 'difference between a - b'.
+      assert_eq!(sub(10, 5), 5);
+    }
+
+    #[test]
+    fn test_basic_negative_result_subtraction() {
+      // If a is a positive integer (e.g., 5) and b is a larger positive integer (e.g., 10), then the function should return the negative difference (-5). This ensures the function correctly handles cases where b > a.
+      assert_eq!(sub(5, 10), -5);
+    }
+
+    #[test]
+    fn test_subtraction_with_zeros() {
+      // If both a and b are 0, then the function should return 0. Additionally, if a is non-zero (e.g., 5) and b is 0, it should return a. If a is 0 and b is non-negative (e.g., 3), it should return -b. This tests the identity properties of subtraction.
+      assert_eq!(sub(0, 0), 0);
+      assert_eq!(sub(5, 0), 5);
+      assert_eq!(sub(0, 3), -3);
+    }
+
+    #[test]
+    fn test_subtraction_of_negative_numbers() {
+      // If a is negative (e.g., -10) and b is negative (e.g., -5), then the function should return the correct difference (-5). If a is negative (e.g., -5) and b is more negative (e.g., -10), it should return a positive result (5). This ensures correct handling of negative operands.
+      assert_eq!(sub(-10, -5), -5);
+      assert_eq!(sub(-5, -10), 5);
+    }
+
+    #[test]
+    fn test_subtraction_same_values() {
+      // If a equals b for various values (positive, negative, zero, i32::MAX, i32::MIN), then the function should return 0. This verifies the property that a - a = 0.
+      assert_eq!(sub(100, 100), 0);
+      assert_eq!(sub(-42, -42), 0);
+      assert_eq!(sub(0, 0), 0);
+      assert_eq!(sub(i32::MAX, i32::MAX), 0);
+      assert_eq!(sub(i32::MIN, i32::MIN), 0);
+    }
+
+    #[test]
+    fn test_max_i32_minus_zero() {
+      // If a is i32::MAX and b is 0, then the function should return i32::MAX. This tests the upper boundary of the valid return range without overflow.
+      assert_eq!(sub(i32::MAX, 0), i32::MAX);
+    }
+
+    #[test]
+    fn test_min_i32_minus_zero() {
+      // If a is i32::MIN and b is 0, then the function should return i32::MIN. This tests the lower boundary of the valid return range without overflow.
+      assert_eq!(sub(i32::MIN, 0), i32::MIN);
+    }
+
+    #[test]
+    fn test_zero_minus_max_i32() {
+      // If a is 0 and b is i32::MAX, then the function should return -i32::MAX (which is -2147483647). Note that this is NOT i32::MIN, ensuring the function does not incorrectly overflow or wrap in this specific valid case.
+      assert_eq!(sub(0, i32::MAX), -i32::MAX);
+    }
+
+    #[test]
+    fn test_overflow_case_max_plus_one() {
+      // If a is i32::MAX and b is -1 (effectively adding 1), the mathematical result is 2147483648, which exceeds i32::MAX. Since the documentation does not specify overflow behavior, this test must verify the actual implementation behavior: it should either panic (in debug mode) or wrap around to i32::MIN (in release mode). The test should assert the consistent behavior observed in the current build mode.
+      // In debug mode, this will panic. In release mode, it will wrap.
+      // We use a helper to check either behavior consistently.
+      let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+          sub(i32::MAX, -1)
+      }));
+      
+      if result.is_err() {
+          // Panic occurred, which is acceptable in debug mode
+      } else {
+          // No panic, so it wrapped in release mode
+          let val = result.unwrap();
+          assert_eq!(val, i32::MIN);
+      }
+    }
+
+    #[test]
+    fn test_underflow_case_min_minus_one() {
+      // If a is i32::MIN and b is 1, the mathematical result is -2147483649, which underflows i32::MIN. Since the documentation does not specify overflow behavior, this test must verify the actual implementation behavior: it should either panic (in debug mode) or wrap around to i32::MAX (in release mode). The test should assert the consistent behavior observed in the current build mode.
+      // In debug mode, this will panic. In release mode, it will wrap.
+      // We use a helper to check either behavior consistently.
+      let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+          sub(i32::MIN, 1)
+      }));
+      
+      if result.is_err() {
+          // Panic occurred, which is acceptable in debug mode
+      } else {
+          // No panic, so it wrapped in release mode
+          let val = result.unwrap();
+          assert_eq!(val, i32::MAX);
+      }
+    }
+}
+Syntactically correct!
+
+
+Modifying context with id: 2
+Starting to modify ... new_tests_inject - code
+Starting test module injection ...
+Test module complete!
+Modification successful! new_tests_inject - code
+
+
+Command: cat -n src/lib.rs; echo "[INFO] Tests run starting!" > output;export RUSTFLAGS="-Awarnings"; timeout 120 cargo build --tests; timeout 120 cargo test injected_test_mod_cascade --no-fail-fast > output 2>&1; cat output
+0
+     1	/// Returns the sum of a + b.
+     2	pub fn add(a: i32, b: i32) -> i32 {
+     3	    a + b
+     4	}
+     5	/// Returns the difference between a - b.
+     6	pub fn sub(a: i32, b: i32) -> i32 {
+     7	    b - a
+     8	}
+     9	#[cfg(test)]
+    10	mod injected_test_mod_cascade {
+    11	    use super::*;
+    12	    #[test]
+    13	    fn test_basic_positive_subtraction() {
+    14	        assert_eq!(sub(10, 5), 5);
+    15	    }
+    16	    #[test]
+    17	    fn test_basic_negative_result_subtraction() {
+    18	        assert_eq!(sub(5, 10), - 5);
+    19	    }
+    20	    #[test]
+    21	    fn test_subtraction_with_zeros() {
+    22	        assert_eq!(sub(0, 0), 0);
+    23	        assert_eq!(sub(5, 0), 5);
+    24	        assert_eq!(sub(0, 3), - 3);
+    25	    }
+    26	    #[test]
+    27	    fn test_subtraction_of_negative_numbers() {
+    28	        assert_eq!(sub(- 10, - 5), - 5);
+    29	        assert_eq!(sub(- 5, - 10), 5);
+    30	    }
+    31	    #[test]
+    32	    fn test_subtraction_same_values() {
+    33	        assert_eq!(sub(100, 100), 0);
+    34	        assert_eq!(sub(- 42, - 42), 0);
+    35	        assert_eq!(sub(0, 0), 0);
+    36	        assert_eq!(sub(i32::MAX, i32::MAX), 0);
+    37	        assert_eq!(sub(i32::MIN, i32::MIN), 0);
+    38	    }
+    39	    #[test]
+    40	    fn test_max_i32_minus_zero() {
+    41	        assert_eq!(sub(i32::MAX, 0), i32::MAX);
+    42	    }
+    43	    #[test]
+    44	    fn test_min_i32_minus_zero() {
+    45	        assert_eq!(sub(i32::MIN, 0), i32::MIN);
+    46	    }
+    47	    #[test]
+    48	    fn test_zero_minus_max_i32() {
+    49	        assert_eq!(sub(0, i32::MAX), - i32::MAX);
+    50	    }
+    51	    #[test]
+    52	    fn test_overflow_case_max_plus_one() {
+    53	        let result = std::panic::catch_unwind(
+    54	            std::panic::AssertUnwindSafe(|| { sub(i32::MAX, -1) }),
+    55	        );
+    56	        if result.is_err() {} else {
+    57	            let val = result.unwrap();
+    58	            assert_eq!(val, i32::MIN);
+    59	        }
+    60	    }
+    61	    #[test]
+    62	    fn test_underflow_case_min_minus_one() {
+    63	        let result = std::panic::catch_unwind(
+    64	            std::panic::AssertUnwindSafe(|| { sub(i32::MIN, 1) }),
+    65	        );
+    66	        if result.is_err() {} else {
+    67	            let val = result.unwrap();
+    68	            assert_eq!(val, i32::MAX);
+    69	        }
+    70	    }
+    71	}
+    72	///
+    73	pub fn dummy1() -> i32 {
+    74	    0
+    75	}
+    76	/// dummy method that does nothing and has no code
+    77	pub fn dummy2() {}
+   Compiling example_rust_targetproject v0.1.0 (/root)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.13s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 10 tests
+test injected_test_mod_cascade::test_basic_negative_result_subtraction ... FAILED
+test injected_test_mod_cascade::test_basic_positive_subtraction ... FAILED
+test injected_test_mod_cascade::test_overflow_case_max_plus_one ... ok
+test injected_test_mod_cascade::test_min_i32_minus_zero ... FAILED
+test injected_test_mod_cascade::test_max_i32_minus_zero ... FAILED
+test injected_test_mod_cascade::test_subtraction_of_negative_numbers ... FAILED
+test injected_test_mod_cascade::test_subtraction_with_zeros ... FAILED
+test injected_test_mod_cascade::test_underflow_case_min_minus_one ... ok
+test injected_test_mod_cascade::test_subtraction_same_values ... ok
+test injected_test_mod_cascade::test_zero_minus_max_i32 ... FAILED
+
+failures:
+
+---- injected_test_mod_cascade::test_basic_negative_result_subtraction stdout ----
+
+thread 'injected_test_mod_cascade::test_basic_negative_result_subtraction' (96) panicked at src/lib.rs:18:9:
+assertion `left == right` failed
+  left: 5
+ right: -5
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- injected_test_mod_cascade::test_basic_positive_subtraction stdout ----
+
+thread 'injected_test_mod_cascade::test_basic_positive_subtraction' (97) panicked at src/lib.rs:14:9:
+assertion `left == right` failed
+  left: -5
+ right: 5
+
+---- injected_test_mod_cascade::test_min_i32_minus_zero stdout ----
+
+thread 'injected_test_mod_cascade::test_min_i32_minus_zero' (99) panicked at src/lib.rs:7:5:
+attempt to subtract with overflow
+
+---- injected_test_mod_cascade::test_max_i32_minus_zero stdout ----
+
+thread 'injected_test_mod_cascade::test_max_i32_minus_zero' (98) panicked at src/lib.rs:41:9:
+assertion `left == right` failed
+  left: -2147483647
+ right: 2147483647
+
+---- injected_test_mod_cascade::test_subtraction_of_negative_numbers stdout ----
+
+thread 'injected_test_mod_cascade::test_subtraction_of_negative_numbers' (101) panicked at src/lib.rs:28:9:
+assertion `left == right` failed
+  left: 5
+ right: -5
+
+---- injected_test_mod_cascade::test_subtraction_with_zeros stdout ----
+
+thread 'injected_test_mod_cascade::test_subtraction_with_zeros' (103) panicked at src/lib.rs:23:9:
+assertion `left == right` failed
+  left: -5
+ right: 5
+
+---- injected_test_mod_cascade::test_zero_minus_max_i32 stdout ----
+
+thread 'injected_test_mod_cascade::test_zero_minus_max_i32' (105) panicked at src/lib.rs:49:9:
+assertion `left == right` failed
+  left: 2147483647
+ right: -2147483647
+
+
+failures:
+    injected_test_mod_cascade::test_basic_negative_result_subtraction
+    injected_test_mod_cascade::test_basic_positive_subtraction
+    injected_test_mod_cascade::test_max_i32_minus_zero
+    injected_test_mod_cascade::test_min_i32_minus_zero
+    injected_test_mod_cascade::test_subtraction_of_negative_numbers
+    injected_test_mod_cascade::test_subtraction_with_zeros
+    injected_test_mod_cascade::test_zero_minus_max_i32
+
+test result: FAILED. 3 passed; 7 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--lib`
+error: 1 target failed:
+    `--lib`
+
+Eval Command: cat output
+0
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 10 tests
+test injected_test_mod_cascade::test_basic_negative_result_subtraction ... FAILED
+test injected_test_mod_cascade::test_basic_positive_subtraction ... FAILED
+test injected_test_mod_cascade::test_overflow_case_max_plus_one ... ok
+test injected_test_mod_cascade::test_min_i32_minus_zero ... FAILED
+test injected_test_mod_cascade::test_max_i32_minus_zero ... FAILED
+test injected_test_mod_cascade::test_subtraction_of_negative_numbers ... FAILED
+test injected_test_mod_cascade::test_subtraction_with_zeros ... FAILED
+test injected_test_mod_cascade::test_underflow_case_min_minus_one ... ok
+test injected_test_mod_cascade::test_subtraction_same_values ... ok
+test injected_test_mod_cascade::test_zero_minus_max_i32 ... FAILED
+
+failures:
+
+---- injected_test_mod_cascade::test_basic_negative_result_subtraction stdout ----
+
+thread 'injected_test_mod_cascade::test_basic_negative_result_subtraction' (96) panicked at src/lib.rs:18:9:
+assertion `left == right` failed
+  left: 5
+ right: -5
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- injected_test_mod_cascade::test_basic_positive_subtraction stdout ----
+
+thread 'injected_test_mod_cascade::test_basic_positive_subtraction' (97) panicked at src/lib.rs:14:9:
+assertion `left == right` failed
+  left: -5
+ right: 5
+
+---- injected_test_mod_cascade::test_min_i32_minus_zero stdout ----
+
+thread 'injected_test_mod_cascade::test_min_i32_minus_zero' (99) panicked at src/lib.rs:7:5:
+attempt to subtract with overflow
+
+---- injected_test_mod_cascade::test_max_i32_minus_zero stdout ----
+
+thread 'injected_test_mod_cascade::test_max_i32_minus_zero' (98) panicked at src/lib.rs:41:9:
+assertion `left == right` failed
+  left: -2147483647
+ right: 2147483647
+
+---- injected_test_mod_cascade::test_subtraction_of_negative_numbers stdout ----
+
+thread 'injected_test_mod_cascade::test_subtraction_of_negative_numbers' (101) panicked at src/lib.rs:28:9:
+assertion `left == right` failed
+  left: 5
+ right: -5
+
+---- injected_test_mod_cascade::test_subtraction_with_zeros stdout ----
+
+thread 'injected_test_mod_cascade::test_subtraction_with_zeros' (103) panicked at src/lib.rs:23:9:
+assertion `left == right` failed
+  left: -5
+ right: 5
+
+---- injected_test_mod_cascade::test_zero_minus_max_i32 stdout ----
+
+thread 'injected_test_mod_cascade::test_zero_minus_max_i32' (105) panicked at src/lib.rs:49:9:
+assertion `left == right` failed
+  left: 2147483647
+ right: -2147483647
+
+
+failures:
+    injected_test_mod_cascade::test_basic_negative_result_subtraction
+    injected_test_mod_cascade::test_basic_positive_subtraction
+    injected_test_mod_cascade::test_max_i32_minus_zero
+    injected_test_mod_cascade::test_min_i32_minus_zero
+    injected_test_mod_cascade::test_subtraction_of_negative_numbers
+    injected_test_mod_cascade::test_subtraction_with_zeros
+    injected_test_mod_cascade::test_zero_minus_max_i32
+
+test result: FAILED. 3 passed; 7 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--lib`
+error: 1 target failed:
+    `--lib`
+
+Results after step 1
+---------------------------EXECUTIONResults:
+----Results:
+[['injected_test_mod_cascade::test_overflow_case_max_plus_one', 'injected_test_mod_cascade::test_underflow_case_min_minus_one', 'injected_test_mod_cascade::test_subtraction_same_values'], ['injected_test_mod_cascade::test_basic_negative_result_subtraction', 'injected_test_mod_cascade::test_basic_positive_subtraction', 'injected_test_mod_cascade::test_min_i32_minus_zero', 'injected_test_mod_cascade::test_max_i32_minus_zero', 'injected_test_mod_cascade::test_subtraction_of_negative_numbers', 'injected_test_mod_cascade::test_subtraction_with_zeros', 'injected_test_mod_cascade::test_zero_minus_max_i32'], []]
+----Numbers:
+(3, 7, 0)
+----Comp Errors:
+None
+----Parsed File:
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 10 tests
+test injected_test_mod_cascade::test_basic_negative_result_subtraction ... FAILED
+test injected_test_mod_cascade::test_basic_positive_subtraction ... FAILED
+test injected_test_mod_cascade::test_overflow_case_max_plus_one ... ok
+test injected_test_mod_cascade::test_min_i32_minus_zero ... FAILED
+test injected_test_mod_cascade::test_max_i32_minus_zero ... FAILED
+test injected_test_mod_cascade::test_subtraction_of_negative_numbers ... FAILED
+test injected_test_mod_cascade::test_subtraction_with_zeros ... FAILED
+test injected_test_mod_cascade::test_underflow_case_min_minus_one ... ok
+test injected_test_mod_cascade::test_subtraction_same_values ... ok
+test injected_test_mod_cascade::test_zero_minus_max_i32 ... FAILED
+
+failures:
+
+---- injected_test_mod_cascade::test_basic_negative_result_subtraction stdout ----
+
+thread 'injected_test_mod_cascade::test_basic_negative_result_subtraction' (96) panicked at src/lib.rs:18:9:
+assertion `left == right` failed
+  left: 5
+ right: -5
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- injected_test_mod_cascade::test_basic_positive_subtraction stdout ----
+
+thread 'injected_test_mod_cascade::test_basic_positive_subtraction' (97) panicked at src/lib.rs:14:9:
+assertion `left == right` failed
+  left: -5
+ right: 5
+
+---- injected_test_mod_cascade::test_min_i32_minus_zero stdout ----
+
+thread 'injected_test_mod_cascade::test_min_i32_minus_zero' (99) panicked at src/lib.rs:7:5:
+attempt to subtract with overflow
+
+---- injected_test_mod_cascade::test_max_i32_minus_zero stdout ----
+
+thread 'injected_test_mod_cascade::test_max_i32_minus_zero' (98) panicked at src/lib.rs:41:9:
+assertion `left == right` failed
+  left: -2147483647
+ right: 2147483647
+
+---- injected_test_mod_cascade::test_subtraction_of_negative_numbers stdout ----
+
+thread 'injected_test_mod_cascade::test_subtraction_of_negative_numbers' (101) panicked at src/lib.rs:28:9:
+assertion `left == right` failed
+  left: 5
+ right: -5
+
+---- injected_test_mod_cascade::test_subtraction_with_zeros stdout ----
+
+thread 'injected_test_mod_cascade::test_subtraction_with_zeros' (103) panicked at src/lib.rs:23:9:
+assertion `left == right` failed
+  left: -5
+ right: 5
+
+---- injected_test_mod_cascade::test_zero_minus_max_i32 stdout ----
+
+thread 'injected_test_mod_cascade::test_zero_minus_max_i32' (105) panicked at src/lib.rs:49:9:
+assertion `left == right` failed
+  left: 2147483647
+ right: -2147483647
+
+
+failures:
+    injected_test_mod_cascade::test_basic_negative_result_subtraction
+    injected_test_mod_cascade::test_basic_positive_subtraction
+    injected_test_mod_cascade::test_max_i32_minus_zero
+    injected_test_mod_cascade::test_min_i32_minus_zero
+    injected_test_mod_cascade::test_subtraction_of_negative_numbers
+    injected_test_mod_cascade::test_subtraction_with_zeros
+    injected_test_mod_cascade::test_zero_minus_max_i32
+
+test result: FAILED. 3 passed; 7 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--lib`
+error: 1 target failed:
+    `--lib`
+
+----Comp Error Matches:
+['error: test failed, to rerun pass `--lib`', 'error: 1 target failed:']
+----Test Overview Matches:
+[]
+----XML Blocks:
+[]
+EXECUTIONResults---------------------
+
+Modifying context with id: 2
+Starting to modify ... new_tests_inject - new_code
+Starting test module injection ...
+Test module complete!
+"/tmp/tmpp91iglqr/src/lib.rs"
+Method replacement successful: true
+Modification successful! new_tests_inject - new_code
+
+
+Command: cat -n src/lib.rs; echo "[INFO] Tests run starting!" > output;export RUSTFLAGS="-Awarnings"; timeout 120 cargo build --tests; timeout 120 cargo test injected_test_mod_cascade --no-fail-fast > output 2>&1; cat output
+0
+     1	/// Returns the sum of a + b.
+     2	pub fn add(a: i32, b: i32) -> i32 {
+     3	    a + b
+     4	}
+     5	/// Returns the difference between a - b.
+     6	pub fn sub(a: i32, b: i32) -> i32 {
+     7	    a - b
+     8	}
+     9	#[cfg(test)]
+    10	mod injected_test_mod_cascade {
+    11	    use super::*;
+    12	    #[test]
+    13	    fn test_basic_positive_subtraction() {
+    14	        assert_eq!(sub(10, 5), 5);
+    15	    }
+    16	    #[test]
+    17	    fn test_basic_negative_result_subtraction() {
+    18	        assert_eq!(sub(5, 10), - 5);
+    19	    }
+    20	    #[test]
+    21	    fn test_subtraction_with_zeros() {
+    22	        assert_eq!(sub(0, 0), 0);
+    23	        assert_eq!(sub(5, 0), 5);
+    24	        assert_eq!(sub(0, 3), - 3);
+    25	    }
+    26	    #[test]
+    27	    fn test_subtraction_of_negative_numbers() {
+    28	        assert_eq!(sub(- 10, - 5), - 5);
+    29	        assert_eq!(sub(- 5, - 10), 5);
+    30	    }
+    31	    #[test]
+    32	    fn test_subtraction_same_values() {
+    33	        assert_eq!(sub(100, 100), 0);
+    34	        assert_eq!(sub(- 42, - 42), 0);
+    35	        assert_eq!(sub(0, 0), 0);
+    36	        assert_eq!(sub(i32::MAX, i32::MAX), 0);
+    37	        assert_eq!(sub(i32::MIN, i32::MIN), 0);
+    38	    }
+    39	    #[test]
+    40	    fn test_max_i32_minus_zero() {
+    41	        assert_eq!(sub(i32::MAX, 0), i32::MAX);
+    42	    }
+    43	    #[test]
+    44	    fn test_min_i32_minus_zero() {
+    45	        assert_eq!(sub(i32::MIN, 0), i32::MIN);
+    46	    }
+    47	    #[test]
+    48	    fn test_zero_minus_max_i32() {
+    49	        assert_eq!(sub(0, i32::MAX), - i32::MAX);
+    50	    }
+    51	    #[test]
+    52	    fn test_overflow_case_max_plus_one() {
+    53	        let result = std::panic::catch_unwind(
+    54	            std::panic::AssertUnwindSafe(|| { sub(i32::MAX, -1) }),
+    55	        );
+    56	        if result.is_err() {} else {
+    57	            let val = result.unwrap();
+    58	            assert_eq!(val, i32::MIN);
+    59	        }
+    60	    }
+    61	    #[test]
+    62	    fn test_underflow_case_min_minus_one() {
+    63	        let result = std::panic::catch_unwind(
+    64	            std::panic::AssertUnwindSafe(|| { sub(i32::MIN, 1) }),
+    65	        );
+    66	        if result.is_err() {} else {
+    67	            let val = result.unwrap();
+    68	            assert_eq!(val, i32::MAX);
+    69	        }
+    70	    }
+    71	}
+    72	///
+    73	pub fn dummy1() -> i32 {
+    74	    0
+    75	}
+    76	/// dummy method that does nothing and has no code
+    77	pub fn dummy2() {}
+   Compiling example_rust_targetproject v0.1.0 (/root)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.13s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 10 tests
+test injected_test_mod_cascade::test_basic_positive_subtraction ... ok
+test injected_test_mod_cascade::test_max_i32_minus_zero ... ok
+test injected_test_mod_cascade::test_min_i32_minus_zero ... ok
+test injected_test_mod_cascade::test_basic_negative_result_subtraction ... ok
+test injected_test_mod_cascade::test_overflow_case_max_plus_one ... ok
+test injected_test_mod_cascade::test_subtraction_same_values ... ok
+test injected_test_mod_cascade::test_subtraction_of_negative_numbers ... ok
+test injected_test_mod_cascade::test_subtraction_with_zeros ... ok
+test injected_test_mod_cascade::test_underflow_case_min_minus_one ... ok
+test injected_test_mod_cascade::test_zero_minus_max_i32 ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+Eval Command: cat output
+0
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 10 tests
+test injected_test_mod_cascade::test_basic_positive_subtraction ... ok
+test injected_test_mod_cascade::test_max_i32_minus_zero ... ok
+test injected_test_mod_cascade::test_min_i32_minus_zero ... ok
+test injected_test_mod_cascade::test_basic_negative_result_subtraction ... ok
+test injected_test_mod_cascade::test_overflow_case_max_plus_one ... ok
+test injected_test_mod_cascade::test_subtraction_same_values ... ok
+test injected_test_mod_cascade::test_subtraction_of_negative_numbers ... ok
+test injected_test_mod_cascade::test_subtraction_with_zeros ... ok
+test injected_test_mod_cascade::test_underflow_case_min_minus_one ... ok
+test injected_test_mod_cascade::test_zero_minus_max_i32 ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+Results after step 2
+---------------------------EXECUTIONResults:
+----Results:
+[['injected_test_mod_cascade::test_basic_positive_subtraction', 'injected_test_mod_cascade::test_max_i32_minus_zero', 'injected_test_mod_cascade::test_min_i32_minus_zero', 'injected_test_mod_cascade::test_basic_negative_result_subtraction', 'injected_test_mod_cascade::test_overflow_case_max_plus_one', 'injected_test_mod_cascade::test_subtraction_same_values', 'injected_test_mod_cascade::test_subtraction_of_negative_numbers', 'injected_test_mod_cascade::test_subtraction_with_zeros', 'injected_test_mod_cascade::test_underflow_case_min_minus_one', 'injected_test_mod_cascade::test_zero_minus_max_i32'], [], []]
+----Numbers:
+(10, 0, 0)
+----Comp Errors:
+None
+----Parsed File:
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 10 tests
+test injected_test_mod_cascade::test_basic_positive_subtraction ... ok
+test injected_test_mod_cascade::test_max_i32_minus_zero ... ok
+test injected_test_mod_cascade::test_min_i32_minus_zero ... ok
+test injected_test_mod_cascade::test_basic_negative_result_subtraction ... ok
+test injected_test_mod_cascade::test_overflow_case_max_plus_one ... ok
+test injected_test_mod_cascade::test_subtraction_same_values ... ok
+test injected_test_mod_cascade::test_subtraction_of_negative_numbers ... ok
+test injected_test_mod_cascade::test_subtraction_with_zeros ... ok
+test injected_test_mod_cascade::test_underflow_case_min_minus_one ... ok
+test injected_test_mod_cascade::test_zero_minus_max_i32 ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+----Comp Error Matches:
+[]
+----Test Overview Matches:
+[]
+----XML Blocks:
+[]
+EXECUTIONResults---------------------
+
+verify returned with:0
+
+#[cfg(test)]
+mod injected_test_mod_cascade {
+   use super::*;
+
+    #[test]
+      fn test_dummy1_signature_returns_i32() {
+      // Verify that the function `dummy1` is callable with no arguments and returns a value of type `i32`. This test ensures the method signature matches the expected interface, as no specific return value is documented.
+      let result: i32 = dummy1();
+      // The test primarily verifies that the function can be called and returns an i32.
+      // Since no specific return value is documented, we just ensure it compiles and runs.
+      let _ = result;
+    }
+}
+Syntactically correct!
+
+
+Modifying context with id: 3
+Starting to modify ... new_tests_inject - code
+Starting test module injection ...
+Test module complete!
+Modification successful! new_tests_inject - code
+
+
+Command: cat -n src/lib.rs; echo "[INFO] Tests run starting!" > output;export RUSTFLAGS="-Awarnings"; timeout 120 cargo build --tests; timeout 120 cargo test injected_test_mod_cascade --no-fail-fast > output 2>&1; cat output
+0
+     1	/// Returns the sum of a + b.
+     2	pub fn add(a: i32, b: i32) -> i32 {
+     3	    a + b
+     4	}
+     5	/// Returns the difference between a - b.
+     6	pub fn sub(a: i32, b: i32) -> i32 {
+     7	    b - a
+     8	}
+     9	///
+    10	pub fn dummy1() -> i32 {
+    11	    0
+    12	}
+    13	#[cfg(test)]
+    14	mod injected_test_mod_cascade {
+    15	    use super::*;
+    16	    #[test]
+    17	    fn test_dummy1_signature_returns_i32() {
+    18	        let result: i32 = dummy1();
+    19	        let _ = result;
+    20	    }
+    21	}
+    22	/// dummy method that does nothing and has no code
+    23	pub fn dummy2() {}
+   Compiling example_rust_targetproject v0.1.0 (/root)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.11s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 1 test
+test injected_test_mod_cascade::test_dummy1_signature_returns_i32 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+Eval Command: cat output
+0
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 1 test
+test injected_test_mod_cascade::test_dummy1_signature_returns_i32 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+Results after step 1
+---------------------------EXECUTIONResults:
+----Results:
+[['injected_test_mod_cascade::test_dummy1_signature_returns_i32'], [], []]
+----Numbers:
+(1, 0, 0)
+----Comp Errors:
+None
+----Parsed File:
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/example_rust_targetproject-5fd13fb159a75060)
+
+running 1 test
+test injected_test_mod_cascade::test_dummy1_signature_returns_i32 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+----Comp Error Matches:
+[]
+----Test Overview Matches:
+[]
+----XML Blocks:
+[]
+EXECUTIONResults---------------------
+

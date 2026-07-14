@@ -1,14 +1,42 @@
 {
-   "Extraction"    : { "name": "JavaExtraction",  "kwargs" : {}},
-   "CodeGenerator": { "name": "JavaCodeGenerator", "kwargs" : {"model": "gpt-4o-mini-2024-07-18"}},
-   "TestGenerator": { "name": "MultiStepJavaTestGenerator", "kwargs" : {"model": "gpt-4o-mini-2024-07-18"}},
-   "Analysis"      : { "name": "JavaTwoStepAnalysis",  "kwargs" : {}},
-   "Executor"      : { "name": "MavenJavaExecutor",   "kwargs" : {}},
-   "FilterFunctions"  : [
-      { "name": "NoTestsFilterFunction", "kwargs" : {}},
-      { "name": "ContainsFilterFunction", "kwargs" : {"key":"doc", "content":"@inheritDoc" , "invert":true}},
-      { "name": "CheckLengthFilterFunction", "kwargs" : {"key":"code", "op":">", "val":0}},
-      { "name": "CheckLengthFilterFunction", "kwargs" : {"key":"doc", "op":">", "val":12}},
-      { "name": "ContainsFilterFunction", "kwargs" : {"key":"signature.modifier", "content":"public"}}
-   ]
+  "Extraction": { "name": "JavaExtraction", "kwargs": {} },
+  "CodeGenerator": { "name": "JavaCodeGenerator", "kwargs": {
+    "model": "llm3",
+    "base_url": "https://llm3-compute.cms.hu-berlin.de/v1",
+    "api_key": "ollama"
+  }},
+  "TestGenerator": { "name": "MultiStepJavaTestGenerator", "kwargs": {
+    "model": "llm3",
+    "base_url": "https://llm3-compute.cms.hu-berlin.de/v1",
+    "api_key": "ollama"
+  }},
+  "Analysis": { "name": "JavaTwoStepAnalysis", "kwargs": {
+    "debug": 1,
+    "regenerate": false
+  }},
+  "Executor": { "name": "MavenJavaExecutor", "kwargs": {
+    "image": "maven"
+  }},
+  "FilterFunctions": [
+    { "name": "NoTestsFilterFunction", "kwargs": {} },
+    { "name": "ContainsFilterFunction", "kwargs": {
+      "key": "doc",
+      "content": "@inheritDoc",
+      "invert": true
+    }},
+    { "name": "CheckLengthFilterFunction", "kwargs": {
+      "key": "code",
+      "op": ">",
+      "val": 0
+    }},
+    { "name": "CheckLengthFilterFunction", "kwargs": {
+      "key": "doc",
+      "op": ">",
+      "val": 12
+    }},
+    { "name": "ContainsFilterFunction", "kwargs": {
+      "key": "signature.modifier",
+      "content": "public"
+    }}
+  ]
 }
