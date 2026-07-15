@@ -96,8 +96,8 @@
             "(code, new_tests)": [
                 [
                     "injected_test_mod_cascade::test_dummy2_does_not_panic",
-                    "injected_test_mod_cascade::test_dummy2_returns_unit_type",
-                    "injected_test_mod_cascade::test_dummy2_has_no_side_effects"
+                    "injected_test_mod_cascade::test_dummy2_has_no_side_effects",
+                    "injected_test_mod_cascade::test_dummy2_returns_unit_type"
                 ],
                 [],
                 []
@@ -347,17 +347,17 @@
         "results": {
             "(code, new_tests)": [
                 [
-                    "injected_test_mod_cascade::test_add_large_negative_within_range",
                     "injected_test_mod_cascade::test_add_large_positive_within_range",
                     "injected_test_mod_cascade::test_add_max_i32_and_zero",
                     "injected_test_mod_cascade::test_add_min_i32_and_zero",
-                    "injected_test_mod_cascade::test_add_mixed_signs_negative_first",
                     "injected_test_mod_cascade::test_add_mixed_signs_positive_first",
-                    "injected_test_mod_cascade::test_add_positive_integers",
                     "injected_test_mod_cascade::test_add_negative_integers",
+                    "injected_test_mod_cascade::test_add_large_negative_within_range",
+                    "injected_test_mod_cascade::test_add_mixed_signs_negative_first",
+                    "injected_test_mod_cascade::test_add_positive_integers",
                     "injected_test_mod_cascade::test_add_zero_to_negative",
-                    "injected_test_mod_cascade::test_add_zero_to_zero",
-                    "injected_test_mod_cascade::test_add_zero_to_positive"
+                    "injected_test_mod_cascade::test_add_zero_to_positive",
+                    "injected_test_mod_cascade::test_add_zero_to_zero"
                 ],
                 [],
                 []
@@ -608,32 +608,32 @@
             "(code, new_tests)": [
                 [
                     "injected_test_mod_cascade::test_overflow_case_max_plus_one",
-                    "injected_test_mod_cascade::test_underflow_case_min_minus_one",
-                    "injected_test_mod_cascade::test_subtraction_same_values"
+                    "injected_test_mod_cascade::test_subtraction_same_values",
+                    "injected_test_mod_cascade::test_underflow_case_min_minus_one"
                 ],
                 [
-                    "injected_test_mod_cascade::test_basic_negative_result_subtraction",
+                    "injected_test_mod_cascade::test_max_i32_minus_zero",
                     "injected_test_mod_cascade::test_basic_positive_subtraction",
                     "injected_test_mod_cascade::test_min_i32_minus_zero",
-                    "injected_test_mod_cascade::test_max_i32_minus_zero",
-                    "injected_test_mod_cascade::test_subtraction_of_negative_numbers",
+                    "injected_test_mod_cascade::test_basic_negative_result_subtraction",
                     "injected_test_mod_cascade::test_subtraction_with_zeros",
+                    "injected_test_mod_cascade::test_subtraction_of_negative_numbers",
                     "injected_test_mod_cascade::test_zero_minus_max_i32"
                 ],
                 []
             ],
             "(new_code, new_tests)": [
                 [
-                    "injected_test_mod_cascade::test_basic_positive_subtraction",
-                    "injected_test_mod_cascade::test_max_i32_minus_zero",
-                    "injected_test_mod_cascade::test_min_i32_minus_zero",
                     "injected_test_mod_cascade::test_basic_negative_result_subtraction",
+                    "injected_test_mod_cascade::test_max_i32_minus_zero",
+                    "injected_test_mod_cascade::test_basic_positive_subtraction",
                     "injected_test_mod_cascade::test_overflow_case_max_plus_one",
-                    "injected_test_mod_cascade::test_subtraction_same_values",
-                    "injected_test_mod_cascade::test_subtraction_of_negative_numbers",
+                    "injected_test_mod_cascade::test_min_i32_minus_zero",
                     "injected_test_mod_cascade::test_subtraction_with_zeros",
                     "injected_test_mod_cascade::test_underflow_case_min_minus_one",
-                    "injected_test_mod_cascade::test_zero_minus_max_i32"
+                    "injected_test_mod_cascade::test_subtraction_of_negative_numbers",
+                    "injected_test_mod_cascade::test_zero_minus_max_i32",
+                    "injected_test_mod_cascade::test_subtraction_same_values"
                 ],
                 [],
                 []
@@ -840,18 +840,18 @@
         "metric": {
             "p2p": [
                 "injected_test_mod_cascade::test_overflow_case_max_plus_one",
-                "injected_test_mod_cascade::test_underflow_case_min_minus_one",
-                "injected_test_mod_cascade::test_subtraction_same_values"
+                "injected_test_mod_cascade::test_subtraction_same_values",
+                "injected_test_mod_cascade::test_underflow_case_min_minus_one"
             ],
             "f2f": [],
             "p2f": [],
             "f2p": [
-                "injected_test_mod_cascade::test_basic_negative_result_subtraction",
+                "injected_test_mod_cascade::test_max_i32_minus_zero",
                 "injected_test_mod_cascade::test_basic_positive_subtraction",
                 "injected_test_mod_cascade::test_min_i32_minus_zero",
-                "injected_test_mod_cascade::test_max_i32_minus_zero",
-                "injected_test_mod_cascade::test_subtraction_of_negative_numbers",
+                "injected_test_mod_cascade::test_basic_negative_result_subtraction",
                 "injected_test_mod_cascade::test_subtraction_with_zeros",
+                "injected_test_mod_cascade::test_subtraction_of_negative_numbers",
                 "injected_test_mod_cascade::test_zero_minus_max_i32"
             ]
         },

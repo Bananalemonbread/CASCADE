@@ -105,19 +105,19 @@
         "results": {
             "(code, new_tests)": [
                 [
-                    "TestAddZeroToNegativeIntegerReturnsOriginal",
-                    "TestAddOppositeNumbersReturnsZero",
-                    "TestAddPositiveAndNegativeIntegersReturnsSum",
-                    "TestAddMaxIntAndZeroReturnsMaxInt",
-                    "TestAddTwoNegativeIntegersReturnsSum",
-                    "TestAddCommutativePropertyHolds",
-                    "TestAddZeroToZeroReturnsZero",
-                    "TestAddZeroToPositiveIntegerReturnsOriginal",
-                    "TestAddTwoPositiveIntegersReturnsSum",
-                    "TestAddTwoMaxIntegersHandlesOverflow",
-                    "TestAddMaxIntAndMinIntReturnsMinusOne",
                     "TestAddMinIntAndZeroReturnsMinInt",
-                    "TestAddTwoMinIntegersHandlesOverflow"
+                    "TestAddTwoNegativeIntegersReturnsSum",
+                    "TestAddPositiveAndNegativeIntegersReturnsSum",
+                    "TestAddZeroToNegativeIntegerReturnsOriginal",
+                    "TestAddMaxIntAndMinIntReturnsMinusOne",
+                    "TestAddMaxIntAndZeroReturnsMaxInt",
+                    "TestAddTwoPositiveIntegersReturnsSum",
+                    "TestAddCommutativePropertyHolds",
+                    "TestAddTwoMinIntegersHandlesOverflow",
+                    "TestAddZeroToPositiveIntegerReturnsOriginal",
+                    "TestAddTwoMaxIntegersHandlesOverflow",
+                    "TestAddZeroToZeroReturnsZero",
+                    "TestAddOppositeNumbersReturnsZero"
                 ],
                 [],
                 []
@@ -416,24 +416,24 @@
         "results": {
             "(code, new_tests)": [
                 [
-                    "TestSubEqualPositiveIntegersResultZero",
-                    "TestSubPositiveIntegersResultNegative",
+                    "TestSubNonCommutativeCheck",
                     "TestSubMinValueMinusOneOverflowBehavior",
-                    "TestSubZeroFromNegative",
-                    "TestSubPositiveIntegerFromNegative",
+                    "TestSubPositiveIntegersResultNegative",
                     "TestSubMaxValueMinusMinValueOverflowBehavior",
+                    "TestSubPositiveIntegerFromNegative",
+                    "TestSubNegativeFromZero",
+                    "TestSubTrivialCaseZeroFromZero",
+                    "TestSubMinValueMinusMaxValueOverflowBehavior",
+                    "TestSubZeroFromPositive",
+                    "TestSubNegativeIntegerFromNegative",
+                    "TestSubEqualPositiveIntegersResultZero",
+                    "TestSubZeroFromNegative",
+                    "TestSubNegativeIntegerFromPositive",
+                    "TestSubMaxValueMinusMaxValue",
                     "TestSubMaxValueMinusOne",
                     "TestSubPositiveIntegersResultPositive",
-                    "TestSubPositiveFromZero",
-                    "TestSubTrivialCaseZeroFromZero",
-                    "TestSubNonCommutativeCheck",
-                    "TestSubMinValueMinusMaxValueOverflowBehavior",
-                    "TestSubNegativeIntegerFromPositive",
-                    "TestSubZeroFromPositive",
-                    "TestSubNegativeFromZero",
-                    "TestSubNegativeIntegerFromNegative",
-                    "TestSubMaxValueMinusMaxValue",
-                    "TestSubMinValueMinusMinValue"
+                    "TestSubMinValueMinusMinValue",
+                    "TestSubPositiveFromZero"
                 ],
                 [],
                 []
@@ -732,41 +732,41 @@
         "results": {
             "(code, new_tests)": [
                 [
-                    "TestMulShouldReturnSameValueWhenMultipliedByOne",
                     "TestMulShouldReturnNegatedValueWhenMultipliedByNegativeOne",
-                    "TestMulShouldReturnMaxValueWhenMultiplyingMaxValueByOne",
+                    "TestMulShouldReturnZeroWhenFirstOperandIsZero",
+                    "TestMulShouldReturnSameValueWhenMultipliedByOne",
                     "TestMulShouldReturnMinValueWhenMultiplyingMinValueByOne",
-                    "TestMulShouldReturnZeroWhenFirstOperandIsZero"
+                    "TestMulShouldReturnMaxValueWhenMultiplyingMaxValueByOne"
                 ],
                 [
                     "TestMulShouldReturnNegativeProductForNegativeAndPositiveInteger",
-                    "TestMulShouldReturnCorrectProductForLargeNumbersWithinRange",
-                    "TestMulShouldHandleOverflowWithStandardCSharpBehavior",
+                    "TestMulShouldReturnPositiveProductForTwoNegativeIntegers",
                     "TestMulShouldReturnSameValueWhenOneIsFirstOperand",
                     "TestMulShouldReturnZeroWhenSecondOperandIsZero",
+                    "TestMulShouldReturnPositiveProductForTwoPositiveIntegers",
+                    "TestMulShouldReturnCorrectProductForLargeNumbersWithinRange",
                     "TestMulShouldReturnNegativeProductForPositiveAndNegativeInteger",
-                    "TestMulShouldReturnPositiveProductForTwoNegativeIntegers",
-                    "TestMulShouldReturnZeroWhenBothOperandsAreZero",
-                    "TestMulShouldReturnPositiveProductForTwoPositiveIntegers"
+                    "TestMulShouldHandleOverflowWithStandardCSharpBehavior",
+                    "TestMulShouldReturnZeroWhenBothOperandsAreZero"
                 ],
                 []
             ],
             "(new_code, new_tests)": [
                 [
                     "TestMulShouldReturnPositiveProductForTwoNegativeIntegers",
-                    "TestMulShouldReturnSameValueWhenMultipliedByOne",
-                    "TestMulShouldReturnPositiveProductForTwoPositiveIntegers",
                     "TestMulShouldReturnNegativeProductForPositiveAndNegativeInteger",
-                    "TestMulShouldReturnCorrectProductForLargeNumbersWithinRange",
-                    "TestMulShouldHandleOverflowWithStandardCSharpBehavior",
-                    "TestMulShouldReturnZeroWhenBothOperandsAreZero",
-                    "TestMulShouldReturnNegatedValueWhenMultipliedByNegativeOne",
                     "TestMulShouldReturnSameValueWhenOneIsFirstOperand",
                     "TestMulShouldReturnZeroWhenSecondOperandIsZero",
-                    "TestMulShouldReturnZeroWhenFirstOperandIsZero",
+                    "TestMulShouldReturnSameValueWhenMultipliedByOne",
                     "TestMulShouldReturnMinValueWhenMultiplyingMinValueByOne",
-                    "TestMulShouldReturnMaxValueWhenMultiplyingMaxValueByOne",
-                    "TestMulShouldReturnNegativeProductForNegativeAndPositiveInteger"
+                    "TestMulShouldReturnCorrectProductForLargeNumbersWithinRange",
+                    "TestMulShouldReturnPositiveProductForTwoPositiveIntegers",
+                    "TestMulShouldReturnZeroWhenFirstOperandIsZero",
+                    "TestMulShouldReturnZeroWhenBothOperandsAreZero",
+                    "TestMulShouldReturnNegatedValueWhenMultipliedByNegativeOne",
+                    "TestMulShouldReturnNegativeProductForNegativeAndPositiveInteger",
+                    "TestMulShouldHandleOverflowWithStandardCSharpBehavior",
+                    "TestMulShouldReturnMaxValueWhenMultiplyingMaxValueByOne"
                 ],
                 [],
                 []
@@ -1011,24 +1011,24 @@
         },
         "metric": {
             "p2p": [
-                "TestMulShouldReturnSameValueWhenMultipliedByOne",
                 "TestMulShouldReturnNegatedValueWhenMultipliedByNegativeOne",
-                "TestMulShouldReturnMaxValueWhenMultiplyingMaxValueByOne",
+                "TestMulShouldReturnZeroWhenFirstOperandIsZero",
+                "TestMulShouldReturnSameValueWhenMultipliedByOne",
                 "TestMulShouldReturnMinValueWhenMultiplyingMinValueByOne",
-                "TestMulShouldReturnZeroWhenFirstOperandIsZero"
+                "TestMulShouldReturnMaxValueWhenMultiplyingMaxValueByOne"
             ],
             "f2f": [],
             "p2f": [],
             "f2p": [
                 "TestMulShouldReturnNegativeProductForNegativeAndPositiveInteger",
-                "TestMulShouldReturnCorrectProductForLargeNumbersWithinRange",
-                "TestMulShouldHandleOverflowWithStandardCSharpBehavior",
+                "TestMulShouldReturnPositiveProductForTwoNegativeIntegers",
                 "TestMulShouldReturnSameValueWhenOneIsFirstOperand",
                 "TestMulShouldReturnZeroWhenSecondOperandIsZero",
+                "TestMulShouldReturnPositiveProductForTwoPositiveIntegers",
+                "TestMulShouldReturnCorrectProductForLargeNumbersWithinRange",
                 "TestMulShouldReturnNegativeProductForPositiveAndNegativeInteger",
-                "TestMulShouldReturnPositiveProductForTwoNegativeIntegers",
-                "TestMulShouldReturnZeroWhenBothOperandsAreZero",
-                "TestMulShouldReturnPositiveProductForTwoPositiveIntegers"
+                "TestMulShouldHandleOverflowWithStandardCSharpBehavior",
+                "TestMulShouldReturnZeroWhenBothOperandsAreZero"
             ]
         },
         "verdict": "INCO; pass; step 2 (C'+T'); (5, 9, 0); (14, 0, 0); p2p: 5, f2f: 0, p2f: 0, f2p: 9"
