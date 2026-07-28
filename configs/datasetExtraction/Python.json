@@ -1,0 +1,51 @@
+{
+  "Extraction": {
+    "name": "PythonExtraction",
+    "kwargs": {}
+  },
+  "Analysis": {
+    "name": "EmptyAnalysis",
+    "kwargs": {}
+  },
+  "Executor": {
+    "name": "PythonExecutor",
+    "kwargs": {}
+  },
+  "FilterFunctions": [
+    {
+      "name": "EqualsFilterFunction",
+      "kwargs": {
+        "key": "signature.name",
+        "expected": ""
+      }
+    },
+    {
+      "name": "EqualsFilterFunction",
+      "kwargs": {
+        "key": "code_file_path",
+        "expected": "",
+        "normalize_path": true
+      }
+    },
+    {
+      "name": "NoTestsFilterFunction",
+      "kwargs": {}
+    },
+    {
+      "name": "CheckLengthFilterFunction",
+      "kwargs": {
+        "key": "code",
+        "op": ">",
+        "val": 0
+      }
+    },
+    {
+      "name": "CheckLengthFilterFunction",
+      "kwargs": {
+        "key": "doc",
+        "op": ">",
+        "val": 0
+      }
+    }
+  ]
+}

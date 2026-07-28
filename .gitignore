@@ -65,3 +65,6 @@ wheels/
 *.egg
 
 /tests/test_JavaExecution.py
+
+# Temporary
+/dataset-extraction

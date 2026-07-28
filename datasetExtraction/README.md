@@ -43,16 +43,76 @@ It stores extended metadata for each case, including information such as the com
 
 ## Step-by-Step Process
 
-### 1) Run extraction
+### 1) Validate and run extraction
 
-Execute the initial extraction step:
+`datasetextract.sh` supports Python, Java, Rust, and C#. It validates the CSV,
+reuses a repository cache, checks out each requested commit, resolves the
+language-specific project root, filters by exact function name and file path,
+and writes `analyzed.json` plus `inconsistency.txt`.
 
-```zsh
-cd ~/CASCADE/datasetExtraction
-bash datasetextract.sh
+The required CSV order is:
+
+```text
+language,repository,commit,case_number,function_name,file_path,inconsistent
 ```
 
-This produces the first extracted dataset artifacts.
+An optional eighth column can select a project root explicitly:
+
+```text
+language,repository,commit,case_number,function_name,file_path,inconsistent,project_path
+```
+
+`project_path` is relative to the repository. For C# it should point to a
+`.sln` or `.slnx` file. If omitted, the script searches upward from
+`file_path` for a Python project marker, Maven/Gradle project, `Cargo.toml`, or
+C# solution.
+
+Run a small cross-language preview:
+
+```bash
+cd ~/CASCADE/datasetExtraction
+./datasetextract.sh --dry-run --limit 10
+```
+
+Plan only Python cases:
+
+```bash
+cd ~/CASCADE/datasetExtraction
+./datasetextract.sh --dry-run --language python
+```
+
+Execute one Python case first:
+
+```bash
+cd ~/CASCADE/datasetExtraction
+./datasetextract.sh --execute --language python --limit 1
+```
+
+Run all complete rows:
+
+```bash
+cd ~/CASCADE/datasetExtraction
+./datasetextract.sh --execute
+```
+
+Outputs are stored below:
+
+```text
+datasetExtraction/work/dataset/<language>/<owner>/<repository>/<commit>/<case>/
+```
+
+Repositories are cached below `datasetExtraction/work/repositories/`. Existing
+valid `analyzed.json` files are resumed and not overwritten. Use a different
+`--workdir` when a clean extraction is required.
+
+Failures are recorded in:
+
+```text
+datasetExtraction/work/failed.csv
+```
+
+Rows with missing commit, case number, function name, file path, or label are
+reported and skipped.
 
 ### 2) Manual clean
 

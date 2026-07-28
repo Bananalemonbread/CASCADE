@@ -285,6 +285,8 @@ class MultiStepTestGenerator(Generator):
                 "\"test_description\": a detailed description for the developer of what this test should do and "
                 "which specific behavior from the documentation it tests. "
                 "In particular, I want testable statements of the 'if this then that' type.\n"
+                "Return strictly valid JSON only. Escape every double quote inside string values. "
+                "Prefer single quotes for Python literals mentioned inside test descriptions. "
                 "Focus on those tests that follow directly from the documentation, e.g. no performance based ones."
             )
         }
