@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/pandas-dev/pandas -o /home/betul/Humboldt/HiWi/dataset/python/pandas-dev/pandas/e3ae055ab220f9ca9836b3229374cafc46397c18/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:pivot_table\) --filters \(1\,expected:pandas/core/reshape/pivot.py\) --filters \(2\,expected:pivot_table\)
+
+Extraction started
+Extraction finished. Extracted:  8591
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

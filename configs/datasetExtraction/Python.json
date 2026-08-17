@@ -28,6 +28,13 @@
       }
     },
     {
+      "name": "EqualsFilterFunction",
+      "kwargs": {
+        "key": "qualified_name",
+        "expected": ""
+      }
+    },
+    {
       "name": "NoTestsFilterFunction",
       "kwargs": {}
     },

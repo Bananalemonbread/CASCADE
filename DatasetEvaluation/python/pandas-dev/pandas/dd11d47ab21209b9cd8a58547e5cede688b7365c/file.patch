@@ -1,0 +1,12 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index f9dfe65ab2..2769ac7705 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -25,6 +25,7 @@ authors = [
+ license = {file = 'LICENSE'}
+ requires-python = '>=3.9'
+ dependencies = [
++  "numpy<2",
+   "numpy>=1.21.6; python_version<'3.11'",
+   "numpy>=1.23.2; python_version>='3.11'",
+   "python-dateutil>=2.8.2",

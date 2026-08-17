@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scikit-learn/scikit-learn -o /home/betul/Humboldt/HiWi/dataset/python/scikit-learn/scikit-learn/d80b0c7216ed64aa62f1dcd3a18bf28d83198c6b/3 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:inverse_transform\) --filters \(1\,expected:sklearn/decomposition/_kernel_pca.py\) --filters \(2\,expected:KernelPCA.inverse_transform\)
+
+Extraction started
+Extraction finished. Extracted:  4473
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

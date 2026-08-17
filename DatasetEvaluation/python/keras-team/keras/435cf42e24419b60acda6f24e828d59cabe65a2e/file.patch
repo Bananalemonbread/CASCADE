@@ -1,0 +1,12 @@
+diff --git a/setup.py b/setup.py
+index 2ba0bb38a..fe426e589 100644
+--- a/setup.py
++++ b/setup.py
+@@ -34,6 +34,7 @@ setup(name='Keras',
+       license='MIT',
+       install_requires=['numpy>=1.9.1',
+                         'scipy>=0.14',
++                        'tensorflow==1.13.1',
+                         'six>=1.9.0',
+                         'pyyaml',
+                         'h5py',

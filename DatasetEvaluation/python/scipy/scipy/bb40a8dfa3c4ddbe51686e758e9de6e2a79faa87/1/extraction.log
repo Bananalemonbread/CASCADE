@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy -o /home/betul/Humboldt/HiWi/dataset/python/scipy/scipy/bb40a8dfa3c4ddbe51686e758e9de6e2a79faa87/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:_calc_oa_lens\) --filters \(1\,expected:scipy/signal/_signaltools.py\) --filters \(2\,expected:_calc_oa_lens\)
+
+Extraction started
+Extraction finished. Extracted:  9050
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

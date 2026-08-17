@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/numpy/numpy/numpy/core -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/numpy/numpy/57adb4bb6a8eb46fed597d4a781e47bcb86ebe11/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:putmask\) --filters \(1\,expected:multiarray.py\) --filters \(2\,expected:putmask\)
+
+Extraction started
+Extraction finished. Extracted:  678
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

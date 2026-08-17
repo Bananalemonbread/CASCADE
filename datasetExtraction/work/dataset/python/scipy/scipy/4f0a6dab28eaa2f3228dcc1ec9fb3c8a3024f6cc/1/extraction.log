@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy/scipy/cluster -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/scipy/scipy/4f0a6dab28eaa2f3228dcc1ec9fb3c8a3024f6cc/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:vq\) --filters \(1\,expected:vq.py\) --filters \(2\,expected:vq\)
+
+Extraction started
+Extraction finished. Extracted:  71
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

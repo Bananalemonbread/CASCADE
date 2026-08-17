@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/keras-team/keras -o /home/betul/Humboldt/HiWi/dataset/python/keras-team/keras/4de2c745ad1de82e691ae090ea125e681eb30d74/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:hard_sigmoid\) --filters \(1\,expected:keras/activations/activations.py\) --filters \(2\,expected:hard_sigmoid\)
+
+Extraction started
+Extraction finished. Extracted:  5033
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

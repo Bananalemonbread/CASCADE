@@ -15,6 +15,7 @@ LANGUAGE_FILTER="all"
 LIMIT=0
 MODE=""
 KEEP_EXTRACTED=false
+OVERWRITE=false
 
 usage() {
     cat <<'EOF'
@@ -37,6 +38,8 @@ Options:
   --repo-cache DIR      Repository cache. Default: WORKDIR/repositories
   --github-base URL     Git hosting base URL. Default: https://github.com
   --keep-extracted      Keep extracted.json after successful extraction.
+  --overwrite           Re-run existing cases and replace extraction outputs.
+                        Patch and container-hook files are left untouched.
   --limit NUMBER        Stop after NUMBER valid cases. Default: no limit.
   -h, --help            Show this help.
 
@@ -47,8 +50,8 @@ project_path is optional. It is relative to the repository and identifies a
 project root or, for C#, a solution file. If omitted, the script searches
 upward from file_path for the nearest language-specific project marker.
 
-Existing successful cases are resumed: if analyzed.json already exists and is
-valid, the case is skipped. Use a new --workdir for a clean extraction.
+Existing successful cases are resumed by default. With --overwrite, generated
+extraction files are replaced while patch and container-hook files are kept.
 EOF
 }
 
@@ -106,7 +109,7 @@ is_valid_analyzed_file() {
     [[ -s "$analyzed_file" ]] || return 1
 
     if command -v jq >/dev/null 2>&1; then
-        jq -e 'type == "array" and length > 0' "$analyzed_file" >/dev/null 2>&1
+        jq -e 'type == "array" and length == 1' "$analyzed_file" >/dev/null 2>&1
     else
         return 0
     fi
@@ -214,11 +217,17 @@ resolve_input_path() {
     else
         case "$language" in
             python)
-                input_path=$(
-                    find_marker_upwards \
-                        "$start_dir" "$repository_dir" \
-                        pyproject.toml setup.py setup.cfg
-                ) || input_path="$repository_dir"
+                if [[ -e "$repository_dir/pyproject.toml" ||
+                    -e "$repository_dir/setup.py" ||
+                    -e "$repository_dir/setup.cfg" ]]; then
+                    input_path="$repository_dir"
+                else
+                    input_path=$(
+                        find_marker_upwards \
+                            "$start_dir" "$repository_dir" \
+                            pyproject.toml setup.py setup.cfg
+                    ) || input_path="$repository_dir"
+                fi
                 ;;
             java)
                 input_path=$(
@@ -253,6 +262,20 @@ resolve_input_path() {
     ) || return 1
 }
 
+clear_extraction_outputs() {
+    local output_dir=$1
+
+    # Remove only generated extraction artifacts. Do not remove file.patch,
+    # container_patch.sh, patch.sh, or other manually maintained files.
+    rm -f \
+        "$output_dir/analyzed.json" \
+        "$output_dir/extracted.json" \
+        "$output_dir/extraction.log" \
+        "$output_dir/errors.txt" \
+        "$output_dir/inconsistent_functions.json" \
+        "$output_dir/inconsistency.txt"
+}
+
 execute_case() {
     local language=$1
     local repository=$2
@@ -268,7 +291,7 @@ execute_case() {
     local repository_dir="$REPOSITORY_CACHE/$repository"
     local run_log="$output_dir/extraction.log"
 
-    if is_valid_analyzed_file "$output_dir/analyzed.json"; then
+    if ! $OVERWRITE && is_valid_analyzed_file "$output_dir/analyzed.json"; then
         printf '%s\n' "$inconsistent" > "$output_dir/inconsistency.txt"
         echo "RESUME $language $repository $commit/$case_number"
         ((resumed_count += 1))
@@ -298,17 +321,31 @@ execute_case() {
     echo "  input: $RESOLVED_INPUT_PATH"
     echo "  file:  $RESOLVED_FILE_PATH"
 
+    if $OVERWRITE && [[ -d "$output_dir" ]]; then
+        echo "  overwriting generated extraction files"
+        clear_extraction_outputs "$output_dir"
+    fi
+
     mkdir -p "$output_dir"
     printf '%s\n' "$inconsistent" > "$output_dir/inconsistency.txt"
+
+    local signature_function_name=$function_name
+    if [[ $language == "python" ]]; then
+        signature_function_name=${function_name##*.}
+    fi
 
     local command=(
         "$CASCADE_BIN" run
         -i "$RESOLVED_INPUT_PATH"
         -o "$output_dir"
         -c "$config_file"
-        --filters "(0,expected:$function_name)"
+        --filters "(0,expected:$signature_function_name)"
         --filters "(1,expected:$RESOLVED_FILE_PATH)"
     )
+
+    if [[ $language == "python" ]]; then
+        command+=(--filters "(2,expected:$function_name)")
+    fi
 
     printf 'Command:' > "$run_log"
     printf ' %q' "${command[@]}" >> "$run_log"
@@ -404,6 +441,10 @@ while (($# > 0)); do
             ;;
         --keep-extracted)
             KEEP_EXTRACTED=true
+            shift
+            ;;
+        --overwrite)
+            OVERWRITE=true
             shift
             ;;
         --limit)
@@ -502,6 +543,12 @@ while IFS=, read -r raw_language raw_repository raw_commit raw_case_number \
 
     if ((${#missing[@]} > 0)); then
         echo "SKIP line $line_number: missing ${missing[*]}" >&2
+        ((skipped_count += 1))
+        continue
+    fi
+
+    if [[ ! $repository =~ ^[^/]+/[^/]+$ ]]; then
+        echo "SKIP line $line_number: repository must use owner/name format ('$repository')" >&2
         ((skipped_count += 1))
         continue
     fi

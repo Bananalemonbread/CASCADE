@@ -1,0 +1,10 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/scipy/scipy/0140d6e77291aa9ec267ae5a367f41034e0cb3fe/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:_minimize_trustregion_constr\) --filters \(1\,expected:scipy/optimize/_trustregion_constr/minimize_trustregion_constr.py\) --filters \(2\,expected:_minimize_trustregion_constr\)
+
+<unknown>:51: SyntaxWarning: invalid escape sequence '\ '
+<unknown>:60: SyntaxWarning: invalid escape sequence '\g'
+Extraction started
+Extraction finished. Extracted:  7723
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

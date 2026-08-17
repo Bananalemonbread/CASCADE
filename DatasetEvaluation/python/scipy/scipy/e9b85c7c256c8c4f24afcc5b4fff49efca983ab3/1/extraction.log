@@ -1,0 +1,9 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy -o /home/betul/Humboldt/HiWi/dataset/python/scipy/scipy/e9b85c7c256c8c4f24afcc5b4fff49efca983ab3/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:qr\) --filters \(1\,expected:scipy/linalg/decomp_qr.py\) --filters \(2\,expected:qr\)
+
+<unknown>:1: SyntaxWarning: invalid escape sequence '\l'
+Extraction started
+Extraction finished. Extracted:  5827
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

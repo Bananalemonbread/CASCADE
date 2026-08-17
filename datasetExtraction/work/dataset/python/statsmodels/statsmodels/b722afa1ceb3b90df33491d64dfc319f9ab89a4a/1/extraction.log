@@ -1,0 +1,15 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/statsmodels/statsmodels -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/statsmodels/statsmodels/b722afa1ceb3b90df33491d64dfc319f9ab89a4a/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:loglike\) --filters \(1\,expected:statsmodels/tsa/exponential_smoothing/ets.py\) --filters \(2\,expected:ETSModel.loglike\)
+
+<unknown>:421: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:54: SyntaxWarning: invalid escape sequence '\p'
+<unknown>:54: SyntaxWarning: invalid escape sequence '\p'
+<unknown>:188: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:211: SyntaxWarning: invalid escape sequence '\$'
+<unknown>:223: SyntaxWarning: invalid escape sequence '\$'
+<unknown>:35: SyntaxWarning: invalid escape sequence '\s'
+Extraction started
+Extraction finished. Extracted:  6111
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

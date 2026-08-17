@@ -1,0 +1,28 @@
+diff --git a/pyproject.toml b/pyproject.toml
+new file mode 100644
+index 0000000000..00efc155aa
+--- /dev/null
++++ b/pyproject.toml
+@@ -0,0 +1,9 @@
++[build-system]
++requires = [
++    "setuptools<60",
++    "wheel",
++    "Cython==0.29.36",
++    "numpy==1.19.5",
++    "scipy==1.5.4",
++]
++build-backend = "setuptools.build_meta:__legacy__"
+diff --git a/setup.py b/setup.py
+index a8d0a81ea0..ba4038bbb4 100755
+--- a/setup.py
++++ b/setup.py
+@@ -256,7 +256,7 @@ def setup_package():
+                     cmdclass=cmdclass,
+                     python_requires=">=3.5",
+                     install_requires=[
+-                        'numpy>={}'.format(NUMPY_MIN_VERSION),
++                        'numpy>={},<1.24'.format(NUMPY_MIN_VERSION),
+                         'scipy>={}'.format(SCIPY_MIN_VERSION),
+                         'joblib>={}'.format(JOBLIB_MIN_VERSION)
+                     ],

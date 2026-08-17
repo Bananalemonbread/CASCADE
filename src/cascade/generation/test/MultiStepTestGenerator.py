@@ -11,6 +11,8 @@ from cascade.generation.executor.OpenAICaller import OpenAICaller
 from abc import abstractmethod
 
 class MultiStepTestGenerator(Generator):
+    json_repair_attempts = 3
+    test_repair_attempts = 3
     code_block_names = []
     language_name = None
     signature_block_name = None
@@ -92,14 +94,39 @@ class MultiStepTestGenerator(Generator):
         prompt_step1.append(self.json_test_list_instruction())
 
         response_step1b = self.prompt_executor.execute(prompt_step1).model_dump()
-        response_text = response_step1b["choices"][0]["message"]["content"]
+        test_list = []
+        json_error = "The model returned no response choice"
+        response_text = ""
 
-        test_list = self.extract_json_list(output_path, response_text)
+        for repair_attempt in range(self.json_repair_attempts + 1):
+            chat_history.append(copy.deepcopy(prompt_step1))
+            chat_history.append(response_step1b)
 
-        chat_history.append(copy.deepcopy(prompt_step1))
-        chat_history.append(response_step1b)
+            if response_step1b.get("choices"):
+                response_message = response_step1b["choices"][0]["message"]
+                response_text = response_message.get("content") or ""
+                test_list, json_error = self.parse_json_list(response_text)
+                if test_list:
+                    break
+            else:
+                response_message = {
+                    "role": "assistant",
+                    "content": response_text,
+                }
+
+            if repair_attempt == self.json_repair_attempts:
+                break
+
+            print(
+                "      Invalid JSON test plan; requesting repair "
+                f"{repair_attempt + 1}/{self.json_repair_attempts}"
+            )
+            prompt_step1.append(response_message)
+            prompt_step1.append(self.json_repair_instruction(json_error))
+            response_step1b = self.prompt_executor.execute(prompt_step1).model_dump()
 
         if not test_list:
+            self.log_json_error(output_path, response_text, json_error)
             with open(errors_path, "a") as f:
                 f.write("error during test extraction from json")
                 return []
@@ -161,32 +188,17 @@ class MultiStepTestGenerator(Generator):
 
         return extracted_tests
 
-    def extract_json_list(self, output_path, response_text):
-        # extract json list from response
-        def log_json_error(error_message):
-            """Logs the JSON error to results.txt and errors.txt"""
-            print(error_message)
-            results_path = os.path.join(output_path, "results.txt")
-            errors_path = os.path.join(output_path, "errors.txt")
-            
-            with open(results_path, "w") as f:
-                f.write("Negative, JSON test extraction error")
-            with open(errors_path, "w") as f:
-                f.write(f"Could not parse JSON: {error_message}\nResponse text:\n{response_text}")
-
+    def parse_json_list(self, response_text):
         json_blocks = re.findall(r"```json\s*(.*?)\s*```", response_text, flags=re.DOTALL)
         json_text = json_blocks[0].strip() if json_blocks else response_text.strip()
 
         try:
             extracted_test_list = json.loads(json_text)
-
         except json.JSONDecodeError as e:
-            log_json_error(str(e))
-            return []
+            return [], str(e)
 
         if not isinstance(extracted_test_list, list):
-            log_json_error("Extracted JSON is not a list")
-            return []
+            return [], "Extracted JSON is not a list"
 
         clean_test_list = []
         seen_names = {}
@@ -206,12 +218,44 @@ class MultiStepTestGenerator(Generator):
                 }
                 clean_test_list.append(ct)
         if clean_test_list == []:
-            log_json_error("No test case with the correct keys found in extracted JSON")
-            return []
+            return [], "No test case with the correct keys found in extracted JSON"
 
         test_names = [test['test_name'] for test in clean_test_list]
         print(f"      Got {len(clean_test_list)} potential tests:\n        {'\n        '.join(test_names)}")
-        return  clean_test_list
+        return clean_test_list, None
+
+    def extract_json_list(self, output_path, response_text):
+        test_list, error_message = self.parse_json_list(response_text)
+        if not test_list:
+            self.log_json_error(output_path, response_text, error_message)
+        return test_list
+
+    def log_json_error(self, output_path, response_text, error_message):
+        """Log a JSON error after all repair attempts have failed."""
+        print(error_message)
+        results_path = os.path.join(output_path, "results.txt")
+        errors_path = os.path.join(output_path, "errors.txt")
+
+        with open(results_path, "w") as f:
+            f.write("Negative, JSON test extraction error")
+        with open(errors_path, "w") as f:
+            f.write(
+                f"Could not parse JSON: {error_message}\n"
+                f"Response text:\n{response_text}"
+            )
+
+    def json_repair_instruction(self, error_message):
+        return {
+            "role": "user",
+            "content": (
+                "Your previous response could not be parsed as the required "
+                f"JSON test-plan list. Parser/validation error: {error_message}\n"
+                "Repair the previous response without changing the intended "
+                "test cases. Return only one valid JSON array using the exact "
+                "keys `test_name` and `test_description` for every item. Do "
+                "not include explanations or any text outside the JSON array."
+            ),
+        }
 
     def normalize_test_name(self, name):
         base_name = str(name).replace("test", "").replace("Test", "").replace("TEST", "").strip()
@@ -271,7 +315,8 @@ class MultiStepTestGenerator(Generator):
         "content": (
             f"Make sure that this {self.test_artifact_name} compiles or runs without errors. "
             "Check that all imports are correct, all referenced symbols exist, and errors or exceptions are handled appropriately. "
-            f"Reply with the corrected {self.test_artifact_name} only."
+            f"Reply with the corrected {self.test_artifact_name} only, inside one "
+            f"```{self.signature_block_name} code block. Do not call tools, emit tool calls, or include explanations."
         )
     }
 
@@ -294,28 +339,32 @@ class MultiStepTestGenerator(Generator):
     def repair(self, context, input_path, output_path, errors, key):
         response_history = []
         prompt_list = self.build_repair_prompt(context, input_path, output_path, errors, key)
-        tools = self.get_repair_tools()
+        prompt_list.append(self.repair_output_instruction())
 
-        for i in range(3):
-            res = self.execute_repair_prompt(prompt_list, tools, allow_tools=i < 2)
+        for i in range(self.test_repair_attempts):
+            print(f"      Test repair attempt {i + 1}/{self.test_repair_attempts}")
+            # Test repair must always produce a directly consumable code block.
+            # Do not expose tools: some OpenAI-compatible endpoints serialize a
+            # tool request as ordinary response text, which cannot be executed
+            # or parsed by CASCADE.
+            res = self.execute_repair_prompt(prompt_list, tools=None, allow_tools=False)
             response_history.append(copy.deepcopy(prompt_list))
             response_history.append(res)
 
-            if not res["choices"]:
-                break
+            if not res.get("choices"):
+                if i + 1 < self.test_repair_attempts:
+                    prompt_list.append(self.repair_retry_instruction())
+                continue
 
             message = res["choices"][0]["message"]
             prompt_list.append(message)
 
-            if tools and res["choices"][0]["finish_reason"] == "tool_calls":
-                self.append_tool_results(message, prompt_list, input_path, output_path, context)
-                continue
-
-            new_tests = self.extract_tests(message["content"], context, res, output_path)
+            new_tests = self.extract_tests(message.get("content") or "", context, res, output_path)
             if new_tests:
                 return new_tests, response_history
-            
-            prompt_list.append(self.repair_retry_instruction())
+
+            if i + 1 < self.test_repair_attempts:
+                prompt_list.append(self.repair_retry_instruction())
 
         return "", response_history
 
@@ -354,7 +403,18 @@ class MultiStepTestGenerator(Generator):
             "content": (
                 f"The previous answer did not contain syntactically valid {self.test_artifact_name}. "
                 f"Please return one complete {self.test_artifact_name} only, inside a "
-                f"```{self.signature_block_name} code block. Do not include explanations."
+                f"```{self.signature_block_name} code block. Do not call tools, emit tool calls, "
+                "or include explanations or text outside the code block."
+            )
+        }
+
+    def repair_output_instruction(self):
+        return {
+            "role": "user",
+            "content": (
+                f"Your response must contain exactly one complete {self.test_artifact_name} inside one "
+                f"fenced ```{self.signature_block_name} code block. Do not call tools or emit tool calls. "
+                "Do not include explanations or any text outside the code block."
             )
         }
 

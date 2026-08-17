@@ -1,0 +1,13 @@
+diff --git a/setup.py b/setup.py
+index fb00eb2c5a..59fdea7dcd 100755
+--- a/setup.py
++++ b/setup.py
+@@ -605,7 +605,7 @@ def setup_package():
+         ],
+         cmdclass=cmdclass,
+         python_requires=python_requires,
+-        install_requires=min_deps.tag_to_packages["install"],
++        install_requires=min_deps.tag_to_packages["install"] + ["numpy<2"],
+         package_data={"": ["*.csv", "*.gz", "*.txt", "*.pxd", "*.rst", "*.jpg"]},
+         zip_safe=False,  # the package can run out of an .egg file
+         extras_require={

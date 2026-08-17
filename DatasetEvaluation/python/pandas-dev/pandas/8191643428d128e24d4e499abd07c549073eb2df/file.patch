@@ -1,0 +1,25 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index 2f09b003de..05fcdb3736 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -2,7 +2,7 @@
+ # Minimum requirements for the build system to execute.
+ # See https://github.com/scipy/scipy/pull/12940 for the AIX issue.
+ requires = [
+-    "setuptools>=51.0.0",
++    "setuptools>=51.0.0,<81",
+     "wheel",
+     "Cython>=0.29.24,<3",  # Note: sync with setup.py, environment.yml and asv.conf.json
+     "oldest-supported-numpy>=0.10"
+diff --git a/setup.cfg b/setup.cfg
+index fdd6bdd9d5..40365acff4 100644
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -31,6 +31,7 @@ project_urls =
+ [options]
+ packages = find:
+ install_requires =
++    numpy<2
+     numpy>=1.18.5; platform_machine!='aarch64' and platform_machine!='arm64' and python_version<'3.10'
+     numpy>=1.19.2; platform_machine=='aarch64' and python_version<'3.10'
+     numpy>=1.20.0; platform_machine=='arm64' and python_version<'3.10'

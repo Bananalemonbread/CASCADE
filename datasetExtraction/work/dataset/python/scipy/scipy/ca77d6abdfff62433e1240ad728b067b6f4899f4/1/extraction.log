@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy/scipy/sparse -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/scipy/scipy/ca77d6abdfff62433e1240ad728b067b6f4899f4/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:min\) --filters \(1\,expected:data.py\) --filters \(2\,expected:_minmax_mixin.min\)
+
+Extraction started
+Extraction finished. Extracted:  566
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

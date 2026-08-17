@@ -1,0 +1,10 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy/scipy/spatial -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/scipy/scipy/ed7a686f9887d8d3b349212fa0402bd15f671fcf/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:yule\) --filters \(1\,expected:distance.py\) --filters \(2\,expected:yule\)
+
+<unknown>:1656: SyntaxWarning: invalid escape sequence '\c'
+<unknown>:1660: SyntaxWarning: invalid escape sequence '\c'
+Extraction started
+Extraction finished. Extracted:  69
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

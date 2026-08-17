@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scikit-learn/scikit-learn -o /home/betul/Humboldt/HiWi/dataset/python/scikit-learn/scikit-learn/3179ce31cce4a1e143a575d273218d23901e4c1f/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:fit\) --filters \(1\,expected:sklearn/manifold/_t_sne.py\) --filters \(2\,expected:TSNE.fit\)
+
+Extraction started
+Extraction finished. Extracted:  4227
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

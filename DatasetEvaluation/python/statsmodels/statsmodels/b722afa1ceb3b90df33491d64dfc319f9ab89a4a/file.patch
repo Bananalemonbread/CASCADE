@@ -1,0 +1,25 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index c75f275aa..7fcd7d975 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -2,7 +2,7 @@
+ # These are strictly build requirements. Runtime requirements are listed in
+ # INSTALL_REQUIRES in setup.py
+ requires = [
+-    "setuptools>=59.2.0",
++    "setuptools>=59.2.0,<60",
+     "wheel>=0.37.1",
+     "cython>=0.29.26,<3",  # Sync with CYTHON_MIN_VER in setup
+     "oldest-supported-numpy",
+diff --git a/setup.py b/setup.py
+index 17a439ea7..64f8211a9 100644
+--- a/setup.py
++++ b/setup.py
+@@ -58,6 +58,7 @@ INSTALL_REQUIREMENTS = {
+ CYTHON_MIN_VER = "0.29.26"  # released 2020
+ 
+ INSTALL_REQUIRES = [k + ">=" + v for k, v in INSTALL_REQUIREMENTS.items()]
++INSTALL_REQUIRES.append("numpy<2")
+ 
+ EXTRAS_REQUIRE = {
+     "build": ["cython>=" + CYTHON_MIN_VER],

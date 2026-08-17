@@ -1,13 +1,13 @@
 {
   "Extraction": { "name": "PythonExtraction", "kwargs": {} },
   "CodeGenerator": { "name": "PythonCodeGenerator", "kwargs": {
-    "model": "llm3",
-    "base_url": "https://llm3-compute.cms.hu-berlin.de/v1",
+    "model": "llm7",
+    "base_url": "https://llm7-compute.cms.hu-berlin.de/v1",
     "api_key": "ollama"
   }},
   "TestGenerator": { "name": "MultiStepPythonTestGenerator", "kwargs": {
-    "model": "llm3",
-    "base_url": "https://llm3-compute.cms.hu-berlin.de/v1",
+    "model": "llm7",
+    "base_url": "https://llm7-compute.cms.hu-berlin.de/v1",
     "api_key": "ollama"
   }},
   "Analysis": { "name": "PythonTwoStepAnalysis", "kwargs": { "debug": 1, "regenerate": false }},

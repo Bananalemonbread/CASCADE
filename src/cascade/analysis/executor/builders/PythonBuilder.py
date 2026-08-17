@@ -1,21 +1,57 @@
 import re
+import shlex
 
 from cascade.analysis.executor.ExecutionResults import ExecutionResults
 from cascade.analysis.executor.builders.Builder import Builder
 
 
 class PythonBuilder(Builder):
-    def __init__(self, image="python:3.12", timeout=120):
+    def __init__(
+        self,
+        image="python:3.12",
+        timeout=120,
+        dependencies=None,
+    ):
         test_output_file = "/root/cascade_pytest_output.txt"
+
+        dependencies = dependencies or ""
+        dependency_args = " ".join(
+            shlex.quote(dependency.strip())
+            for dependency in dependencies.split(",")
+            if dependency.strip()
+        )
+
+        if dependency_args:
+            dependency_args += " "
+
+        install_command = (
+            "git config --global --add safe.directory /root "
+            ">/dev/null 2>&1 || true; "
+            "if [[ -f setup.py || -f pyproject.toml ]]; then "
+            f"python -m pip install -q "
+            f"{dependency_args}. pytest; "
+            "else "
+            f"python -m pip install -q "
+            f"{dependency_args}pytest && "
+            'export PYTHONPATH="/root'
+            '${PYTHONPATH:+:$PYTHONPATH}"; '
+            "fi"
+        )
+
         test_pattern = (
-            f"python -m pip install -q . pytest > {test_output_file} 2>&1 && "
+            f"{install_command} "
+            f"> {test_output_file} 2>&1 && "
             f"cp /root/%t /tmp/cascade_generated_test.py && "
-            f"(cd /tmp && timeout {timeout} python -m pytest "
-            f"-q -rA cascade_generated_test.py --tb=short) >> {test_output_file} 2>&1; "
-            f"status=$?; cat {test_output_file} > /root/out; "
+            f"(cd /tmp && timeout {timeout} "
+            f"python -m pytest "
+            f"-q -rA cascade_generated_test.py --tb=short) "
+            f">> {test_output_file} 2>&1; "
+            f"status=$?; "
+            f"cat {test_output_file} > /root/out; "
             f'echo "[PYTEST_EXIT_CODE] $status" >> /root/out; '
             f"cat {test_output_file}"
         )
+
         super().__init__(
             test_pattern=test_pattern,
             eval_function=self.eval_function,

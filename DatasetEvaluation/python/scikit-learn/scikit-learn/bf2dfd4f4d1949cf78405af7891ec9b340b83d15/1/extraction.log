@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scikit-learn/scikit-learn -o /home/betul/Humboldt/HiWi/dataset/python/scikit-learn/scikit-learn/bf2dfd4f4d1949cf78405af7891ec9b340b83d15/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:estimate_bandwidth\) --filters \(1\,expected:sklearn/cluster/_mean_shift.py\) --filters \(2\,expected:estimate_bandwidth\)
+
+Extraction started
+Extraction finished. Extracted:  4702
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

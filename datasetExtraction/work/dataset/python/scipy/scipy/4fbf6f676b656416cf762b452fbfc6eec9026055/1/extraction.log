@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy/scipy/sparse/linalg/eigen/arpack -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/scipy/scipy/4fbf6f676b656416cf762b452fbfc6eec9026055/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:svds\) --filters \(1\,expected:arpack.py\) --filters \(2\,expected:svds\)
+
+Extraction started
+Extraction finished. Extracted:  29
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

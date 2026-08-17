@@ -1,0 +1,1 @@
+NoInco; pass; step 1 (C +T'); (8, 0, 0); ; 

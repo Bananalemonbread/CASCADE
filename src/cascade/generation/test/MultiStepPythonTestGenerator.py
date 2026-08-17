@@ -14,7 +14,8 @@ class MultiStepPythonTestGenerator(MultiStepTestGenerator):
     test_kind_name = "pytest tests"
     test_name_rule = "a descriptive snake_case pytest function name starting with 'test_'"
 
-    def __init__(self, **kwargs):
+    def __init__(self, runtime_hint=None, **kwargs):
+        self.runtime_hint = runtime_hint
         super().__init__(**kwargs)
 
 
@@ -26,14 +27,27 @@ class MultiStepPythonTestGenerator(MultiStepTestGenerator):
         par = context['signature']['params']
         params = ", ".join(par) if len(par) > 1 else (par[0] if par else "")
 
+        runtime_instruction = ""
+        if self.runtime_hint:
+            runtime_instruction = (
+                f" The tests run with {self.runtime_hint}. Use only APIs available in that runtime."
+            )
+            if re.search(r"TensorFlow\s+1(?:\.|\b)", self.runtime_hint, flags=re.IGNORECASE):
+                runtime_instruction += (
+                    " TensorFlow 1.x uses graph tensors: do not call Tensor.numpy(); "
+                    "evaluate tensor values with tf.Session().run()."
+                )
+
         return (
             f"You are an expert Python developer. You will generate pytest tests for the specific function "
             f"{context['signature']['name']}({params}). "
             f"{test_framework_instruction} "
+            f"{runtime_instruction} "
             "You can import anything from the project itself. "
             "Make sure all function signatures and calls are correct. "
             "Handle exceptions, None, async behavior, and error cases appropriately when relevant. "
-            "The code should run without syntax errors."
+            "Do not add __future__ imports; if an existing one must be retained, it must occur immediately "
+            "after the module docstring and before every other import. The code should run without syntax errors."
         )
 
 
@@ -57,7 +71,7 @@ class MultiStepPythonTestGenerator(MultiStepTestGenerator):
             "Use the imports already present in the test module skeleton; do not guess alternate module names. "
             "Use pytest.raises for expected exceptions. If the function under test is async, "
             "write appropriate async pytest tests. "
-            "Respond with the complete filled pytest test module only:\n"
+            "Respond with the complete filled pytest test module inside one fenced ```python code block only:\n"
         )
 
     def build_tests(self, context):
@@ -138,18 +152,24 @@ class MultiStepPythonTestGenerator(MultiStepTestGenerator):
     def repair_system_prompt(self):
         return (
             "You are an expert Python developer. You will fix syntax, runtime and import errors in a provided "
-            "test module and return the entire repaired module. Use tools to find out more about modules instead of making assumptions."
+            "test module and return the entire repaired module. Use only the supplied errors, test module, "
+            "runtime information, and source-tree context; do not request or call tools."
         )
 
 
     def repair_user_prompt(self, context, errors, key, tree):
+        runtime_instruction = ""
+        if self.runtime_hint:
+            runtime_instruction = f"The target runtime is {self.runtime_hint}. Keep the repair compatible with it.\n"
         return (
             f"Some errors occurred while validating or running my pytest test module.\nErrors:\n```\n{errors}\n```\n\n"
             f"Test module:\n```python\n{context[key]}\n```\n"
+            f"{runtime_instruction}"
             "Do not change the intended behavior of the tests, but make sure the module is syntactically valid "
             "and can run under pytest. Check imports, function calls, expected exceptions, and async handling. "
             f"If you need to add imports, use the following directory structure:\n```\n{tree}\n```\n\n"
-            "Now fix the module and respond with the entire corrected pytest test module only."
+            "Now fix the module and respond with the entire corrected pytest test module inside one fenced "
+            "```python code block only."
         )
 
 

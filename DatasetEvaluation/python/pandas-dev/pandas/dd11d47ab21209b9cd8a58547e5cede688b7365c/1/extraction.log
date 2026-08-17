@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/pandas-dev/pandas -o /home/betul/Humboldt/HiWi/dataset/python/pandas-dev/pandas/dd11d47ab21209b9cd8a58547e5cede688b7365c/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:pct_change\) --filters \(1\,expected:pandas/core/generic.py\) --filters \(2\,expected:NDFrame.pct_change\)
+
+Extraction started
+Extraction finished. Extracted:  8370
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

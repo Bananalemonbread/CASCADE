@@ -1,0 +1,10 @@
+{
+	"Extraction"    : { "name": "RustExtraction",  "kwargs" : {}},
+	"CodeGenerator": { "name": "RustCodeGenerator", "kwargs" : {"model": "gpt-4.1-mini"}, "temperature":0},
+	"TestGenerator": { "name": "MultiStepRustTestGenerator", "kwargs" : {"model": "gpt-4.1-mini", "temperature": 0}},
+	"Analysis": {
+		"name": "RustTwoStepAnalysis",
+		"kwargs": {}
+		},
+	"Executor"      : { "name": "RustExecutor",   "kwargs" : {}}
+}

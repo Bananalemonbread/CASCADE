@@ -1,0 +1,11 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/numpy/numpy -o /home/betul/Humboldt/HiWi/dataset/python/numpy/numpy/763cb87bfe47fdd5efed59e909ee4e4e8ae6b36b/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:pad\) --filters \(1\,expected:numpy/lib/arraypad.py\) --filters \(2\,expected:pad\)
+
+<unknown>:583: SyntaxWarning: invalid escape sequence '\w'
+<unknown>:584: SyntaxWarning: invalid escape sequence '\w'
+<unknown>:585: SyntaxWarning: invalid escape sequence '\)'
+Extraction started
+Extraction finished. Extracted:  4001
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy -o /home/betul/Humboldt/HiWi/dataset/python/scipy/scipy/70d2028cb4ae1a43cbd4a6e0e4d95d784f386592/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:subsets\) --filters \(1\,expected:scipy/_lib/_disjoint_set.py\) --filters \(2\,expected:DisjointSet.subsets\)
+
+Extraction started
+Extraction finished. Extracted:  6138
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy -o /home/betul/Humboldt/HiWi/dataset/python/scipy/scipy/5726f3a1279a8ec7d8663694687f3a2bb539ef6f/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:_post_padding\) --filters \(1\,expected:scipy/signal/_short_time_fft.py\) --filters \(2\,expected:ShortTimeFFT._post_padding\)
+
+Extraction started
+Extraction finished. Extracted:  8845
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

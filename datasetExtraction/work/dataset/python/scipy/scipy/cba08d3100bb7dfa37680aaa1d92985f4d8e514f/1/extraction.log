@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy/scipy/integrate -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/scipy/scipy/cba08d3100bb7dfa37680aaa1d92985f4d8e514f/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:romb\) --filters \(1\,expected:quadrature.py\) --filters \(2\,expected:romb\)
+
+Extraction started
+Extraction finished. Extracted:  74
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

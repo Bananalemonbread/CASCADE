@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/pandas-dev/pandas -o /home/betul/Humboldt/HiWi/dataset/python/pandas-dev/pandas/78242b3f6a256e3638a655f54bb37464f13db585/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:eq\) --filters \(1\,expected:pandas/core/frame.py\) --filters \(2\,expected:DataFrame.eq\)
+
+Extraction started
+Extraction finished. Extracted:  8554
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

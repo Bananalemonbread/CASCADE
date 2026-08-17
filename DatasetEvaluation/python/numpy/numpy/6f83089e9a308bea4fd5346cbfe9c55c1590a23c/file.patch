@@ -1,0 +1,26 @@
+diff --git a/pyproject.toml b/pyproject.toml
+new file mode 100644
+index 0000000000..31a3b6f057
+--- /dev/null
++++ b/pyproject.toml
+@@ -0,0 +1,7 @@
++[build-system]
++requires = [
++    "setuptools<60",
++    "wheel",
++    "Cython==0.27.3",
++]
++build-backend = "setuptools.build_meta:__legacy__"
+diff --git a/setup.py b/setup.py
+index 43c82a7b5e..4da85a303f 100755
+--- a/setup.py
++++ b/setup.py
+@@ -86,7 +86,7 @@ def git_version():
+ 
+     try:
+         out = _minimal_ext_cmd(['git', 'rev-parse', 'HEAD'])
+-        GIT_REVISION = out.strip().decode('ascii')
++        GIT_REVISION = out.strip().decode('ascii') or "unknown"
+     except OSError:
+         GIT_REVISION = "Unknown"
+ 

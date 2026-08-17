@@ -1,0 +1,26 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy -o /home/betul/Humboldt/HiWi/dataset/python/scipy/scipy/fa21e840ad69fbac7ff600a7ef2b36929c18b975/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:qr\) --filters \(1\,expected:scipy/linalg/decomp_qr.py\) --filters \(2\,expected:qr\)
+
+<unknown>:1: SyntaxWarning: invalid escape sequence '\l'
+<unknown>:5: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:6: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:7: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:8: SyntaxWarning: invalid escape sequence '\d'
+<unknown>:17: SyntaxWarning: invalid escape sequence '\p'
+<unknown>:18: SyntaxWarning: invalid escape sequence '\p'
+<unknown>:19: SyntaxWarning: invalid escape sequence '\p'
+<unknown>:992: SyntaxWarning: invalid escape sequence '\m'
+<unknown>:29: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:1: SyntaxWarning: invalid escape sequence '\m'
+<unknown>:1: SyntaxWarning: invalid escape sequence '\h'
+<unknown>:385: SyntaxWarning: invalid escape sequence '\m'
+<unknown>:419: SyntaxWarning: invalid escape sequence '\m'
+<unknown>:951: SyntaxWarning: invalid escape sequence '\d'
+<unknown>:43: SyntaxWarning: invalid escape sequence '\G'
+<unknown>:80: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:115: SyntaxWarning: invalid escape sequence '\s'
+Extraction started
+Extraction finished. Extracted:  1276
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

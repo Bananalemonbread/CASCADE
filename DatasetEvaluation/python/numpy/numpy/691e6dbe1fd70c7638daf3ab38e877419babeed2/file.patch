@@ -1,0 +1,10 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index 0e4f8aeb18..dd3dd6d9cb 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -1,4 +1,4 @@
+ [build-system]
+ # Minimum requirements for the build system to execute.
+-requires = ["setuptools", "wheel", "cython"]  # PEP 508 specification
++requires = ["setuptools<60", "wheel", "Cython==0.29.12"]
+ 

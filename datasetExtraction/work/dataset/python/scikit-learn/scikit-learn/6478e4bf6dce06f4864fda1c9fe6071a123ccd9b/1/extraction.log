@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scikit-learn/scikit-learn/sklearn/neighbors -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/scikit-learn/scikit-learn/6478e4bf6dce06f4864fda1c9fe6071a123ccd9b/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:kneighbors\) --filters \(1\,expected:_base.py\) --filters \(2\,expected:KNeighborsMixin.kneighbors\)
+
+Extraction started
+Extraction finished. Extracted:  72
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

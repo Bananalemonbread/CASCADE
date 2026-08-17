@@ -1,0 +1,322 @@
+[
+    {
+        "id": 4583,
+        "language": "Python",
+        "doc": "\"\"\"Hard sigmoid activation function.\n\nThe hard sigmoid activation is defined as:\n\n- `0` if `if x <= -3`\n- `1` if `x >= 3`\n- `(x/6) + 0.5` if `-3 < x < 3`\n\nIt's a faster, piecewise linear approximation\nof the sigmoid activation.\n\nArgs:\n    x: Input tensor.\n\nReference:\n\n- [Wikipedia \"Hard sigmoid\"](https://en.wikipedia.org/wiki/Hard_sigmoid)\"\"\"",
+        "signature": {
+            "name": "hard_sigmoid",
+            "params": [
+                "x"
+            ],
+            "returns": "",
+            "decorators": [
+                "@keras_export('keras.activations.hard_sigmoid')"
+            ],
+            "is_async": false,
+            "is_method": false
+        },
+        "parent": [
+            {
+                "name": "root module",
+                "parent_type": "Module",
+                "imports": [
+                    "from keras import backend\n",
+                    "from keras import ops\n",
+                    "from keras.api_export import keras_export\n"
+                ],
+                "variables": [],
+                "other_methods": [
+                    {
+                        "doc": "\"\"\"Applies the rectified linear unit activation function.\n\nWith default values, this returns the standard ReLU activation:\n`max(x, 0)`, the element-wise maximum of 0 and the input tensor.\n\nModifying default parameters allows you to use non-zero thresholds,\nchange the max value of the activation,\nand to use a non-zero multiple of the input for values below the threshold.\n\nExamples:\n\n>>> x = [-10, -5, 0.0, 5, 10]\n>>> keras.activations.relu(x)\n[ 0.,  0.,  0.,  5., 10.]\n>>> keras.activations.relu(x, negative_slope=0.5)\n[-5. , -2.5,  0. ,  5. , 10. ]\n>>> keras.activations.relu(x, max_value=5.)\n[0., 0., 0., 5., 5.]\n>>> keras.activations.relu(x, threshold=5.)\n[-0., -0.,  0.,  0., 10.]\n\nArgs:\n    x: Input tensor.\n    negative_slope: A `float` that controls the slope\n        for values lower than the threshold.\n    max_value: A `float` that sets the saturation threshold (the largest\n        value the function will return).\n    threshold: A `float` giving the threshold value of the activation\n        function below which values will be damped or set to zero.\n\nReturns:\n    A tensor with the same shape and dtype as input `x`.\"\"\"",
+                        "signature": {
+                            "name": "relu",
+                            "params": [
+                                "x",
+                                "negative_slope = 0.0",
+                                "max_value = None",
+                                "threshold = 0.0"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.relu')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.relu')\ndef relu(x, negative_slope=0.0, max_value=None, threshold=0.0):\n    \"\"\"Applies the rectified linear unit activation function.\n\n    With default values, this returns the standard ReLU activation:\n    `max(x, 0)`, the element-wise maximum of 0 and the input tensor.\n\n    Modifying default parameters allows you to use non-zero thresholds,\n    change the max value of the activation,\n    and to use a non-zero multiple of the input for values below the threshold.\n\n    Examples:\n\n    >>> x = [-10, -5, 0.0, 5, 10]\n    >>> keras.activations.relu(x)\n    [ 0.,  0.,  0.,  5., 10.]\n    >>> keras.activations.relu(x, negative_slope=0.5)\n    [-5. , -2.5,  0. ,  5. , 10. ]\n    >>> keras.activations.relu(x, max_value=5.)\n    [0., 0., 0., 5., 5.]\n    >>> keras.activations.relu(x, threshold=5.)\n    [-0., -0.,  0.,  0., 10.]\n\n    Args:\n        x: Input tensor.\n        negative_slope: A `float` that controls the slope\n            for values lower than the threshold.\n        max_value: A `float` that sets the saturation threshold (the largest\n            value the function will return).\n        threshold: A `float` giving the threshold value of the activation\n            function below which values will be damped or set to zero.\n\n    Returns:\n        A tensor with the same shape and dtype as input `x`.\n    \"\"\"\n    if backend.any_symbolic_tensors((x,)):\n        return ReLU(negative_slope=negative_slope, max_value=max_value, threshold=threshold)(x)\n    return ReLU.static_call(x, negative_slope=negative_slope, max_value=max_value, threshold=threshold)"
+                    },
+                    {
+                        "doc": "\"\"\"Leaky relu activation function.\n\nArgs:\n    x: Input tensor.\n    negative_slope: A `float` that controls the slope\n        for values lower than the threshold.\"\"\"",
+                        "signature": {
+                            "name": "leaky_relu",
+                            "params": [
+                                "x",
+                                "negative_slope = 0.2"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.leaky_relu')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.leaky_relu')\ndef leaky_relu(x, negative_slope=0.2):\n    \"\"\"Leaky relu activation function.\n\n    Args:\n        x: Input tensor.\n        negative_slope: A `float` that controls the slope\n            for values lower than the threshold.\n    \"\"\"\n    return ops.leaky_relu(x, negative_slope=negative_slope)"
+                    },
+                    {
+                        "doc": "\"\"\"Relu6 activation function.\n\nIt's the ReLU function, but truncated to a maximum value of 6.\n\nArgs:\n    x: Input tensor.\"\"\"",
+                        "signature": {
+                            "name": "relu6",
+                            "params": [
+                                "x"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.relu6')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.relu6')\ndef relu6(x):\n    \"\"\"Relu6 activation function.\n\n    It's the ReLU function, but truncated to a maximum value of 6.\n\n    Args:\n        x: Input tensor.\n    \"\"\"\n    return ops.relu6(x)"
+                    },
+                    {
+                        "doc": "\"\"\"Softmax converts a vector of values to a probability distribution.\n\nThe elements of the output vector are in range `[0, 1]` and sum to 1.\n\nEach input vector is handled independently.\nThe `axis` argument sets which axis of the input the function\nis applied along.\n\nSoftmax is often used as the activation for the last\nlayer of a classification network because the result could be interpreted as\na probability distribution.\n\nThe softmax of each vector x is computed as\n`exp(x) / sum(exp(x))`.\n\nThe input values in are the log-odds of the resulting probability.\n\nArgs:\n    x: Input tensor.\n    axis: Integer, axis along which the softmax is applied.\"\"\"",
+                        "signature": {
+                            "name": "softmax",
+                            "params": [
+                                "x",
+                                "axis = -1"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.softmax')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.softmax')\ndef softmax(x, axis=-1):\n    \"\"\"Softmax converts a vector of values to a probability distribution.\n\n    The elements of the output vector are in range `[0, 1]` and sum to 1.\n\n    Each input vector is handled independently.\n    The `axis` argument sets which axis of the input the function\n    is applied along.\n\n    Softmax is often used as the activation for the last\n    layer of a classification network because the result could be interpreted as\n    a probability distribution.\n\n    The softmax of each vector x is computed as\n    `exp(x) / sum(exp(x))`.\n\n    The input values in are the log-odds of the resulting probability.\n\n    Args:\n        x: Input tensor.\n        axis: Integer, axis along which the softmax is applied.\n    \"\"\"\n    output = ops.softmax(x, axis=axis)\n    try:\n        output._keras_logits = x\n    except AttributeError:\n        pass\n    return output"
+                    },
+                    {
+                        "doc": "\"\"\"Exponential Linear Unit.\n\nThe exponential linear unit (ELU) with `alpha > 0` is define as:\n\n- `x` if `x > 0`\n- alpha * `exp(x) - 1` if `x < 0`\n\nELUs have negative values which pushes the mean of the activations\ncloser to zero.\n\nMean activations that are closer to zero enable faster learning as they\nbring the gradient closer to the natural gradient.\nELUs saturate to a negative value when the argument gets smaller.\nSaturation means a small derivative which decreases the variation\nand the information that is propagated to the next layer.\n\nArgs:\n    x: Input tensor.\n\nReference:\n\n- [Clevert et al., 2016](https://arxiv.org/abs/1511.07289)\"\"\"",
+                        "signature": {
+                            "name": "elu",
+                            "params": [
+                                "x",
+                                "alpha = 1.0"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.elu')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.elu')\ndef elu(x, alpha=1.0):\n    \"\"\"Exponential Linear Unit.\n\n    The exponential linear unit (ELU) with `alpha > 0` is define as:\n\n    - `x` if `x > 0`\n    - alpha * `exp(x) - 1` if `x < 0`\n\n    ELUs have negative values which pushes the mean of the activations\n    closer to zero.\n\n    Mean activations that are closer to zero enable faster learning as they\n    bring the gradient closer to the natural gradient.\n    ELUs saturate to a negative value when the argument gets smaller.\n    Saturation means a small derivative which decreases the variation\n    and the information that is propagated to the next layer.\n\n    Args:\n        x: Input tensor.\n\n    Reference:\n\n    - [Clevert et al., 2016](https://arxiv.org/abs/1511.07289)\n    \"\"\"\n    return ops.elu(x, alpha=alpha)"
+                    },
+                    {
+                        "doc": "\"\"\"Scaled Exponential Linear Unit (SELU).\n\nThe Scaled Exponential Linear Unit (SELU) activation function is defined as:\n\n- `scale * x` if `x > 0`\n- `scale * alpha * (exp(x) - 1)` if `x < 0`\n\nwhere `alpha` and `scale` are pre-defined constants\n(`alpha=1.67326324` and `scale=1.05070098`).\n\nBasically, the SELU activation function multiplies `scale` (> 1) with the\noutput of the `keras.activations.elu` function to ensure a slope larger\nthan one for positive inputs.\n\nThe values of `alpha` and `scale` are\nchosen so that the mean and variance of the inputs are preserved\nbetween two consecutive layers as long as the weights are initialized\ncorrectly (see `keras.initializers.LecunNormal` initializer)\nand the number of input units is \"large enough\"\n(see reference paper for more information).\n\nArgs:\n    x: Input tensor.\n\nNotes:\n\n- To be used together with the\n    `keras.initializers.LecunNormal` initializer.\n- To be used together with the dropout variant\n    `keras.layers.AlphaDropout` (rather than regular dropout).\n\nReference:\n\n- [Klambauer et al., 2017](https://arxiv.org/abs/1706.02515)\"\"\"",
+                        "signature": {
+                            "name": "selu",
+                            "params": [
+                                "x"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.selu')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.selu')\ndef selu(x):\n    \"\"\"Scaled Exponential Linear Unit (SELU).\n\n    The Scaled Exponential Linear Unit (SELU) activation function is defined as:\n\n    - `scale * x` if `x > 0`\n    - `scale * alpha * (exp(x) - 1)` if `x < 0`\n\n    where `alpha` and `scale` are pre-defined constants\n    (`alpha=1.67326324` and `scale=1.05070098`).\n\n    Basically, the SELU activation function multiplies `scale` (> 1) with the\n    output of the `keras.activations.elu` function to ensure a slope larger\n    than one for positive inputs.\n\n    The values of `alpha` and `scale` are\n    chosen so that the mean and variance of the inputs are preserved\n    between two consecutive layers as long as the weights are initialized\n    correctly (see `keras.initializers.LecunNormal` initializer)\n    and the number of input units is \"large enough\"\n    (see reference paper for more information).\n\n    Args:\n        x: Input tensor.\n\n    Notes:\n\n    - To be used together with the\n        `keras.initializers.LecunNormal` initializer.\n    - To be used together with the dropout variant\n        `keras.layers.AlphaDropout` (rather than regular dropout).\n\n    Reference:\n\n    - [Klambauer et al., 2017](https://arxiv.org/abs/1706.02515)\n    \"\"\"\n    return ops.selu(x)"
+                    },
+                    {
+                        "doc": "\"\"\"Softplus activation function.\n\nIt is defined as: `softplus(x) = log(exp(x) + 1)`.\n\nArgs:\n    x: Input tensor.\"\"\"",
+                        "signature": {
+                            "name": "softplus",
+                            "params": [
+                                "x"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.softplus')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.softplus')\ndef softplus(x):\n    \"\"\"Softplus activation function.\n\n    It is defined as: `softplus(x) = log(exp(x) + 1)`.\n\n    Args:\n        x: Input tensor.\n    \"\"\"\n    return ops.softplus(x)"
+                    },
+                    {
+                        "doc": "\"\"\"Softsign activation function.\n\nSoftsign is defined as: `softsign(x) = x / (abs(x) + 1)`.\n\nArgs:\n    x: Input tensor.\"\"\"",
+                        "signature": {
+                            "name": "softsign",
+                            "params": [
+                                "x"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.softsign')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.softsign')\ndef softsign(x):\n    \"\"\"Softsign activation function.\n\n    Softsign is defined as: `softsign(x) = x / (abs(x) + 1)`.\n\n    Args:\n        x: Input tensor.\n    \"\"\"\n    return ops.softsign(x)"
+                    },
+                    {
+                        "doc": "\"\"\"Swish (or Silu) activation function.\n\nIt is defined as: `swish(x) = x * sigmoid(x)`.\n\nThe Swish (or Silu) activation function is a smooth,\nnon-monotonic function that is unbounded above and\nbounded below.\n\nArgs:\n    x: Input tensor.\n\nReference:\n\n- [Ramachandran et al., 2017](https://arxiv.org/abs/1710.05941)\"\"\"",
+                        "signature": {
+                            "name": "silu",
+                            "params": [
+                                "x"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export(['keras.activations.silu', 'keras.activations.swish'])"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export(['keras.activations.silu', 'keras.activations.swish'])\ndef silu(x):\n    \"\"\"Swish (or Silu) activation function.\n\n    It is defined as: `swish(x) = x * sigmoid(x)`.\n\n    The Swish (or Silu) activation function is a smooth,\n    non-monotonic function that is unbounded above and\n    bounded below.\n\n    Args:\n        x: Input tensor.\n\n    Reference:\n\n    - [Ramachandran et al., 2017](https://arxiv.org/abs/1710.05941)\n    \"\"\"\n    return ops.silu(x)"
+                    },
+                    {
+                        "doc": "\"\"\"Gaussian error linear unit (GELU) activation function.\n\nThe Gaussian error linear unit (GELU) is defined as:\n\n`gelu(x) = x * P(X <= x)` where `P(X) ~ N(0, 1)`,\ni.e. `gelu(x) = 0.5 * x * (1 + erf(x / sqrt(2)))`.\n\nGELU weights inputs by their value, rather than gating\ninputs by their sign as in ReLU.\n\nArgs:\n    x: Input tensor.\n    approximate: A `bool`, whether to enable approximation.\n\nReference:\n\n- [Hendrycks et al., 2016](https://arxiv.org/abs/1606.08415)\"\"\"",
+                        "signature": {
+                            "name": "gelu",
+                            "params": [
+                                "x",
+                                "approximate = False"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.gelu')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.gelu')\ndef gelu(x, approximate=False):\n    \"\"\"Gaussian error linear unit (GELU) activation function.\n\n    The Gaussian error linear unit (GELU) is defined as:\n\n    `gelu(x) = x * P(X <= x)` where `P(X) ~ N(0, 1)`,\n    i.e. `gelu(x) = 0.5 * x * (1 + erf(x / sqrt(2)))`.\n\n    GELU weights inputs by their value, rather than gating\n    inputs by their sign as in ReLU.\n\n    Args:\n        x: Input tensor.\n        approximate: A `bool`, whether to enable approximation.\n\n    Reference:\n\n    - [Hendrycks et al., 2016](https://arxiv.org/abs/1606.08415)\n    \"\"\"\n    return ops.gelu(x, approximate=approximate)"
+                    },
+                    {
+                        "doc": "\"\"\"Hyperbolic tangent activation function.\n\nIt is defined as:\n`tanh(x) = sinh(x) / cosh(x)`, i.e.\n`tanh(x) = ((exp(x) - exp(-x)) / (exp(x) + exp(-x)))`.\n\nArgs:\n    x: Input tensor.\"\"\"",
+                        "signature": {
+                            "name": "tanh",
+                            "params": [
+                                "x"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.tanh')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.tanh')\ndef tanh(x):\n    \"\"\"Hyperbolic tangent activation function.\n\n    It is defined as:\n    `tanh(x) = sinh(x) / cosh(x)`, i.e.\n    `tanh(x) = ((exp(x) - exp(-x)) / (exp(x) + exp(-x)))`.\n\n    Args:\n        x: Input tensor.\n    \"\"\"\n    return ops.tanh(x)"
+                    },
+                    {
+                        "doc": "\"\"\"Sigmoid activation function.\n\nIt is defined as: `sigmoid(x) = 1 / (1 + exp(-x))`.\n\nFor small values (<-5),\n`sigmoid` returns a value close to zero, and for large values (>5)\nthe result of the function gets close to 1.\n\nSigmoid is equivalent to a 2-element softmax, where the second element is\nassumed to be zero. The sigmoid function always returns a value between\n0 and 1.\n\nArgs:\n    x: Input tensor.\"\"\"",
+                        "signature": {
+                            "name": "sigmoid",
+                            "params": [
+                                "x"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.sigmoid')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.sigmoid')\ndef sigmoid(x):\n    \"\"\"Sigmoid activation function.\n\n    It is defined as: `sigmoid(x) = 1 / (1 + exp(-x))`.\n\n    For small values (<-5),\n    `sigmoid` returns a value close to zero, and for large values (>5)\n    the result of the function gets close to 1.\n\n    Sigmoid is equivalent to a 2-element softmax, where the second element is\n    assumed to be zero. The sigmoid function always returns a value between\n    0 and 1.\n\n    Args:\n        x: Input tensor.\n    \"\"\"\n    output = ops.sigmoid(x)\n    try:\n        output._keras_logits = x\n    except AttributeError:\n        pass\n    return output"
+                    },
+                    {
+                        "doc": "\"\"\"Exponential activation function.\n\nArgs:\n    x: Input tensor.\"\"\"",
+                        "signature": {
+                            "name": "exponential",
+                            "params": [
+                                "x"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.exponential')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.exponential')\ndef exponential(x):\n    \"\"\"Exponential activation function.\n\n    Args:\n        x: Input tensor.\n    \"\"\"\n    return ops.exp(x)"
+                    },
+                    {
+                        "doc": "\"\"\"Hard SiLU activation function, also known as Hard Swish.\n\nIt is defined as:\n\n- `0` if `if x < -3`\n- `x` if `x > 3`\n- `x * (x + 3) / 6` if `-3 <= x <= 3`\n\nIt's a faster, piecewise linear approximation of the silu activation.\n\nArgs:\n    x: Input tensor.\n\nReference:\n\n- [A Howard, 2019](https://arxiv.org/abs/1905.02244)\"\"\"",
+                        "signature": {
+                            "name": "hard_silu",
+                            "params": [
+                                "x"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export(['keras.activations.hard_silu', 'keras.activations.hard_swish'])"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export(['keras.activations.hard_silu', 'keras.activations.hard_swish'])\ndef hard_silu(x):\n    \"\"\"Hard SiLU activation function, also known as Hard Swish.\n\n    It is defined as:\n\n    - `0` if `if x < -3`\n    - `x` if `x > 3`\n    - `x * (x + 3) / 6` if `-3 <= x <= 3`\n\n    It's a faster, piecewise linear approximation of the silu activation.\n\n    Args:\n        x: Input tensor.\n\n    Reference:\n\n    - [A Howard, 2019](https://arxiv.org/abs/1905.02244)\n    \"\"\"\n    x = backend.convert_to_tensor(x)\n    return ops.hard_silu(x)"
+                    },
+                    {
+                        "doc": "\"\"\"Linear activation function (pass-through).\n\nA \"linear\" activation is an identity function:\nit returns the input, unmodified.\n\nArgs:\n    x: Input tensor.\"\"\"",
+                        "signature": {
+                            "name": "linear",
+                            "params": [
+                                "x"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.linear')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.linear')\ndef linear(x):\n    \"\"\"Linear activation function (pass-through).\n\n    A \"linear\" activation is an identity function:\n    it returns the input, unmodified.\n\n    Args:\n        x: Input tensor.\n    \"\"\"\n    return x"
+                    },
+                    {
+                        "doc": "\"\"\"Mish activation function.\n\nIt is defined as:\n\n`mish(x) = x * tanh(softplus(x))`\n\nwhere `softplus` is defined as:\n\n`softplus(x) = log(exp(x) + 1)`\n\nArgs:\n    x: Input tensor.\n\nReference:\n\n- [Misra, 2019](https://arxiv.org/abs/1908.08681)\"\"\"",
+                        "signature": {
+                            "name": "mish",
+                            "params": [
+                                "x"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.mish')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.mish')\ndef mish(x):\n    \"\"\"Mish activation function.\n\n    It is defined as:\n\n    `mish(x) = x * tanh(softplus(x))`\n\n    where `softplus` is defined as:\n\n    `softplus(x) = log(exp(x) + 1)`\n\n    Args:\n        x: Input tensor.\n\n    Reference:\n\n    - [Misra, 2019](https://arxiv.org/abs/1908.08681)\n    \"\"\"\n    x = backend.convert_to_tensor(x)\n    return Mish.static_call(x)"
+                    },
+                    {
+                        "doc": "\"\"\"Log-Softmax activation function.\n\nEach input vector is handled independently.\nThe `axis` argument sets which axis of the input the function\nis applied along.\n\nArgs:\n    x: Input tensor.\n    axis: Integer, axis along which the softmax is applied.\"\"\"",
+                        "signature": {
+                            "name": "log_softmax",
+                            "params": [
+                                "x",
+                                "axis = -1"
+                            ],
+                            "returns": "",
+                            "decorators": [
+                                "@keras_export('keras.activations.log_softmax')"
+                            ],
+                            "is_async": false,
+                            "is_method": false
+                        },
+                        "code": "@keras_export('keras.activations.log_softmax')\ndef log_softmax(x, axis=-1):\n    \"\"\"Log-Softmax activation function.\n\n    Each input vector is handled independently.\n    The `axis` argument sets which axis of the input the function\n    is applied along.\n\n    Args:\n        x: Input tensor.\n        axis: Integer, axis along which the softmax is applied.\n    \"\"\"\n    return ops.log_softmax(x, axis=axis)"
+                    }
+                ],
+                "constructors": []
+            }
+        ],
+        "code": "return ops.hard_sigmoid(x)",
+        "code_file_path": "keras/activations/activations.py",
+        "code_file_content": "from keras import backend\nfrom keras import ops\nfrom keras.api_export import keras_export\n\n\n@keras_export(\"keras.activations.relu\")\ndef relu(x, negative_slope=0.0, max_value=None, threshold=0.0):\n    \"\"\"Applies the rectified linear unit activation function.\n\n    With default values, this returns the standard ReLU activation:\n    `max(x, 0)`, the element-wise maximum of 0 and the input tensor.\n\n    Modifying default parameters allows you to use non-zero thresholds,\n    change the max value of the activation,\n    and to use a non-zero multiple of the input for values below the threshold.\n\n    Examples:\n\n    >>> x = [-10, -5, 0.0, 5, 10]\n    >>> keras.activations.relu(x)\n    [ 0.,  0.,  0.,  5., 10.]\n    >>> keras.activations.relu(x, negative_slope=0.5)\n    [-5. , -2.5,  0. ,  5. , 10. ]\n    >>> keras.activations.relu(x, max_value=5.)\n    [0., 0., 0., 5., 5.]\n    >>> keras.activations.relu(x, threshold=5.)\n    [-0., -0.,  0.,  0., 10.]\n\n    Args:\n        x: Input tensor.\n        negative_slope: A `float` that controls the slope\n            for values lower than the threshold.\n        max_value: A `float` that sets the saturation threshold (the largest\n            value the function will return).\n        threshold: A `float` giving the threshold value of the activation\n            function below which values will be damped or set to zero.\n\n    Returns:\n        A tensor with the same shape and dtype as input `x`.\n    \"\"\"\n    if backend.any_symbolic_tensors((x,)):\n        return ReLU(\n            negative_slope=negative_slope,\n            max_value=max_value,\n            threshold=threshold,\n        )(x)\n    return ReLU.static_call(\n        x,\n        negative_slope=negative_slope,\n        max_value=max_value,\n        threshold=threshold,\n    )\n\n\nclass ReLU(ops.Operation):\n    def __init__(\n        self, negative_slope=0.0, max_value=None, threshold=0.0, name=None\n    ):\n        super().__init__(name=name)\n        self.negative_slope = negative_slope\n        self.max_value = max_value\n        self.threshold = threshold\n\n    def call(self, x):\n        return self.static_call(\n            x,\n            negative_slope=self.negative_slope,\n            max_value=self.max_value,\n            threshold=self.threshold,\n        )\n\n    def compute_output_spec(self, x):\n        return backend.KerasTensor(x.shape, x.dtype)\n\n    @staticmethod\n    def static_call(x, negative_slope=0.0, max_value=None, threshold=0.0):\n        x = backend.convert_to_tensor(x)\n        if negative_slope != 0.0:\n            if max_value is None and threshold == 0:\n                return backend.nn.leaky_relu(x, negative_slope=negative_slope)\n\n            if threshold != 0:\n                negative_part = backend.nn.relu(-x + threshold)\n            else:\n                negative_part = backend.nn.relu(-x)\n\n        clip_max = max_value is not None\n        if threshold != 0:\n            # computes x for x > threshold else 0\n            threshold = ops.cast(threshold, dtype=x.dtype)\n            x = x * backend.cast(\n                backend.numpy.greater(x, threshold), dtype=x.dtype\n            )\n        elif max_value == 6:\n            # if no threshold, then can use nn.relu6 native op for performance\n            x = backend.nn.relu6(x)\n            clip_max = False\n        else:\n            x = backend.nn.relu(x)\n\n        if clip_max:\n            min_value = ops.cast(0.0, dtype=x.dtype)\n            max_value = ops.cast(max_value, dtype=x.dtype)\n            x = backend.numpy.clip(x, min_value, max_value)\n\n        if negative_slope != 0.0:\n            x -= negative_slope * negative_part\n        return x\n\n\n@keras_export(\"keras.activations.leaky_relu\")\ndef leaky_relu(x, negative_slope=0.2):\n    \"\"\"Leaky relu activation function.\n\n    Args:\n        x: Input tensor.\n        negative_slope: A `float` that controls the slope\n            for values lower than the threshold.\n    \"\"\"\n    return ops.leaky_relu(x, negative_slope=negative_slope)\n\n\n@keras_export(\"keras.activations.relu6\")\ndef relu6(x):\n    \"\"\"Relu6 activation function.\n\n    It's the ReLU function, but truncated to a maximum value of 6.\n\n    Args:\n        x: Input tensor.\n    \"\"\"\n    return ops.relu6(x)\n\n\n@keras_export(\"keras.activations.softmax\")\ndef softmax(x, axis=-1):\n    \"\"\"Softmax converts a vector of values to a probability distribution.\n\n    The elements of the output vector are in range `[0, 1]` and sum to 1.\n\n    Each input vector is handled independently.\n    The `axis` argument sets which axis of the input the function\n    is applied along.\n\n    Softmax is often used as the activation for the last\n    layer of a classification network because the result could be interpreted as\n    a probability distribution.\n\n    The softmax of each vector x is computed as\n    `exp(x) / sum(exp(x))`.\n\n    The input values in are the log-odds of the resulting probability.\n\n    Args:\n        x: Input tensor.\n        axis: Integer, axis along which the softmax is applied.\n    \"\"\"\n    output = ops.softmax(x, axis=axis)\n    # Cache the logits to use for crossentropy loss.\n    try:\n        output._keras_logits = x\n    except AttributeError:\n        # We're dealing with a C-type.\n        pass\n    return output\n\n\n@keras_export(\"keras.activations.elu\")\ndef elu(x, alpha=1.0):\n    \"\"\"Exponential Linear Unit.\n\n    The exponential linear unit (ELU) with `alpha > 0` is define as:\n\n    - `x` if `x > 0`\n    - alpha * `exp(x) - 1` if `x < 0`\n\n    ELUs have negative values which pushes the mean of the activations\n    closer to zero.\n\n    Mean activations that are closer to zero enable faster learning as they\n    bring the gradient closer to the natural gradient.\n    ELUs saturate to a negative value when the argument gets smaller.\n    Saturation means a small derivative which decreases the variation\n    and the information that is propagated to the next layer.\n\n    Args:\n        x: Input tensor.\n\n    Reference:\n\n    - [Clevert et al., 2016](https://arxiv.org/abs/1511.07289)\n    \"\"\"\n    return ops.elu(x, alpha=alpha)\n\n\n@keras_export(\"keras.activations.selu\")\ndef selu(x):\n    \"\"\"Scaled Exponential Linear Unit (SELU).\n\n    The Scaled Exponential Linear Unit (SELU) activation function is defined as:\n\n    - `scale * x` if `x > 0`\n    - `scale * alpha * (exp(x) - 1)` if `x < 0`\n\n    where `alpha` and `scale` are pre-defined constants\n    (`alpha=1.67326324` and `scale=1.05070098`).\n\n    Basically, the SELU activation function multiplies `scale` (> 1) with the\n    output of the `keras.activations.elu` function to ensure a slope larger\n    than one for positive inputs.\n\n    The values of `alpha` and `scale` are\n    chosen so that the mean and variance of the inputs are preserved\n    between two consecutive layers as long as the weights are initialized\n    correctly (see `keras.initializers.LecunNormal` initializer)\n    and the number of input units is \"large enough\"\n    (see reference paper for more information).\n\n    Args:\n        x: Input tensor.\n\n    Notes:\n\n    - To be used together with the\n        `keras.initializers.LecunNormal` initializer.\n    - To be used together with the dropout variant\n        `keras.layers.AlphaDropout` (rather than regular dropout).\n\n    Reference:\n\n    - [Klambauer et al., 2017](https://arxiv.org/abs/1706.02515)\n    \"\"\"\n    return ops.selu(x)\n\n\n@keras_export(\"keras.activations.softplus\")\ndef softplus(x):\n    \"\"\"Softplus activation function.\n\n    It is defined as: `softplus(x) = log(exp(x) + 1)`.\n\n    Args:\n        x: Input tensor.\n    \"\"\"\n    return ops.softplus(x)\n\n\n@keras_export(\"keras.activations.softsign\")\ndef softsign(x):\n    \"\"\"Softsign activation function.\n\n    Softsign is defined as: `softsign(x) = x / (abs(x) + 1)`.\n\n    Args:\n        x: Input tensor.\n    \"\"\"\n    return ops.softsign(x)\n\n\n@keras_export([\"keras.activations.silu\", \"keras.activations.swish\"])\ndef silu(x):\n    \"\"\"Swish (or Silu) activation function.\n\n    It is defined as: `swish(x) = x * sigmoid(x)`.\n\n    The Swish (or Silu) activation function is a smooth,\n    non-monotonic function that is unbounded above and\n    bounded below.\n\n    Args:\n        x: Input tensor.\n\n    Reference:\n\n    - [Ramachandran et al., 2017](https://arxiv.org/abs/1710.05941)\n    \"\"\"\n    return ops.silu(x)\n\n\n@keras_export(\"keras.activations.gelu\")\ndef gelu(x, approximate=False):\n    \"\"\"Gaussian error linear unit (GELU) activation function.\n\n    The Gaussian error linear unit (GELU) is defined as:\n\n    `gelu(x) = x * P(X <= x)` where `P(X) ~ N(0, 1)`,\n    i.e. `gelu(x) = 0.5 * x * (1 + erf(x / sqrt(2)))`.\n\n    GELU weights inputs by their value, rather than gating\n    inputs by their sign as in ReLU.\n\n    Args:\n        x: Input tensor.\n        approximate: A `bool`, whether to enable approximation.\n\n    Reference:\n\n    - [Hendrycks et al., 2016](https://arxiv.org/abs/1606.08415)\n    \"\"\"\n    return ops.gelu(x, approximate=approximate)\n\n\n@keras_export(\"keras.activations.tanh\")\ndef tanh(x):\n    \"\"\"Hyperbolic tangent activation function.\n\n    It is defined as:\n    `tanh(x) = sinh(x) / cosh(x)`, i.e.\n    `tanh(x) = ((exp(x) - exp(-x)) / (exp(x) + exp(-x)))`.\n\n    Args:\n        x: Input tensor.\n    \"\"\"\n    return ops.tanh(x)\n\n\n@keras_export(\"keras.activations.sigmoid\")\ndef sigmoid(x):\n    \"\"\"Sigmoid activation function.\n\n    It is defined as: `sigmoid(x) = 1 / (1 + exp(-x))`.\n\n    For small values (<-5),\n    `sigmoid` returns a value close to zero, and for large values (>5)\n    the result of the function gets close to 1.\n\n    Sigmoid is equivalent to a 2-element softmax, where the second element is\n    assumed to be zero. The sigmoid function always returns a value between\n    0 and 1.\n\n    Args:\n        x: Input tensor.\n    \"\"\"\n    output = ops.sigmoid(x)\n    # Cache the logits to use for crossentropy loss.\n    try:\n        output._keras_logits = x\n    except AttributeError:\n        # We're dealing with a C-type.\n        pass\n    return output\n\n\n@keras_export(\"keras.activations.exponential\")\ndef exponential(x):\n    \"\"\"Exponential activation function.\n\n    Args:\n        x: Input tensor.\n    \"\"\"\n    return ops.exp(x)\n\n\n@keras_export(\"keras.activations.hard_sigmoid\")\ndef hard_sigmoid(x):\n    \"\"\"Hard sigmoid activation function.\n\n    The hard sigmoid activation is defined as:\n\n    - `0` if `if x <= -3`\n    - `1` if `x >= 3`\n    - `(x/6) + 0.5` if `-3 < x < 3`\n\n    It's a faster, piecewise linear approximation\n    of the sigmoid activation.\n\n    Args:\n        x: Input tensor.\n\n    Reference:\n\n    - [Wikipedia \"Hard sigmoid\"](https://en.wikipedia.org/wiki/Hard_sigmoid)\n    \"\"\"\n    return ops.hard_sigmoid(x)\n\n\n@keras_export([\"keras.activations.hard_silu\", \"keras.activations.hard_swish\"])\ndef hard_silu(x):\n    \"\"\"Hard SiLU activation function, also known as Hard Swish.\n\n    It is defined as:\n\n    - `0` if `if x < -3`\n    - `x` if `x > 3`\n    - `x * (x + 3) / 6` if `-3 <= x <= 3`\n\n    It's a faster, piecewise linear approximation of the silu activation.\n\n    Args:\n        x: Input tensor.\n\n    Reference:\n\n    - [A Howard, 2019](https://arxiv.org/abs/1905.02244)\n    \"\"\"\n    x = backend.convert_to_tensor(x)\n    return ops.hard_silu(x)\n\n\n@keras_export(\"keras.activations.linear\")\ndef linear(x):\n    \"\"\"Linear activation function (pass-through).\n\n    A \"linear\" activation is an identity function:\n    it returns the input, unmodified.\n\n    Args:\n        x: Input tensor.\n    \"\"\"\n    return x\n\n\nclass Mish(ops.Operation):\n    def call(self, x):\n        return self.static_call(x)\n\n    def compute_output_spec(self, x):\n        return backend.KerasTensor(x.shape, x.dtype)\n\n    @staticmethod\n    def static_call(x):\n        return x * backend.nn.tanh(backend.nn.softplus(x))\n\n\n@keras_export(\"keras.activations.mish\")\ndef mish(x):\n    \"\"\"Mish activation function.\n\n    It is defined as:\n\n    `mish(x) = x * tanh(softplus(x))`\n\n    where `softplus` is defined as:\n\n    `softplus(x) = log(exp(x) + 1)`\n\n    Args:\n        x: Input tensor.\n\n    Reference:\n\n    - [Misra, 2019](https://arxiv.org/abs/1908.08681)\n    \"\"\"\n    x = backend.convert_to_tensor(x)\n    return Mish.static_call(x)\n\n\n@keras_export(\"keras.activations.log_softmax\")\ndef log_softmax(x, axis=-1):\n    \"\"\"Log-Softmax activation function.\n\n    Each input vector is handled independently.\n    The `axis` argument sets which axis of the input the function\n    is applied along.\n\n    Args:\n        x: Input tensor.\n        axis: Integer, axis along which the softmax is applied.\n    \"\"\"\n    return ops.log_softmax(x, axis=axis)\n",
+        "tests": [],
+        "called_functions": [],
+        "module_name": "keras.activations.activations",
+        "qualified_name": "hard_sigmoid",
+        "import_path": "keras.activations.activations.hard_sigmoid"
+    }
+]

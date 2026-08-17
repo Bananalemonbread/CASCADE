@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/numpy/numpy -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/numpy/numpy/43b10db40f94e3b4a250bc18fd4b9c5641a42ff8/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:cumulative_sum\) --filters \(1\,expected:numpy/_core/fromnumeric.py\) --filters \(2\,expected:cumulative_sum\)
+
+Extraction started
+Extraction finished. Extracted:  4536
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

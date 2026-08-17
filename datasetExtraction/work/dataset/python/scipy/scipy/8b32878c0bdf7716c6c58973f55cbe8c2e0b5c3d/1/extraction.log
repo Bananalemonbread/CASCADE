@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/scipy/scipy/8b32878c0bdf7716c6c58973f55cbe8c2e0b5c3d/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:place_poles\) --filters \(1\,expected:scipy/signal/_ltisys.py\) --filters \(2\,expected:place_poles\)
+
+Extraction started
+Extraction finished. Extracted:  9049
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

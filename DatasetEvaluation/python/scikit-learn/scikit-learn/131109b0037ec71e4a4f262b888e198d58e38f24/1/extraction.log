@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scikit-learn/scikit-learn -o /home/betul/Humboldt/HiWi/dataset/python/scikit-learn/scikit-learn/131109b0037ec71e4a4f262b888e198d58e38f24/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:fit\) --filters \(1\,expected:sklearn/preprocessing/_discretization.py\) --filters \(2\,expected:KBinsDiscretizer.fit\)
+
+Extraction started
+Extraction finished. Extracted:  4286
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

@@ -1,0 +1,26 @@
+diff --git a/pyproject.toml b/pyproject.toml
+new file mode 100644
+index 0000000000..60ac501e1d
+--- /dev/null
++++ b/pyproject.toml
+@@ -0,0 +1,7 @@
++[build-system]
++requires = [
++    "setuptools<44",
++    "wheel<0.34",
++    "Cython==0.20.2",
++]
++build-backend = "setuptools.build_meta:__legacy__"
+diff --git a/setup.py b/setup.py
+index 12eb290932..e58e8be510 100755
+--- a/setup.py
++++ b/setup.py
+@@ -191,7 +191,7 @@ def generate_cython():
+         raise RuntimeError("Running cythonize failed!")
+ 
+ def setup_package():
+-    src_path = os.path.dirname(os.path.abspath(sys.argv[0]))
++    src_path = os.path.dirname(os.path.abspath(__file__))
+     old_path = os.getcwd()
+     os.chdir(src_path)
+     sys.path.insert(0, src_path)

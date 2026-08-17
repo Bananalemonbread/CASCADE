@@ -1,0 +1,12 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/keras-team/keras -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/keras-team/keras/38231e8a434f1841b2e5027cc4a48501ac517d1e/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:elu\) --filters \(1\,expected:keras/backend/tensorflow_backend.py\) --filters \(2\,expected:elu\)
+
+<unknown>:373: SyntaxWarning: invalid escape sequence '\.'
+<unknown>:411: SyntaxWarning: invalid escape sequence '\S'
+<unknown>:36: SyntaxWarning: invalid escape sequence '\W'
+<unknown>:81: SyntaxWarning: invalid escape sequence '\W'
+Extraction started
+Extraction finished. Extracted:  1600
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

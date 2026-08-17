@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scikit-learn/scikit-learn/sklearn/neighbors -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/scikit-learn/scikit-learn/61beb3b79947a6976b8c1df4f606b8bee7983dd6/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:fit_predict\) --filters \(1\,expected:_lof.py\) --filters \(2\,expected:LocalOutlierFactor.fit_predict\)
+
+Extraction started
+Extraction finished. Extracted:  81
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

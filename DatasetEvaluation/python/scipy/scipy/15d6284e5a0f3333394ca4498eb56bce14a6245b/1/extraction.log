@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy -o /home/betul/Humboldt/HiWi/dataset/python/scipy/scipy/15d6284e5a0f3333394ca4498eb56bce14a6245b/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:eye_array\) --filters \(1\,expected:scipy/sparse/_construct.py\) --filters \(2\,expected:eye_array\)
+
+Extraction started
+Extraction finished. Extracted:  8500
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/numpy/numpy -o /home/betul/Humboldt/HiWi/dataset/python/numpy/numpy/fcf488a27605db53dd3cd19431b36d15ea649df9/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:gradient\) --filters \(1\,expected:numpy/lib/_function_base_impl.py\) --filters \(2\,expected:gradient\)
+
+Extraction started
+Extraction finished. Extracted:  4527
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

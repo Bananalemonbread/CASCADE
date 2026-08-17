@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scikit-learn/scikit-learn -o /home/betul/Humboldt/HiWi/dataset/python/scikit-learn/scikit-learn/57dde82f7cf86d93de638d0527400bc3baa6cabe/2 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:orthogonal_mp_gram\) --filters \(1\,expected:sklearn/linear_model/_omp.py\) --filters \(2\,expected:orthogonal_mp_gram\)
+
+Extraction started
+Extraction finished. Extracted:  4233
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

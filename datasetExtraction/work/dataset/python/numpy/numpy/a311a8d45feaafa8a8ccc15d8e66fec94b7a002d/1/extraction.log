@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/numpy/numpy/numpy/linalg -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/numpy/numpy/a311a8d45feaafa8a8ccc15d8e66fec94b7a002d/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:lstsq\) --filters \(1\,expected:linalg.py\) --filters \(2\,expected:lstsq\)
+
+Extraction started
+Extraction finished. Extracted:  106
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

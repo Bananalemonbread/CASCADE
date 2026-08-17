@@ -1,0 +1,13 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy/scipy/interpolate -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/scipy/scipy/1f9f36d59b8b58078baf9e409e7cf9279c7a4be6/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:splrep\) --filters \(1\,expected:fitpack.py\) --filters \(2\,expected:splrep\)
+
+<unknown>:1269: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:1355: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:1125: SyntaxWarning: invalid escape sequence '\p'
+<unknown>:292: SyntaxWarning: invalid escape sequence '\p'
+<unknown>:93: SyntaxWarning: invalid escape sequence '\s'
+Extraction started
+Extraction finished. Extracted:  159
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

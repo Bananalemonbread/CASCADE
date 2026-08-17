@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy/scipy/fft -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/scipy/scipy/5811dfcc5339aaaca4ab29b6155993dec7144756/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:fht\) --filters \(1\,expected:_fftlog.py\) --filters \(2\,expected:fht\)
+
+Extraction started
+Extraction finished. Extracted:  73
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy -o /home/betul/Humboldt/HiWi/dataset/python/scipy/scipy/3c4be670488ec4378ec009fe81d2f9c6a8e7f4b6/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:insert\) --filters \(1\,expected:scipy/interpolate/_fitpack_py.py\) --filters \(2\,expected:insert\)
+
+Extraction started
+Extraction finished. Extracted:  7640
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

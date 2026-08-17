@@ -10,10 +10,10 @@ from cascade.analysis.executor.builders.PythonBuilder import PythonBuilder
 
 
 class PythonExecutor(AnalysisExecutor):
-    def __init__(self, debug=False, image="python:3.12", timeout=120, builder=None):
+    def __init__(self, debug=False, image="python:3.12", timeout=120, dependencies=None, builder=None):
         super().__init__()
         self.debug = debug
-        self.builder = builder or PythonBuilder(image=image, timeout=timeout)
+        self.builder = builder or PythonBuilder(image=image, timeout=timeout, dependencies=dependencies)
 
     def execute(self, code: str, tests: str, context: dict, input_path, output_path):
         with tempfile.TemporaryDirectory() as temp_dir:

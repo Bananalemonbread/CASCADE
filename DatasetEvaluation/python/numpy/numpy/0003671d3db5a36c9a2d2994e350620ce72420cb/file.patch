@@ -1,0 +1,14 @@
+diff --git a/numpy/core/setup.py b/numpy/core/setup.py
+index fc09dba8b5..aeac4cea52 100644
+--- a/numpy/core/setup.py
++++ b/numpy/core/setup.py
+@@ -87,8 +87,7 @@ def can_link_svml():
+ 
+ def check_svml_submodule(svmlpath):
+     if not os.path.exists(svmlpath + "/README.md"):
+-        raise RuntimeError("Missing `SVML` submodule! Run `git submodule "
+-                           "update --init` to fix this.")
++        return False
+     return True
+ 
+ def pythonlib_dir():

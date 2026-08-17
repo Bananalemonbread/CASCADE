@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/keras-team/keras -o /home/betul/Humboldt/HiWi/dataset/python/keras-team/keras/91765e700b1d5e465fcb56bd2c2f56384bc2772d/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:compile\) --filters \(1\,expected:keras/engine/training.py\) --filters \(2\,expected:Model.compile\)
+
+Extraction started
+Extraction finished. Extracted:  1808
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

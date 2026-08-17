@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy -o /home/betul/Humboldt/HiWi/dataset/python/scipy/scipy/8ef583067438a16e7f3a4bed2e109168f16dfda8/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:basis_element\) --filters \(1\,expected:scipy/interpolate/_bsplines.py\) --filters \(2\,expected:BSpline.basis_element\)
+
+Extraction started
+Extraction finished. Extracted:  6253
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

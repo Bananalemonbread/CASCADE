@@ -97,7 +97,8 @@ class MultiStepJavaTestGenerator(MultiStepTestGenerator):
     def repair_system_prompt(self):
         return (
             "You are an expert Java developer. You will fix compilation errors in a provided test class "
-            "and return the entire repaired class. Use tools to find out more about classes instead of making assumptions."
+            "and return the entire repaired class. Use only the supplied errors, test class, and source-tree "
+            "context; do not request or call tools."
         )
 
 

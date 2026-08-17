@@ -67,6 +67,10 @@ language,repository,commit,case_number,function_name,file_path,inconsistent,proj
 `file_path` for a Python project marker, Maven/Gradle project, `Cargo.toml`, or
 C# solution.
 
+For Python methods, `function_name` uses the extractor's qualified name, for
+example `KernelPCA.transform`. Module-level functions keep their simple name,
+for example `isotonic_regression`.
+
 Run a small cross-language preview:
 
 ```bash
@@ -88,6 +92,18 @@ cd ~/CASCADE/datasetExtraction
 ./datasetextract.sh --execute --language python --limit 1
 ```
 
+Re-extract existing Python cases after changing paths or extraction logic:
+
+```bash
+cd ~/CASCADE/datasetExtraction
+./datasetextract.sh --execute --language python --overwrite
+```
+
+`--overwrite` replaces only generated extraction files such as
+`analyzed.json`, `extracted.json`, and extraction logs. Manually maintained
+files such as `file.patch`, `container_patch.sh`, and `patch.sh` are preserved,
+including files stored directly in a case directory.
+
 Run all complete rows:
 
 ```bash
@@ -101,9 +117,12 @@ Outputs are stored below:
 datasetExtraction/work/dataset/<language>/<owner>/<repository>/<commit>/<case>/
 ```
 
+This layout is identical for every supported language (Python, Java, Rust,
+and C#). The `repository` CSV field must therefore use `owner/name` format.
+
 Repositories are cached below `datasetExtraction/work/repositories/`. Existing
-valid `analyzed.json` files are resumed and not overwritten. Use a different
-`--workdir` when a clean extraction is required.
+valid `analyzed.json` files are resumed unless `--overwrite` is supplied. Use a
+different `--workdir` when an entirely separate extraction is required.
 
 Failures are recorded in:
 

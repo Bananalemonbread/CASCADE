@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/numpy/numpy/numpy/linalg -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/numpy/numpy/88cf0e4f6d722b12f2d57e3acb6452d6a015cc93/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:tensorinv\) --filters \(1\,expected:linalg.py\) --filters \(2\,expected:tensorinv\)
+
+Extraction started
+Extraction finished. Extracted:  99
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

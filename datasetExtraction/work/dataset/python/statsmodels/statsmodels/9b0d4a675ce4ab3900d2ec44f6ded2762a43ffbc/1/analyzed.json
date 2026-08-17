@@ -1,0 +1,41 @@
+[
+    {
+        "id": 1885,
+        "language": "Python",
+        "doc": "\"\"\"Hodrick-Prescott filter.\n\nParameters\n----------\nx : array_like\n    The time series to filter, 1-d.\nlamb : float\n    The Hodrick-Prescott smoothing parameter. A value of 1600 is\n    suggested for quarterly data. Ravn and Uhlig suggest using a value\n    of 6.25 (1600/4**4) for annual data and 129600 (1600*3**4) for monthly\n    data.\n\nReturns\n-------\ncycle : ndarray\n    The estimated cycle in the data given lamb.\ntrend : ndarray\n    The estimated trend in the data given lamb.\n\nSee Also\n--------\nstatsmodels.tsa.filters.bk_filter.bkfilter\n    Baxter-King filter.\nstatsmodels.tsa.filters.cf_filter.cffilter\n    The Christiano Fitzgerald asymmetric, random walk filter.\nstatsmodels.tsa.seasonal.seasonal_decompose\n    Decompose a time series using moving averages.\nstatsmodels.tsa.seasonal.STL\n    Season-Trend decomposition using LOESS.\n\nNotes\n-----\nThe HP filter removes a smooth trend, `T`, from the data `x`. by solving\n\nmin sum((x[t] - T[t])**2 + lamb*((T[t+1] - T[t]) - (T[t] - T[t-1]))**2)\n T   t\n\nHere we implemented the HP filter as a ridge-regression rule using\nscipy.sparse. In this sense, the solution can be written as\n\nT = inv(I - lamb*K'K)x\n\nwhere I is a nobs x nobs identity matrix, and K is a (nobs-2) x nobs matrix\nsuch that\n\nK[i,j] = 1 if i == j or i == j + 2\nK[i,j] = -2 if i == j + 1\nK[i,j] = 0 otherwise\n\nReferences\n----------\nHodrick, R.J, and E. C. Prescott. 1980. \"Postwar U.S. Business Cycles: An\n    Empirical Investigation.\" `Carnegie Mellon University discussion\n    paper no. 451`.\nRavn, M.O and H. Uhlig. 2002. \"Notes On Adjusted the Hodrick-Prescott\n    Filter for the Frequency of Observations.\" `The Review of Economics and\n    Statistics`, 84(2), 371-80.\n\nExamples\n--------\n>>> import statsmodels.api as sm\n>>> import pandas as pd\n>>> dta = sm.datasets.macrodata.load_pandas().data\n>>> index = pd.DatetimeIndex(start='1959Q1', end='2009Q4', freq='Q')\n>>> dta.set_index(index, inplace=True)\n\n>>> cycle, trend = sm.tsa.filters.hpfilter(dta.realgdp, 1600)\n>>> gdp_decomp = dta[['realgdp']]\n>>> gdp_decomp[\"cycle\"] = cycle\n>>> gdp_decomp[\"trend\"] = trend\n\n>>> import matplotlib.pyplot as plt\n>>> fig, ax = plt.subplots()\n>>> gdp_decomp[[\"realgdp\", \"trend\"]][\"2000-03-31\":].plot(ax=ax,\n...                                                      fontsize=16)\n>>> plt.show()\n\n.. plot:: plots/hpf_plot.py\"\"\"",
+        "signature": {
+            "name": "hpfilter",
+            "params": [
+                "x",
+                "lamb = 1600"
+            ],
+            "returns": "",
+            "decorators": [],
+            "is_async": false,
+            "is_method": false
+        },
+        "parent": [
+            {
+                "name": "root module",
+                "parent_type": "Module",
+                "imports": [
+                    "import numpy as np\n",
+                    "from scipy import sparse\n",
+                    "from scipy.sparse.linalg import spsolve\n",
+                    "from statsmodels.tools.validation import array_like, PandasWrapper\n"
+                ],
+                "variables": [],
+                "other_methods": [],
+                "constructors": []
+            }
+        ],
+        "code": "pw = PandasWrapper(x)\nx = array_like(x, 'x', ndim=1)\nnobs = len(x)\nI = sparse.eye(nobs, nobs)  # noqa:E741\noffsets = np.array([0, 1, 2])\ndata = np.repeat([[1.], [-2.], [1.]], nobs, axis=1)\nK = sparse.dia_matrix((data, offsets), shape=(nobs - 2, nobs))\n\nuse_umfpack = True\ntrend = spsolve(I+lamb*K.T.dot(K), x, use_umfpack=use_umfpack)\n\ncycle = x - trend\nreturn pw.wrap(cycle, append='cycle'), pw.wrap(trend, append='trend')",
+        "code_file_path": "statsmodels/tsa/filters/hp_filter.py",
+        "code_file_content": "\nimport numpy as np\nfrom scipy import sparse\nfrom scipy.sparse.linalg import spsolve\nfrom statsmodels.tools.validation import array_like, PandasWrapper\n\n\ndef hpfilter(x, lamb=1600):\n    \"\"\"\n    Hodrick-Prescott filter.\n\n    Parameters\n    ----------\n    x : array_like\n        The time series to filter, 1-d.\n    lamb : float\n        The Hodrick-Prescott smoothing parameter. A value of 1600 is\n        suggested for quarterly data. Ravn and Uhlig suggest using a value\n        of 6.25 (1600/4**4) for annual data and 129600 (1600*3**4) for monthly\n        data.\n\n    Returns\n    -------\n    cycle : ndarray\n        The estimated cycle in the data given lamb.\n    trend : ndarray\n        The estimated trend in the data given lamb.\n\n    See Also\n    --------\n    statsmodels.tsa.filters.bk_filter.bkfilter\n        Baxter-King filter.\n    statsmodels.tsa.filters.cf_filter.cffilter\n        The Christiano Fitzgerald asymmetric, random walk filter.\n    statsmodels.tsa.seasonal.seasonal_decompose\n        Decompose a time series using moving averages.\n    statsmodels.tsa.seasonal.STL\n        Season-Trend decomposition using LOESS.\n\n    Notes\n    -----\n    The HP filter removes a smooth trend, `T`, from the data `x`. by solving\n\n    min sum((x[t] - T[t])**2 + lamb*((T[t+1] - T[t]) - (T[t] - T[t-1]))**2)\n     T   t\n\n    Here we implemented the HP filter as a ridge-regression rule using\n    scipy.sparse. In this sense, the solution can be written as\n\n    T = inv(I - lamb*K'K)x\n\n    where I is a nobs x nobs identity matrix, and K is a (nobs-2) x nobs matrix\n    such that\n\n    K[i,j] = 1 if i == j or i == j + 2\n    K[i,j] = -2 if i == j + 1\n    K[i,j] = 0 otherwise\n\n    References\n    ----------\n    Hodrick, R.J, and E. C. Prescott. 1980. \"Postwar U.S. Business Cycles: An\n        Empirical Investigation.\" `Carnegie Mellon University discussion\n        paper no. 451`.\n    Ravn, M.O and H. Uhlig. 2002. \"Notes On Adjusted the Hodrick-Prescott\n        Filter for the Frequency of Observations.\" `The Review of Economics and\n        Statistics`, 84(2), 371-80.\n\n    Examples\n    --------\n    >>> import statsmodels.api as sm\n    >>> import pandas as pd\n    >>> dta = sm.datasets.macrodata.load_pandas().data\n    >>> index = pd.DatetimeIndex(start='1959Q1', end='2009Q4', freq='Q')\n    >>> dta.set_index(index, inplace=True)\n\n    >>> cycle, trend = sm.tsa.filters.hpfilter(dta.realgdp, 1600)\n    >>> gdp_decomp = dta[['realgdp']]\n    >>> gdp_decomp[\"cycle\"] = cycle\n    >>> gdp_decomp[\"trend\"] = trend\n\n    >>> import matplotlib.pyplot as plt\n    >>> fig, ax = plt.subplots()\n    >>> gdp_decomp[[\"realgdp\", \"trend\"]][\"2000-03-31\":].plot(ax=ax,\n    ...                                                      fontsize=16)\n    >>> plt.show()\n\n    .. plot:: plots/hpf_plot.py\n    \"\"\"\n    pw = PandasWrapper(x)\n    x = array_like(x, 'x', ndim=1)\n    nobs = len(x)\n    I = sparse.eye(nobs, nobs)  # noqa:E741\n    offsets = np.array([0, 1, 2])\n    data = np.repeat([[1.], [-2.], [1.]], nobs, axis=1)\n    K = sparse.dia_matrix((data, offsets), shape=(nobs - 2, nobs))\n\n    use_umfpack = True\n    trend = spsolve(I+lamb*K.T.dot(K), x, use_umfpack=use_umfpack)\n\n    cycle = x - trend\n    return pw.wrap(cycle, append='cycle'), pw.wrap(trend, append='trend')\n",
+        "tests": [],
+        "called_functions": [],
+        "module_name": "statsmodels.tsa.filters.hp_filter",
+        "qualified_name": "hpfilter",
+        "import_path": "statsmodels.tsa.filters.hp_filter.hpfilter"
+    }
+]

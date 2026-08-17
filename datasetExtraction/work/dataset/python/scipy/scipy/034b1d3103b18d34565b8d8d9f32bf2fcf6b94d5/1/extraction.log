@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy/scipy/stats -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/scipy/scipy/034b1d3103b18d34565b8d8d9f32bf2fcf6b94d5/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:boxcox\) --filters \(1\,expected:morestats.py\) --filters \(2\,expected:boxcox\)
+
+Extraction started
+Extraction finished. Extracted:  1352
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

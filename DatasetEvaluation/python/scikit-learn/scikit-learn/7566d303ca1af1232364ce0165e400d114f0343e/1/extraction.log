@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scikit-learn/scikit-learn -o /home/betul/Humboldt/HiWi/dataset/python/scikit-learn/scikit-learn/7566d303ca1af1232364ce0165e400d114f0343e/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:_validate_shuffle_split\) --filters \(1\,expected:sklearn/model_selection/_split.py\) --filters \(2\,expected:_validate_shuffle_split\)
+
+Extraction started
+Extraction finished. Extracted:  4101
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

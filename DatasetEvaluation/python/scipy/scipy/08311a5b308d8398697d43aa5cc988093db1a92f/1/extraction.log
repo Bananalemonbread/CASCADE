@@ -1,0 +1,46 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scipy/scipy -o /home/betul/Humboldt/HiWi/dataset/python/scipy/scipy/08311a5b308d8398697d43aa5cc988093db1a92f/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:splrep\) --filters \(1\,expected:scipy/interpolate/fitpack.py\) --filters \(2\,expected:splrep\)
+
+<unknown>:1: SyntaxWarning: invalid escape sequence '\l'
+<unknown>:5: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:6: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:7: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:8: SyntaxWarning: invalid escape sequence '\d'
+<unknown>:17: SyntaxWarning: invalid escape sequence '\p'
+<unknown>:18: SyntaxWarning: invalid escape sequence '\p'
+<unknown>:19: SyntaxWarning: invalid escape sequence '\p'
+<unknown>:117: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:32: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:118: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:1: SyntaxWarning: invalid escape sequence '\m'
+<unknown>:848: SyntaxWarning: invalid escape sequence '\o'
+<unknown>:901: SyntaxWarning: invalid escape sequence '\o'
+<unknown>:960: SyntaxWarning: invalid escape sequence '\o'
+<unknown>:1032: SyntaxWarning: invalid escape sequence '\c'
+<unknown>:488: SyntaxWarning: invalid escape sequence '\d'
+<unknown>:1: SyntaxWarning: invalid escape sequence '\h'
+<unknown>:1656: SyntaxWarning: invalid escape sequence '\c'
+<unknown>:1660: SyntaxWarning: invalid escape sequence '\c'
+<unknown>:1269: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:1355: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:1125: SyntaxWarning: invalid escape sequence '\p'
+<unknown>:292: SyntaxWarning: invalid escape sequence '\p'
+<unknown>:93: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:928: SyntaxWarning: invalid escape sequence '\l'
+<unknown>:933: SyntaxWarning: invalid escape sequence '\l'
+<unknown>:550: SyntaxWarning: invalid escape sequence '\*'
+<unknown>:617: SyntaxWarning: invalid escape sequence '\*'
+<unknown>:998: SyntaxWarning: invalid escape sequence '\d'
+<unknown>:46: SyntaxWarning: invalid escape sequence '\G'
+<unknown>:677: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:683: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:827: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:58: SyntaxWarning: invalid escape sequence '\*'
+<unknown>:76: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:91: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:130: SyntaxWarning: invalid escape sequence '\s'
+Extraction started
+Extraction finished. Extracted:  3835
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

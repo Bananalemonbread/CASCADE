@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/scikit-learn/scikit-learn -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/scikit-learn/scikit-learn/fa5f43fa2b060c28b4e71d00837e69d6830c934b/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:isotonic_regression\) --filters \(1\,expected:sklearn/isotonic.py\) --filters \(2\,expected:isotonic_regression\)
+
+Extraction started
+Extraction finished. Extracted:  4126
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

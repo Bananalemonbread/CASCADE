@@ -69,13 +69,19 @@ class DockerizedWrapper:
 
 
     def run(self, container: Container, dock_context: dict, path):
-        res = container.exec_run('bash -c - "cd ~; ' + dock_context["command"].replace('"', "\\\"") + '"')
+        setup_command = (
+            "if [[ -f /root/.cascade-container-patch.sh ]]; then "
+            "bash /root/.cascade-container-patch.sh || exit $?; "
+            "fi; "
+        )
+        command = "cd /root; " + setup_command + dock_context["command"]
+        res = container.exec_run(["bash", "-lc", command])
         with open(os.path.join(path, "log.txt"), "a") as file:
-            file.write("Command: " + dock_context["command"] + "\n")
+            file.write("Command: " + command + "\n")
             file.write(str(res.exit_code) + "\n")
             file.write(str(res.output, "utf-8") + "\n")
         if self.debug:
-            print("Command:", dock_context["command"])
+            print("Command:", command)
             print(res.exit_code)
             print(str(res.output, "utf-8"))
         return res.exit_code == 0

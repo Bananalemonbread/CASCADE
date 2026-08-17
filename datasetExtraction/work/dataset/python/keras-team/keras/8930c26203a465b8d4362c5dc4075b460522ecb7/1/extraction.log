@@ -1,0 +1,8 @@
+Command: /home/betul/Humboldt/HiWi/CASCADE/../cascade.venv/bin/CASCADE run -i /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/repositories/keras-team/keras -o /home/betul/Humboldt/HiWi/CASCADE/datasetExtraction/work/dataset/python/keras-team/keras/8930c26203a465b8d4362c5dc4075b460522ecb7/1 -c /home/betul/Humboldt/HiWi/CASCADE/configs/datasetExtraction/Python.json --filters \(0\,expected:_compute_attention\) --filters \(1\,expected:keras/layers/attention/multi_head_attention.py\) --filters \(2\,expected:MultiHeadAttention._compute_attention\)
+
+Extraction started
+Extraction finished. Extracted:  4420
+Filtering started
+Filtering finished. Remaining:  1
+Analysis started
+Analysis finished

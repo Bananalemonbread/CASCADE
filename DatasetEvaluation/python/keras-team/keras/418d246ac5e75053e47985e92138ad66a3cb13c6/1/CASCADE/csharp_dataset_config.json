@@ -1,0 +1,10 @@
+{
+	"Extraction"    : { "name": "CSharpExtraction",  "kwargs" : {}},
+	"CodeGenerator": { "name": "CSharpCodeGenerator", "kwargs" : {"model": "gpt-4.1-mini"}, "temperature":0},
+	"TestGenerator": { "name": "MultiStepCSharpTestGenerator", "kwargs" : {"model": "gpt-4.1-mini", "temperature": 0}},
+	"Analysis": {
+		"name": "CSharpTwoStepAnalysis",
+		"kwargs": {}
+		},
+	"Executor"      : { "name": "CSharpExecutor",   "kwargs" : {}}
+}

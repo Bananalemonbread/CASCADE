@@ -1,6 +1,7 @@
 import ast
 import os
 import textwrap
+import tokenize
 from typing import Any, Dict, List
 
 from cascade.extraction.Extraction import Extraction
@@ -40,8 +41,14 @@ class PythonExtraction(Extraction):
         for file_path in self.find_python_files(input_path):
             rel_path = os.path.relpath(file_path, input_path)
 
-            with open(file_path, "r", encoding="utf-8") as f:
-                source = f.read()
+            try:
+                # Respect PEP 263 encoding declarations used by older Python
+                # projects. A single unreadable source file must not abort the
+                # extraction of the complete repository.
+                with tokenize.open(file_path) as f:
+                    source = f.read()
+            except (OSError, UnicodeError, SyntaxError):
+                continue
 
             try:
                 tree = ast.parse(source)
